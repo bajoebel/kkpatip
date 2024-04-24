@@ -1,18 +1,31 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="home" v-if="isLogin">
+      <WelcomeMessage msg="Hello Wanhar Azri"/>
+  </div>
+  <div class="login" v-else>
+      <LoginForm title="Login Disini"/>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
+import WelcomeMessage from '@/components/WelcomeMessage.vue'
+import LoginForm from '@/components/LoginForm.vue'
 export default {
   name: 'HomeView',
   components: {
-    HelloWorld
+    WelcomeMessage,
+    LoginForm
+  },
+  data:() => {
+    return {
+      form: {
+        username: "",
+        password: "",
+      },
+      isLogin: localStorage.getItem('isLogin'),
+      isLevel:0
+    }
   }
 }
 </script>
