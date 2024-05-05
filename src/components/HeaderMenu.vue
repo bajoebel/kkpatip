@@ -15,12 +15,13 @@
             </b-navbar-brand>
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
             <b-collapse id="nav-collapse" is-nav>
-              <b-navbar-nav right>
+              <b-navbar-nav right v-if="isLogin">
                 <b-link to="/" class="nav-link">Home</b-link>
-                <b-link to="/about" class="nav-link">About</b-link>
+                <b-link to="/about" class="nav-link" >About</b-link>
+                <a class="nav-link" @click="logout()">Logout</a>
               </b-navbar-nav>
 
-              <b-navbar-nav class="ml-auto">
+              <!-- <b-navbar-nav class="ml-auto">
                 <b-nav-item-dropdown text="Lang" right>
                   <b-dropdown-item href="#">EN</b-dropdown-item>
                   <b-dropdown-item href="#">ES</b-dropdown-item>
@@ -32,7 +33,7 @@
                   <b-dropdown-item href="#">Account</b-dropdown-item>
                   <b-dropdown-item href="#">Settings</b-dropdown-item>
                 </b-nav-item-dropdown>
-              </b-navbar-nav>
+              </b-navbar-nav> -->
             </b-collapse>
           <!-- </b-container> -->
         </b-navbar>
@@ -52,9 +53,11 @@
       <p style="text-align: center">Administrator</p>
       <b-list-group style="max-width: 500px">
         <b-list-group-item class="d-flex align-items-center" active>
+          
           <b-avatar class="mr-3" variant="primary"></b-avatar>
-          <span class="mr-auto">Mahasiswa</span>
+          <span class="mr-auto"><b-link to="/about">Mahasiswa</b-link></span>
           <b-badge>5</b-badge>
+          
         </b-list-group-item>
         <b-list-group-item class="d-flex align-items-center">
           <b-avatar variant="primary" text="BV" class="mr-3"></b-avatar>
@@ -91,6 +94,16 @@ export default {
       isLogin: localStorage.getItem("isLogin"),
     };
   },
+  mounted() {
+    this.isLogin=localStorage.getItem("isLogin")
+  },
+  methods: {
+    logout(){
+      let self = this;
+      localStorage.clear();
+      self.$router.go('../')
+    }
+  }
 };
 </script>
 <style scoped lang="scss">

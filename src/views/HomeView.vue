@@ -1,6 +1,8 @@
 <template>
+  <!-- <WelcomeMessage msg="Hello Wanhar Azri"/>  -->
   <div class="home" v-if="isLogin">
-      <WelcomeMessage msg="Hello Wanhar Azri"/>
+      <!-- <WelcomeMessage msg="Hello Wanhar Azri"/> -->
+      <shorcut-menu/>
   </div>
   <div class="login" v-else>
       <LoginForm title="Login Disini"/>
@@ -9,13 +11,14 @@
 
 <script>
 // @ is an alias to /src
-import WelcomeMessage from '@/components/WelcomeMessage.vue'
+// import WelcomeMessage from '@/components/WelcomeMessage.vue'
 import LoginForm from '@/components/LoginForm.vue'
+import ShorcutMenu from '@/components/ShorcutMenu.vue'
 export default {
   name: 'HomeView',
   components: {
-    WelcomeMessage,
-    LoginForm
+    LoginForm,
+    ShorcutMenu
   },
   data:() => {
     return {
@@ -26,6 +29,7 @@ export default {
       isLogin: localStorage.getItem('isLogin'),
       isLevel:0
     }
-  }
+  },
+  
 }
 </script>

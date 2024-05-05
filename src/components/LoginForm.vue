@@ -51,7 +51,11 @@
                     </b-form-group>
                     <div class="t10">
                       <b-button-group>
-                      <b-button type="submit" variant="primary">
+                      <!-- <b-button type="submit" variant="primary">
+                        <b-icon icon="key"></b-icon>
+                        Login
+                        </b-button> -->
+                      <b-button type="button" variant="primary" @click="onLogin()">
                         <b-icon icon="key"></b-icon>
                         Login
                         </b-button>
@@ -72,6 +76,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: "LoginForm",
   props: {
@@ -89,7 +95,30 @@ export default {
   methods: {
     onSubmit(event) {
       event.preventDefault();
-      alert(JSON.stringify(this.form));
+      try {
+        console.clear();
+        console.log(this.form.username);
+        console.log(this.form.password);
+        axios.post('login', {
+          username: this.form.username,
+          userpass: this.form.password
+        },{})
+        .then(function (response) {
+          console.log(response);
+          localStorage.setItem('token',response.token)
+          localStorage.setItem('isLogin',true)
+          
+          return response;
+        })
+        .catch(function (error) {
+          // console.clear();
+          console.log("Caching Error : ")
+          console.log(error);
+        });
+      } catch (error) {
+        
+        console.log(error)
+      }
     },
     onReset(event) {
       event.preventDefault();
@@ -101,6 +130,36 @@ export default {
         this.show = true;
       });
     },
+
+    async onLogin(){
+      let self = this;
+      try {
+        console.clear();
+        console.log(this.form.username);
+        console.log(this.form.password);
+        await axios.post('login', {
+          username: this.form.username,
+          userpass: this.form.password
+        },{})
+        .then(function (response) {
+          console.log(response);
+          localStorage.setItem('token',response.token)
+          localStorage.setItem('isLogin',true)
+          // this.$router.push({ path: '/' })
+          self.$router.go('/')
+          return response;
+        })
+        .catch(function (error) {
+          // console.clear();
+          console.log("Caching Error : ")
+          console.log(error);
+        });
+      } catch (error) {
+        console.clear();
+        console.log("Error Message : ")
+        console.log(error)
+      }
+    }
   },
 };
 </script>
