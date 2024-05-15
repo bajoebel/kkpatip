@@ -143,10 +143,14 @@ export default {
         },{})
         .then(function (response) {
           console.log(response);
-          localStorage.setItem('token',response.token)
-          localStorage.setItem('isLogin',true)
-          // this.$router.push({ path: '/' })
-          self.$router.go('/')
+          // alert(response.data.token)
+          if(response.data.status==200){
+            localStorage.setItem('token',response.data.token)
+            localStorage.setItem('isLogin',true)
+            // this.$router.push({ path: '/' })
+            self.$router.go('/')
+          }
+          
           return response;
         })
         .catch(function (error) {

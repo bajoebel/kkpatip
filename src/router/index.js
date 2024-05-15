@@ -2,6 +2,12 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
+import PerusahaanView from '../views/PerusahaanView.vue'
+import MahasiswaView from '../views/MahasiswaView.vue'
+import JenisView from '../views/JenisView.vue'
+import JenisKuotaView from '../views/JenisKuotaView.vue'
+import DokumenView from '../views/DokumenView.vue'
+import ProdiView from '../views/ProdiView.vue'
 
 Vue.use(VueRouter)
 
@@ -15,6 +21,36 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginView
+  },
+  {
+    path: '/perusahaan',
+    name: 'perusahaan',
+    component: PerusahaanView
+  },
+  {
+    path: '/mahasiswa',
+    name: 'mahasiswa',
+    component: MahasiswaView
+  },
+  {
+    path: '/jenis',
+    name: 'jenis',
+    component: JenisView
+  },
+  {
+    path: '/jeniskuota',
+    name: 'jeniskuota',
+    component: JenisKuotaView
+  },
+  {
+    path: '/dokumen',
+    name: 'dokumen',
+    component: DokumenView
+  },
+  {
+    path: '/prodi',
+    name: 'prodi',
+    component: ProdiView
   },
   {
     path: '/about',

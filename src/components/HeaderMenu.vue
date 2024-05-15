@@ -9,19 +9,32 @@
           style="border-bottom: solid 1px #ccc; border-collapse: collapse"
         >
           <!-- <b-container> -->
-            <b-navbar-brand href="#" style="padding-left: 10px">
-              <b-img src="img/logo.png" fluid alt="Fluid image" v-b-toggle.sidebar-1 v-if="isLogin"></b-img>
-              <b-img src="img/logo.png" fluid alt="Fluid image" v-else></b-img>
-            </b-navbar-brand>
-            <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-            <b-collapse id="nav-collapse" is-nav>
-              <b-navbar-nav right v-if="isLogin">
-                <b-link to="/" class="nav-link">Home</b-link>
-                <b-link to="/about" class="nav-link" >About</b-link>
-                <a class="nav-link" @click="logout()">Logout</a>
-              </b-navbar-nav>
+          <b-navbar-brand href="#" style="padding-left: 10px">
+            <b-img
+              src="img/logo.png"
+              fluid
+              alt="Fluid image"
+              v-b-toggle.sidebar-1
+              v-if="isLogin"
+            ></b-img>
+            <b-img src="img/logo.png" fluid alt="Fluid image" v-else></b-img>
+          </b-navbar-brand>
+          <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+          <b-collapse id="nav-collapse" is-nav>
+            <b-navbar-nav right v-if="isLogin">
+              <b-link to="/" class="nav-link">Home</b-link>
+              
+              <b-link to="/perusahaan" class="nav-link">Perusahaan</b-link>
+              <b-link to="/mahasiswa" class="nav-link">Mahasiswa</b-link>
+              <b-link to="/prodi" class="nav-link">Prodi</b-link>
+              <b-link to="/jenis" class="nav-link">Jenis</b-link>
+              <b-link to="/jeniskuota" class="nav-link">Jenis Kuota</b-link>
+              <b-link to="/dokumen" class="nav-link">Dokumen</b-link>
+              <b-link to="/about" class="nav-link">About</b-link>
+              <a class="nav-link" @click="logout()">Logout</a>
+            </b-navbar-nav>
 
-              <!-- <b-navbar-nav class="ml-auto">
+            <!-- <b-navbar-nav class="ml-auto">
                 <b-nav-item-dropdown text="Lang" right>
                   <b-dropdown-item href="#">EN</b-dropdown-item>
                   <b-dropdown-item href="#">ES</b-dropdown-item>
@@ -34,7 +47,7 @@
                   <b-dropdown-item href="#">Settings</b-dropdown-item>
                 </b-nav-item-dropdown>
               </b-navbar-nav> -->
-            </b-collapse>
+          </b-collapse>
           <!-- </b-container> -->
         </b-navbar>
       </b-col>
@@ -49,15 +62,16 @@
       <div class="px-5 py-1">
         <b-img src="img/user.png" fluid thumbnail rounded="circle"></b-img>
       </div>
-      <h3 style="text-align: center">Wanhar Azri S.Kom</h3>
-      <p style="text-align: center">Administrator</p>
+      <h3 style="text-align: center">{{ nama }}</h3>
+      <p style="text-align: center">{{ level }}</p>
       <b-list-group style="max-width: 500px">
         <b-list-group-item class="d-flex align-items-center" active>
-          
           <b-avatar class="mr-3" variant="primary"></b-avatar>
-          <span class="mr-auto"><b-link to="/about">Mahasiswa</b-link></span>
+          <span class="mr-auto">
+            <!-- <b-link to="/about">Mahasiswa</b-link> -->
+            <router-link to="mahasiswa">Mahasiswa</router-link>
+          </span>
           <b-badge>5</b-badge>
-          
         </b-list-group-item>
         <b-list-group-item class="d-flex align-items-center">
           <b-avatar variant="primary" text="BV" class="mr-3"></b-avatar>
@@ -87,23 +101,54 @@
   </nav>
 </template>
 <script>
+import axios from "axios";
 export default {
   name: "HeaderMenu",
   data: () => {
     return {
       isLogin: localStorage.getItem("isLogin"),
+      nama: "Ujang",
+      level: "Guest",
     };
   },
   mounted() {
-    this.isLogin=localStorage.getItem("isLogin")
+    this.isLogin = localStorage.getItem("isLogin");
+    // alert('getInfo');
+    this.getInfo()
+    // alert(token)
+    
   },
   methods: {
-    logout(){
+    logout() {
       let self = this;
       localStorage.clear();
-      self.$router.go('../')
-    }
-  }
+      self.$router.go("/");
+    },
+    getInfo: async function() {
+      let token = localStorage.getItem("token");
+      await axios
+      .request({
+        headers: {
+          Authorization: `Bearer ` + token,
+        },
+        method: "GET",
+        url: `me`,
+      })
+      .then((response) => {
+        console.log(response.data);
+        this.nama = response.data.info.nama
+        this.level = (response.data.info.level==1?'Administrator':(response.data.info.level==2?'Mahasiswa':'Dosen'))
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+      .finally(function () {
+        // always executed
+      });
+      return false;
+    },
+  },
 };
 </script>
 <style scoped lang="scss">

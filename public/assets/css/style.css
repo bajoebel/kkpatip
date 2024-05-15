@@ -2,3 +2,32 @@
     padding-top:10px;
     padding-bottom:10px;
 }
+.kotak{
+    border:1px solid #ccc;
+    border-collapse: collapse;
+    padding: 5px;;
+    margin:10px;
+}
+.text-center{
+    text-align: center;
+}
+.close:not(:disabled):not(.disabled):hover {
+    opacity: .75;
+  }
+  .modal-header .close {
+    padding: 1rem;
+    margin: -1rem -1rem -1rem auto;
+  }
+  .close:hover {
+    color: #000;
+    text-decoration: none;
+  }
+  .close{
+    background: transparent;
+    opacity: 75%;
+    border: 0px;
+  }
+  .form-control{
+    border-radius: 0px;
+  }
+  
