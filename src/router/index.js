@@ -8,6 +8,8 @@ import JenisView from '../views/JenisView.vue'
 import JenisKuotaView from '../views/JenisKuotaView.vue'
 import DokumenView from '../views/DokumenView.vue'
 import ProdiView from '../views/ProdiView.vue'
+import KuotaView from '../views/KuotaView.vue'
+import KuotaperusahaanView from '../views/KuotaperusahaanView.vue'
 
 Vue.use(VueRouter)
 
@@ -51,6 +53,16 @@ const routes = [
     path: '/prodi',
     name: 'prodi',
     component: ProdiView
+  },
+  {
+    path: '/kuota',
+    name: 'kuota',
+    component: KuotaView
+  },
+  {
+    path: '/kuota/perusahaan/:id',
+    name: 'perusahaan',
+    component: KuotaperusahaanView
   },
   {
     path: '/about',

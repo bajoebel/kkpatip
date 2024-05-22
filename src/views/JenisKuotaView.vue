@@ -51,6 +51,7 @@
               <b-button squared variant="danger" @click="hapus(item.jenisid)"
                 ><b-icon icon="trash2"></b-icon></b-button
               >
+              
             </b-button-group>
           </td>
         </tr>

@@ -23,13 +23,13 @@
           <b-collapse id="nav-collapse" is-nav>
             <b-navbar-nav right v-if="isLogin">
               <b-link to="/" class="nav-link">Home</b-link>
-              
               <b-link to="/perusahaan" class="nav-link">Perusahaan</b-link>
               <b-link to="/mahasiswa" class="nav-link">Mahasiswa</b-link>
               <b-link to="/prodi" class="nav-link">Prodi</b-link>
               <b-link to="/jenis" class="nav-link">Jenis</b-link>
               <b-link to="/jeniskuota" class="nav-link">Jenis Kuota</b-link>
               <b-link to="/dokumen" class="nav-link">Dokumen</b-link>
+              <b-link to="/kuota" class="nav-link">Kuota</b-link>
               <b-link to="/about" class="nav-link">About</b-link>
               <a class="nav-link" @click="logout()">Logout</a>
             </b-navbar-nav>
@@ -46,7 +46,7 @@
                   <b-dropdown-item href="#">Account</b-dropdown-item>
                   <b-dropdown-item href="#">Settings</b-dropdown-item>
                 </b-nav-item-dropdown>
-              </b-navbar-nav> -->
+            </b-navbar-nav> -->
           </b-collapse>
           <!-- </b-container> -->
         </b-navbar>
@@ -54,7 +54,7 @@
     </div>
     <b-sidebar
       id="sidebar-1"
-      title="Selamat Datang DI Aplikasi KKP"
+      title="Selamat Datang Di Aplikasi KKP"
       shadow
       style="text-align: center"
       v-if="isLogin"
