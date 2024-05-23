@@ -4,7 +4,7 @@
     <!-- <b-table striped hover :items="items"></b-table> -->
     <b-row>
       <b-col cols="2" lg="1">
-        <select class="form-control" v-model="limit" @change="getData">
+        <select class="custom-select" v-model="limit" @change="getData">
           <option value="10" selected>10</option>
           <option value="20">20</option>
           <option value="30">30</option>
@@ -14,13 +14,13 @@
         </select>
       </b-col>
       <b-col cols="3" lg="3">
-        <b-form-select v-model="prodiid" :options="listprodi" value-field="prodiid" text-field="prodinama" size="sm" class="form-control" @change="getData(Event, 1)"></b-form-select>
+        <b-form-select v-model="prodiid" :options="listprodi" value-field="prodiid" text-field="prodinama"  @change="getData(Event, 1)"></b-form-select>
         <!-- <select class="form-control" v-model="prodiid" :options="listprodi" @change="getData">
           <option value="11" selected>TIA</option>
         </select> -->
       </b-col>
       <b-col cols="3" lg="3">
-        <b-form-select v-model="semester" :options="listsemester" value-field="semid" text-field="semnama" size="sm" class="form-control" @change="getData(Event, 1)"></b-form-select>
+        <b-form-select v-model="semester" :options="listsemester" value-field="semid" text-field="semnama" @change="getData(Event, 1)"></b-form-select>
         <!-- <select class="form-control" v-model="semester" @change="getData(Event, 1)">
           <option  v-for="item in listsemester" v-bind:key="item.semid" v-bind:value="item.semid" v-if="item.semaktif=1">{{item.semnama}}</option>
         </select> -->
@@ -49,7 +49,7 @@
           <td rowspan="2">Prodi</td>
           <td rowspan="2">Semester</td>
           <td colspan="3" class="text-center">Tanggal</td>
-          <td style="width: 260px"  rowspan="2">#</td>
+          <td style="width: 270px"  rowspan="2">#</td>
         </tr>
         <tr>
             <td>Mulai Registrasi</td>

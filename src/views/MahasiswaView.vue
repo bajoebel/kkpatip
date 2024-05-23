@@ -4,7 +4,7 @@
     <!-- <b-table striped hover :items="items"></b-table> -->
     <b-row>
       <b-col cols="2" lg="1">
-        <select class="form-control" v-model="limit" @change="getData">
+        <select class="custom-select" v-model="limit" @change="getData">
           <option value="10" selected>10</option>
           <option value="20">20</option>
           <option value="30">30</option>
@@ -14,13 +14,13 @@
         </select>
       </b-col>
       <b-col cols="3" lg="3">
-        <b-form-select v-model="prodiid" :options="listprodi" value-field="prodiid" text-field="prodinama" size="sm" class="form-control" @change="getData(Event, 1)"></b-form-select>
+        <b-form-select v-model="prodiid" :options="listprodi" value-field="prodiid" text-field="prodinama" @change="getData(Event, 1)"></b-form-select>
         <!-- <select class="form-control" v-model="prodiid" :options="listprodi" @change="getData">
           <option value="11" selected>TIA</option>
         </select> -->
       </b-col>
       <b-col cols="3" lg="3">
-        <b-form-select v-model="angkatan" :options="listangkatan" size="sm" class="form-control" @change="getData(Event, 1)"></b-form-select>
+        <b-form-select v-model="angkatan" :options="listangkatan"  @change="getData(Event, 1)"></b-form-select>
         
       </b-col>
       <b-col cols="4" lg="5">
@@ -163,7 +163,7 @@ export default {
             Authorization: `Bearer ` + token,
           },
           method: "GET",
-          url:`prodi/all`,
+          url:`all/prodi`,
         })
         .then((response) => {
           console.log(response.data);

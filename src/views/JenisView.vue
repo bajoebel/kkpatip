@@ -4,7 +4,7 @@
     <!-- <b-table striped hover :items="items"></b-table> -->
     <b-row>
       <b-col cols="2" lg="1">
-        <select class="form-control" v-model="limit">
+        <select class="custom-select" v-model="limit">
           <option value="10" selected>10</option>
           <option value="20">20</option>
           <option value="30">30</option>

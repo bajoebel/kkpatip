@@ -111,9 +111,10 @@ export default {
           return response;
         })
         .catch(function (error) {
-          // console.clear();
+          console.clear();
           console.log("Caching Error : ")
-          console.log(error);
+          
+          console.log(error.stack.code);
         });
       } catch (error) {
         

@@ -11,7 +11,7 @@
           <!-- <b-container> -->
           <b-navbar-brand href="#" style="padding-left: 10px">
             <b-img
-              src="img/logo.png"
+              src="http://localhost:8081/img/logo.png"
               fluid
               alt="Fluid image"
               v-b-toggle.sidebar-1
@@ -22,18 +22,20 @@
           <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
           <b-collapse id="nav-collapse" is-nav>
             <b-navbar-nav right v-if="isLogin">
-              <b-link to="/" class="nav-link">Home</b-link>
-              <b-link to="/perusahaan" class="nav-link">Perusahaan</b-link>
-              <b-link to="/mahasiswa" class="nav-link">Mahasiswa</b-link>
-              <b-link to="/prodi" class="nav-link">Prodi</b-link>
-              <b-link to="/jenis" class="nav-link">Jenis</b-link>
-              <b-link to="/jeniskuota" class="nav-link">Jenis Kuota</b-link>
-              <b-link to="/dokumen" class="nav-link">Dokumen</b-link>
-              <b-link to="/kuota" class="nav-link">Kuota</b-link>
-              <b-link to="/about" class="nav-link">About</b-link>
-              <a class="nav-link" @click="logout()">Logout</a>
+              <b-link to="/" class="nav-link"><b-icon icon="house-fill"></b-icon> Home</b-link>
+              <b-link to="/perusahaan" class="nav-link"><b-icon icon="bank"></b-icon> Perusahaan</b-link>
+              <b-link to="/mahasiswa" class="nav-link"><b-icon icon="people-fill"></b-icon> Mahasiswa</b-link>
+              <b-link to="/prodi" class="nav-link"><b-icon icon="intersect"></b-icon> Prodi</b-link>
+              <b-link to="/jenis" class="nav-link"><b-icon icon="folder-check"></b-icon> Jenis</b-link>
+              <b-link to="/jeniskuota" class="nav-link"><b-icon icon="union"></b-icon> Jenis Kuota</b-link>
+              <b-link to="/dokumen" class="nav-link"><b-icon icon="folder-fill"></b-icon> Dokumen</b-link>
+              <b-link to="/kuota" class="nav-link"><b-icon icon="alarm-fill"></b-icon> Kuota</b-link>
+              <!-- <b-link to="/about" class="nav-link">About</b-link> -->
+              
             </b-navbar-nav>
-
+            <b-navbar-nav right>
+              <a class="nav-link" @click="logout()" v-if="isLogin"><b-icon icon="power" aria-hidden="true"></b-icon>Logout</a>
+              </b-navbar-nav>
             <!-- <b-navbar-nav class="ml-auto">
                 <b-nav-item-dropdown text="Lang" right>
                   <b-dropdown-item href="#">EN</b-dropdown-item>
@@ -60,7 +62,7 @@
       v-if="isLogin"
     >
       <div class="px-5 py-1">
-        <b-img src="img/user.png" fluid thumbnail rounded="circle"></b-img>
+        <b-img src="@img/user.png" fluid thumbnail rounded="circle"></b-img>
       </div>
       <h3 style="text-align: center">{{ nama }}</h3>
       <p style="text-align: center">{{ level }}</p>
