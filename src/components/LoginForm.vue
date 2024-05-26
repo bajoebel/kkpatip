@@ -55,11 +55,16 @@
                         <b-icon icon="key"></b-icon>
                         Login
                         </b-button> -->
-                      <b-button type="button" variant="primary" @click="onLogin()">
-                        <b-icon icon="key"></b-icon>
-                        Login
-                        </b-button>
-                      <b-button type="reset" variant="danger">Reset</b-button>
+                          <b-button type="button" variant="primary" @click="onLogin()" v-if="level==='admin'">
+                          <b-icon icon="key"></b-icon>
+                          Login admin
+                          </b-button>
+                          <b-button type="button" variant="primary" @click="onLoginMahasiswa()" v-else-if="level==='mahasiswa'">
+                          <b-icon icon="key"></b-icon>
+                          Login Mahasiswa
+                          </b-button>
+                      
+                      <!-- <b-button type="reset" variant="danger">Reset</b-button> -->
                       </b-button-group>
                     </div>
                     
@@ -82,6 +87,7 @@ export default {
   name: "LoginForm",
   props: {
     title: String,
+    level: String
   },
   data() {
     return {
@@ -93,45 +99,6 @@ export default {
     };
   },
   methods: {
-    onSubmit(event) {
-      event.preventDefault();
-      try {
-        console.clear();
-        console.log(this.form.username);
-        console.log(this.form.password);
-        axios.post('login', {
-          username: this.form.username,
-          userpass: this.form.password
-        },{})
-        .then(function (response) {
-          console.log(response);
-          localStorage.setItem('token',response.token)
-          localStorage.setItem('isLogin',true)
-          
-          return response;
-        })
-        .catch(function (error) {
-          console.clear();
-          console.log("Caching Error : ")
-          
-          console.log(error.stack.code);
-        });
-      } catch (error) {
-        
-        console.log(error)
-      }
-    },
-    onReset(event) {
-      event.preventDefault();
-      // Reset our form values
-      this.form.email = "";
-      this.form.name = "";
-      this.show = false;
-      this.$nextTick(() => {
-        this.show = true;
-      });
-    },
-
     async onLogin(){
       let self = this;
       try {
@@ -139,6 +106,42 @@ export default {
         console.log(this.form.username);
         console.log(this.form.password);
         await axios.post('login', {
+          username: this.form.username,
+          userpass: this.form.password
+        },{})
+        .then(function (response) {
+          console.log(response);
+          // alert(response.data.token)
+          if(response.data.status==200){
+            localStorage.setItem('token',response.data.token)
+            localStorage.setItem('isLogin',true)
+            // this.show=false;
+            // this.$router.push({ path: '/' })
+            // this.$router.push("/");
+            self.$router.push('/')
+            location.reload()
+          }
+          
+          return response;
+        })
+        .catch(function (error) {
+          // console.clear();
+          console.log("Caching Error : ")
+          console.log(error);
+        });
+      } catch (error) {
+        console.clear();
+        console.log("Error Message : ")
+        console.log(error)
+      }
+    },
+    async onLoginMahasiswa(){
+      let self = this;
+      try {
+        console.clear();
+        console.log(this.form.username);
+        console.log(this.form.password);
+        await axios.post('login_mahasiswa', {
           username: this.form.username,
           userpass: this.form.password
         },{})

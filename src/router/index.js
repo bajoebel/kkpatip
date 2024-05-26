@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
+import LoginmahasiswaView from '../views/LoginmahasiswaView.vue'
 import PerusahaanView from '../views/PerusahaanView.vue'
 import MahasiswaView from '../views/MahasiswaView.vue'
 import JenisView from '../views/JenisView.vue'
@@ -10,6 +11,8 @@ import DokumenView from '../views/DokumenView.vue'
 import ProdiView from '../views/ProdiView.vue'
 import KuotaView from '../views/KuotaView.vue'
 import KuotaperusahaanView from '../views/KuotaperusahaanView.vue'
+import RegisterView from '../views/RegisterView.vue'
+import RegisterdetailView from '../views/RegisterdetailView.vue'
 
 Vue.use(VueRouter)
 
@@ -23,6 +26,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginView
+  },
+  {
+    path: '/login-mahasiswa',
+    name: 'login/mahasiswa',
+    component: LoginmahasiswaView
   },
   {
     path: '/perusahaan',
@@ -58,6 +66,16 @@ const routes = [
     path: '/kuota',
     name: 'kuota',
     component: KuotaView
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: RegisterView
+  },
+  {
+    path: '/register/:id',
+    name: 'registerdetail',
+    component: RegisterdetailView
   },
   {
     path: '/kuota/perusahaan/:id',

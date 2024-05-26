@@ -21,7 +21,7 @@
           </b-navbar-brand>
           <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
           <b-collapse id="nav-collapse" is-nav>
-            <b-navbar-nav right v-if="isLogin">
+            <b-navbar-nav right v-if="isLogin && level=='Administrator'">
               <b-link to="/" class="nav-link"><b-icon icon="house-fill"></b-icon> Home</b-link>
               <b-link to="/perusahaan" class="nav-link"><b-icon icon="bank"></b-icon> Perusahaan</b-link>
               <b-link to="/mahasiswa" class="nav-link"><b-icon icon="people-fill"></b-icon> Mahasiswa</b-link>
@@ -30,6 +30,19 @@
               <b-link to="/jeniskuota" class="nav-link"><b-icon icon="union"></b-icon> Jenis Kuota</b-link>
               <b-link to="/dokumen" class="nav-link"><b-icon icon="folder-fill"></b-icon> Dokumen</b-link>
               <b-link to="/kuota" class="nav-link"><b-icon icon="alarm-fill"></b-icon> Kuota</b-link>
+              <b-link to="/register" class="nav-link"><b-icon icon="card-list"></b-icon> Register</b-link>
+              <!-- <b-link to="/about" class="nav-link">About</b-link> -->
+              
+            </b-navbar-nav>
+            <b-navbar-nav right v-else-if="isLogin && level=='Admin Prodi'">
+              <b-link to="/" class="nav-link"><b-icon icon="house-fill"></b-icon> Home</b-link>
+              <b-link to="/mahasiswa" class="nav-link"><b-icon icon="people-fill"></b-icon> Mahasiswa</b-link>
+              <b-link to="/dosen" class="nav-link"><b-icon icon="people"></b-icon> Dosen</b-link>
+              
+            </b-navbar-nav>
+            <b-navbar-nav right v-else-if="isLogin && level=='Mahasiswa'">
+              <b-link to="/" class="nav-link"><b-icon icon="house-fill"></b-icon> Home</b-link>
+              <b-link to="/profile" class="nav-link"><b-icon icon="file-check"></b-icon> Laporan Magang</b-link>
               <!-- <b-link to="/about" class="nav-link">About</b-link> -->
               
             </b-navbar-nav>
@@ -62,7 +75,7 @@
       v-if="isLogin"
     >
       <div class="px-5 py-1">
-        <b-img src="@img/user.png" fluid thumbnail rounded="circle"></b-img>
+        <b-img src="img/user.png" fluid thumbnail rounded="circle"></b-img>
       </div>
       <h3 style="text-align: center">{{ nama }}</h3>
       <p style="text-align: center">{{ level }}</p>
@@ -118,7 +131,7 @@ export default {
     // alert('getInfo');
     this.getInfo()
     // alert(token)
-    
+    // alert(this.nama)
   },
   methods: {
     logout() {
@@ -139,7 +152,8 @@ export default {
       .then((response) => {
         console.log(response.data);
         this.nama = response.data.info.nama
-        this.level = (response.data.info.level==1?'Administrator':(response.data.info.level==2?'Mahasiswa':'Dosen'))
+        this.level = (response.data.info.level==1?'Administrator':(response.data.info.level==2?'Admin Prodi':(response.data.info.level==3?"Mahasiswa":"Dosen")))
+        localStorage.setItem('isLevel',response.data.info.level)
       })
       .catch(function (error) {
         // handle error

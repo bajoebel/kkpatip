@@ -1,5 +1,5 @@
 <template>
-  <LoginForm title="Login Disini" level="admin"/>
+  <LoginForm title="Halaman Login Mahasiswa" level="mahasiswa"/>
 </template>
 
 <script>
