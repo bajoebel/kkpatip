@@ -12,21 +12,24 @@
           v-if="isLogin"
         ></b-icon
       ></b-col> -->
-      <b-col>
+      <b-col class="konten">
         
         <router-view />
       </b-col>
     <!-- </b-container> -->
 
     <!-- </b-row> -->
+    <footer-theme />
   </div>
 </template>
 <script>
 import HeaderMenu from "@/components/HeaderMenu.vue";
+import FooterTheme from "@/components/FooterTheme.vue";
 
 export default {
   components: {
     HeaderMenu,
+    FooterTheme,
   },
   data: () => {
     return {

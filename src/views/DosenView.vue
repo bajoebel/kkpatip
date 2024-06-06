@@ -4,7 +4,7 @@
     <!-- <b-table striped hover :items="items"></b-table> -->
     <b-row>
       <b-col cols="2" lg="1">
-        <select class="custom-select" v-model="limit" @change="getData">
+        <select class="custom-select" v-model="limit" @change="getData(Event, 1)">
           <option value="10" selected>10</option>
           <option value="20">20</option>
           <option value="30">30</option>
@@ -25,18 +25,12 @@
           <option value="11" selected>TIA</option>
         </select> -->
       </b-col>
-      <b-col cols="3" lg="3">
-        <b-form-select
-          v-model="angkatan"
-          :options="listangkatan"
-          @change="getData(Event, 1)"
-        ></b-form-select>
-      </b-col>
-      <b-col cols="4" lg="5">
+      
+      <b-col cols="7" lg="8">
         <b-input-group>
           <b-form-input v-model="keyword" @keyup="getData"></b-form-input>
           <b-input-group-append>
-            <b-button squared variant="success" @click="getData()"
+            <b-button squared variant="success" @click="getData(Event, 1)"
               >Cari</b-button
             >
           </b-input-group-append>
@@ -49,57 +43,22 @@
       <thead>
         <tr>
           <td>No</td>
-          <td>Nama</td>
+          <td>NIDN</td>
+          <td>Nama Dosen</td>
+          <td>Prodi</td>
           <td>Alamat</td>
           <td>No Telp</td>
-          <td>Prodi Nama</td>
-          <td>Angkatan</td>
-          <td>SKS Diambil</td>
-          <td>SKS Nilai D/E</td>
-          <td>Di Rekomendasi Sistem</td>
-          <td style="width: 50px">#</td>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(item, index) in items" :key="item.perusahaanid">
           <td>{{ index + 1 }}</td>
-          <td>{{ item.mhsnobp + " - " + item.mhsnama }}</td>
-          <td>{{ item.mhsalamat }}</td>
-          <td>{{ item.mhstelp }}</td>
+          <td>{{ item.dosennidn }}</td>
+          <td>{{ item.dosennama }}</td>
           <td>{{ item.prodinama }}</td>
-          <td>{{ item.mhsangkatan }}</td>
-          <td>{{ item.totalsks }}</td>
-          <td>{{ item.nilai_d_e }}</td>
-          <td>
-            <b-button
-              variant="success"
-              size="sm"
-              squared
-              v-if="
-                item.totalsks >= minimalsks && item.nilai_d_e < maximalsksgagal
-              "
-              >Ya</b-button
-            >
-            <b-button variant="danger" size="sm" squared v-else>Tidak</b-button>
-          </td>
-          <td>
-            <b-button-group size="sm">
-              <b-button
-                squared
-                variant="primary"
-                @click="rekomendasi(item.mhsnobp)"
-                v-if="item.mhsrekommagang=='0'"
-                ><b-icon icon="person-check"></b-icon
-              ></b-button>
-              <b-button
-                squared
-                variant="danger"
-                @click="hapusRekomendasi(item.mhsnobp)"
-                v-else
-                ><b-icon icon="person-x"></b-icon
-              ></b-button>
-            </b-button-group>
-          </td>
+          <td>{{ item.dosenalamat }}</td>
+          <td>{{ item.dosentelp }}</td>
+          
         </tr>
       </tbody>
     </table>
@@ -122,7 +81,7 @@
     <div class="kotak">
       <h3 class="text-center">
         Anda Belum Login <br />
-        <b-link class="text-center" to="/login">Silahkan Login Disini</b-link>
+        <b-link class="text-center" to="/">Silahkan Login Disini</b-link>
       </h3>
     </div>
   </div>
@@ -242,16 +201,14 @@ export default {
           },
           method: "GET",
           url:
-            `mahasiswa?page=` +
+            `dosen?page=` +
             page +
             `&limit=` +
             this.limit +
             `&keyword=` +
             this.keyword +
             `&prodi=` +
-            this.prodiid +
-            `&angkatan=` +
-            this.angkatan,
+            this.prodiid,
         })
         .then((response) => {
           console.log(response.data);

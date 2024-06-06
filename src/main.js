@@ -22,6 +22,8 @@ const options = {
 
 Vue.use(VueSweetalert2, options);
 
+// import { Select2 } from "select2-vue-component";
+// Vue.component('select2', Select2)
 // Make BootstrapVue available throughout your project
 axios.defaults.baseURL=process.env.VUE_APP_BASE_URL;
 // axios.defaults.baseURL = process.env.ATIP_API_URL

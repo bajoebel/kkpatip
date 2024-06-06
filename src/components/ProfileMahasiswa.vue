@@ -246,7 +246,7 @@
                           </b-tab>
                           <b-tab
                             title="Lihat Dokumen Register"
-                            v-if="register.dokumenregister"
+                            v-if="register.dokumenregister.length>0"
                           >
                           <table
                               responsive
@@ -274,17 +274,10 @@
                                   <b-button-group size="sm">
                                     <b-button
                                       squared
-                                      variant="primary"
-                                      @click="
-                                        upload(
-                                          item.dokumenid,
-                                          register.registerid,
-                                          item.dokumentipe
-                                        )
-                                      "
+                                      variant="info"
                                       v-if="item.status!='1'"
                                       ><b-icon icon="upload"></b-icon>
-                                      Upload</b-button
+                                      Belum Validasi</b-button
                                     >
                                     <b-button
                                       squared
@@ -330,17 +323,10 @@
                                   <b-button-group size="sm">
                                     <b-button
                                       squared
-                                      variant="primary"
-                                      @click="
-                                        upload(
-                                          item.dokumenid,
-                                          register.registerid,
-                                          item.dokumentipe
-                                        )
-                                      "
+                                      variant="info"
                                       v-if="item.status!='1'"
                                       ><b-icon icon="upload"></b-icon>
-                                      Upload</b-button
+                                      Belum Validasi</b-button
                                     >
                                     <b-button
                                       squared
@@ -386,17 +372,10 @@
                                   <b-button-group size="sm">
                                     <b-button
                                       squared
-                                      variant="primary"
-                                      @click="
-                                        upload(
-                                          item.dokumenid,
-                                          register.registerid,
-                                          item.dokumentipe
-                                        )
-                                      "
+                                      variant="info"
                                       v-if="item.status!='1'"
                                       ><b-icon icon="upload"></b-icon>
-                                      Upload</b-button
+                                      Belum Validasi</b-button
                                     >
                                     <b-button
                                       squared
@@ -406,7 +385,7 @@
                                       Sudah Divalidasi</b-button
                                     >
                                     
-                                    <a :href="endpoint+item.files" class="btn btn-danger rounded-0" v-if="item.files" target="_blank"><b-icon icon="eye"></b-icon> Lihat</a>
+                                    <a :href="endpoint+item.files" class="btn btn-info rounded-0" v-if="item.files" target="_blank"><b-icon icon="eye"></b-icon> Lihat</a>
                                   </b-button-group>
                                 </td>
                               </tr>
@@ -491,7 +470,7 @@
               drop-placeholder="Drop file here..."
             ></b-form-file>
           </b-form-group>
-          <div class="mt-2">
+          <!-- <div class="mt-2">
             <b-button
               squared
               type="button"
@@ -500,7 +479,7 @@
               v-if="isnew"
               >Upload</b-button
             >
-          </div>
+          </div> -->
           <div class="mt-2">
             <b-button
               squared
@@ -639,6 +618,7 @@ export default {
       console.clear();
       console.log(dokumenid);
       console.log(registerid);
+      // alert(dokumentipe)
       this.dokumenid = dokumenid;
       this.registerid = registerid;
       this.dokumentipe = dokumentipe;
@@ -865,6 +845,7 @@ export default {
           }
         });
     },
+    
   },
 };
 </script>

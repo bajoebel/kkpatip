@@ -64,7 +64,6 @@
       <b-col>
         <div class="mt-2">
           <b-pagination 
-            size="lg"
             pills
             v-model="currentPage"
             :total-rows="rows"
@@ -416,7 +415,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Ya, Tolong Hapus!",
+        confirmButtonText: "Ya",
+        cancelButtonText: "Tidak",
       }).then((result) => {
         if (result.isConfirmed) {
           let token = localStorage.getItem("token");

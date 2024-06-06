@@ -28,13 +28,19 @@
     <table responsive class="table b-table table-striped table-hover">
         <thead>
             <tr>
-                <td>No</td>
-                <td>Mahasiswa</td>
-                <td>Jenis Kuota</td>
-                <td>Prodi</td>
-                <td>Periode</td>
-                <td>Nama Perusahaan</td>
-                <td>Persetujuan</td>
+                <td rowspan="2">No</td>
+                <td rowspan="2">Mahasiswa</td>
+                <td rowspan="2">Jenis Kuota</td>
+                <td rowspan="2">Prodi</td>
+                <td rowspan="2">Periode</td>
+                <td rowspan="2">Nama Perusahaan</td>
+                <td colspan="3">Upload Dokumen</td>
+                <td rowspan="2">Persetujuan</td>
+            </tr>
+            <tr>
+              <td>Register</td>
+              <td>Konsul</td>
+              <td>Berangkat</td>
             </tr>
         </thead>
         <tbody>
@@ -45,6 +51,9 @@
                 <td>{{item.kuotaprodinama}}</td>
                 <td>{{item.kuotasemnama}}</td>
                 <td>{{item.registernamaperusahaan}}</td>
+                <td>{{item.jmluploadregister+' / '+item.jmldokregister}}</td>
+                <td>{{item.jmluploadkonsultasi+' / '+item.jmldokkonsultasi}}</td>
+                <td>{{item.jmluploadberangkat+' / '+item.jmldokberangkat}}</td>
                 <td v-if="item.registerdisetujui == null">Belum Diproses</td>
                 <td v-else-if="item.registerdisetujui == '1'">Disetujui</td>
                 <td v-else>Tidak Disetujui</td>
@@ -58,7 +67,6 @@
       <b-col>
         <div class="mt-2">
           <b-pagination 
-            size="lg"
             pills
             v-model="currentPage"
             :total-rows="rows"
@@ -75,7 +83,7 @@
     <div class="kotak">
     <h3 class="text-center">
       Anda Belum Login <br>
-      <b-link class="text-center" to="/">Silahkan Login Disini</b-link>
+      <b-link class="text-center" to="/login">Silahkan Login Disini</b-link>
       </h3>
     
     </div>

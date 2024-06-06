@@ -62,7 +62,6 @@
       <b-col>
         <div class="mt-2">
           <b-pagination 
-            size="lg"
             pills
             v-model="currentPage"
             :total-rows="rows"
@@ -175,7 +174,7 @@
     <div class="kotak">
       <h3 class="text-center">
         Anda Belum Login <br />
-        <b-link class="text-center" to="/">Silahkan Login Disini</b-link>
+        <b-link class="text-center" to="/login">Silahkan Login Disini</b-link>
       </h3>
     </div>
   </div>
@@ -428,7 +427,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Ya, Tolong Hapus!",
+        confirmButtonText: "Ya",
+        cancelButtonText: "Tidak",
       }).then((result) => {
         if (result.isConfirmed) {
           let token = localStorage.getItem("token");

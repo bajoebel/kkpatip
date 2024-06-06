@@ -1,12 +1,13 @@
 <template>
   <nav>
     <div>
-      <b-col>
+      <!-- <b-col> -->
         <b-navbar
           toggleable="lg"
           type="light"
           variant="default"
           style="border-bottom: solid 1px #ccc; border-collapse: collapse"
+          class="header"
         >
           <!-- <b-container> -->
           <b-navbar-brand href="#" style="padding-left: 10px">
@@ -31,6 +32,7 @@
               <b-link to="/dokumen" class="nav-link"><b-icon icon="folder-fill"></b-icon> Dokumen</b-link>
               <b-link to="/kuota" class="nav-link"><b-icon icon="alarm-fill"></b-icon> Kuota</b-link>
               <b-link to="/register" class="nav-link"><b-icon icon="card-list"></b-icon> Register</b-link>
+              <!-- <b-link to="/dokumen_akademik" class="nav-link"><b-icon icon="folder"></b-icon> Dokumen Akademik</b-link> -->
               <!-- <b-link to="/about" class="nav-link">About</b-link> -->
               
             </b-navbar-nav>
@@ -38,7 +40,7 @@
               <b-link to="/" class="nav-link"><b-icon icon="house-fill"></b-icon> Home</b-link>
               <b-link to="/mahasiswa" class="nav-link"><b-icon icon="people-fill"></b-icon> Mahasiswa</b-link>
               <b-link to="/dosen" class="nav-link"><b-icon icon="people"></b-icon> Dosen</b-link>
-              
+              <b-link to="/register" class="nav-link"><b-icon icon="card-list"></b-icon> Register</b-link>
             </b-navbar-nav>
             <b-navbar-nav right v-else-if="isLogin && level=='Mahasiswa'">
               <b-link to="/" class="nav-link"><b-icon icon="house-fill"></b-icon> Home</b-link>
@@ -65,7 +67,7 @@
           </b-collapse>
           <!-- </b-container> -->
         </b-navbar>
-      </b-col>
+      <!-- </b-col> -->
     </div>
     <b-sidebar
       id="sidebar-1"

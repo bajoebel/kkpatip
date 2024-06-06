@@ -5,6 +5,7 @@ import LoginView from '../views/LoginView.vue'
 import LoginmahasiswaView from '../views/LoginmahasiswaView.vue'
 import PerusahaanView from '../views/PerusahaanView.vue'
 import MahasiswaView from '../views/MahasiswaView.vue'
+import DosenView from '../views/DosenView.vue'
 import JenisView from '../views/JenisView.vue'
 import JenisKuotaView from '../views/JenisKuotaView.vue'
 import DokumenView from '../views/DokumenView.vue'
@@ -13,6 +14,7 @@ import KuotaView from '../views/KuotaView.vue'
 import KuotaperusahaanView from '../views/KuotaperusahaanView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import RegisterdetailView from '../views/RegisterdetailView.vue'
+import DokumenakademikView from '../views/DokumenakademikView.vue'
 
 Vue.use(VueRouter)
 
@@ -41,6 +43,11 @@ const routes = [
     path: '/mahasiswa',
     name: 'mahasiswa',
     component: MahasiswaView
+  },
+  {
+    path: '/dosen',
+    name: 'dosen',
+    component: DosenView
   },
   {
     path: '/jenis',
@@ -78,9 +85,14 @@ const routes = [
     component: RegisterdetailView
   },
   {
-    path: '/kuota/perusahaan/:id',
+    path: '/kuota/detail/:id',
     name: 'perusahaan',
     component: KuotaperusahaanView
+  },
+  {
+    path: '/dokumenakademik',
+    name: 'dokumenakademik',
+    component: DokumenakademikView
   },
   {
     path: '/about',

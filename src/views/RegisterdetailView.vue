@@ -90,7 +90,33 @@
           <b-tab title="Dosen Pembimbing">
             <div v-if="register.pembimbing == null">
               <h3>Masukkan dosen pembimbing</h3>
-              
+              <b-form id="form1">
+                <b-input-group>
+                  <b-form-select
+                    v-model="dosenid"
+                    :options="listdosen"
+                    value-field="dosenid"
+                    text-field="dosennama"
+                    class="form-control"
+                  ></b-form-select>
+                  <b-input-group-append>
+                    <b-button
+                      squared
+                      variant="success"
+                      class="btn-sm"
+                      @click="simpanPembimbing()"
+                    >
+                      <b-icon icon="save"></b-icon>
+                    </b-button>
+                  </b-input-group-append>
+                </b-input-group>
+                <!-- <b-input-group>
+                  <b-form-select v-model="dosenid" :options="listdosen" value-field="dosenid" text-field="dosennama" class="mt-3 form-control"></b-form-select>
+                  <b-input-group-btn>
+                    <b-button squared variant="success" @click="setDosen">Set Dosen</b-button>
+                  </b-input-group-btn>
+                </b-input-group> -->
+              </b-form>
             </div>
             <div v-else>
               <b-row>
@@ -98,11 +124,20 @@
                   <table class="table table-striped">
                     <tr>
                       <th class="w200">KODE DOSEN</th>
-                      <td>: {{register.pembimbing.pembimbingdosenid}} <a href="#" @click="ubahPembimbing(register.pembimbing.pembimbingid)"><b-icon icon="pencil"></b-icon></a></td>
+                      <td>
+                        : {{ register.pembimbing.pembimbingdosenid }}
+                        <button type="button"
+                          @click="
+                            hapusPembimbing(register.pembimbing.pembimbingid)
+                          "
+                          class="btn btn-danger btn-sm rounded-pill"
+                          ><b-icon icon="person-x-fill"></b-icon
+                        ></button>
+                      </td>
                     </tr>
                     <tr>
                       <th>NAMA DOSEN</th>
-                      <td>: {{register.pembimbing.pembimbingdosennama}}</td>
+                      <td>: {{ register.pembimbing.pembimbingdosennama }}</td>
                     </tr>
                   </table>
                 </b-col>
@@ -132,7 +167,7 @@
                     <b-button
                       squared
                       variant="warning"
-                      @click="isValid(item.idx,item.dokumenjenisid)"
+                      @click="isValid(item.idx, item.dokumenjenisid)"
                       v-if="item.status != '1' && item.files"
                       ><b-icon icon="check"></b-icon> Belum Divalidasi</b-button
                     >
@@ -140,7 +175,7 @@
                       squared
                       variant="success"
                       v-else
-                      @click="unValid(item.idx,item.dokumenjenisid)"
+                      @click="unValid(item.idx, item.dokumenjenisid)"
                       ><b-icon icon="check"></b-icon> Sudah Divalidasi</b-button
                     >
 
@@ -179,7 +214,7 @@
                 </td>
                 <td>
                   <b-button-group size="sm">
-                    <b-button
+                    <!-- <b-button
                       squared
                       variant="warning"
                       @click="isValid(item.idx,item.dokumenjenisid)"
@@ -188,12 +223,32 @@
                     >
                     <b-button
                       squared
+                      variant="warning"
+                      @click="isValid(item.idx,item.dokumenjenisid)"
+                      v-if="item.status != '1' && item.files"
+                      ><b-icon icon="check"></b-icon> Belum Divalidasi </b-button
+                    >
+                    <b-button
+                      squared
                       variant="success"
                       v-else
                       @click="unValid(item.idx,item.dokumenjenisid)"
+                      ><b-icon icon="check"></b-icon> Sudah Divalidasi {{ item.status + ' ' +item.files}}</b-button
+                    > -->
+                    <b-button
+                      squared
+                      variant="warning"
+                      @click="isValid(item.idx, item.dokumenjenisid)"
+                      v-if="item.status != '1' && item.files"
+                      ><b-icon icon="check"></b-icon> Belum Divalidasi
+                    </b-button>
+                    <b-button
+                      squared
+                      variant="success"
+                      v-else-if="item.status == '1' && item.files"
+                      @click="unValid(item.idx, item.dokumenjenisid)"
                       ><b-icon icon="check"></b-icon> Sudah Divalidasi</b-button
                     >
-
                     <a
                       :href="endpoint + item.files"
                       class="btn btn-danger rounded-0"
@@ -232,15 +287,15 @@
                     <b-button
                       squared
                       variant="warning"
-                      @click="isValid(item.idx,item.dokumenjenisid)"
+                      @click="isValid(item.idx, item.dokumenjenisid)"
                       v-if="item.status != '1' && item.files"
-                      ><b-icon icon="check"></b-icon> Belum Divalidasi</b-button
-                    >
+                      ><b-icon icon="check"></b-icon> Belum Divalidasi
+                    </b-button>
                     <b-button
                       squared
                       variant="success"
                       v-else-if="item.status == '1' && item.files"
-                      @click="unValid(item.idx,item.dokumenjenisid)"
+                      @click="unValid(item.idx, item.dokumenjenisid)"
                       ><b-icon icon="check"></b-icon> Sudah Divalidasi</b-button
                     >
 
@@ -337,6 +392,9 @@ export default {
       dokumenid: "",
       dokumentipe: "",
       dokumenaktif: null,
+      listdosen: null,
+      dosenid: null,
+      dosennama: null,
       files: null,
       jenisdokumen: "",
       endpoint: process.env.VUE_APP_BASE_URL,
@@ -345,6 +403,8 @@ export default {
   mounted() {
     this.id = this.$route.params.id;
     this.profile();
+    // alert(this.prodiid)
+    // this.getDosen();
   },
   methods: {
     async profile() {
@@ -375,7 +435,8 @@ export default {
           this.prodiid = response.data.data.mhsprodiid;
           this.rekomendasi = response.data.data.rekomendasi;
           this.register = response.data.data.register;
-
+          this.getDosen();
+          // alert(this.prodiid)
           // this.config = response.data.data.config;
           // this.kuotaAktif();
         })
@@ -404,6 +465,31 @@ export default {
           console.log(response.data.data);
           this.kuotaaktif = response.data.data;
           this.kuotadetail = response.data.data.perusahaan;
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        })
+        .finally(function () {
+          // always executed
+        });
+      return false;
+    },
+    async getDosen() {
+      let token = localStorage.getItem("token");
+      await axios
+        .request({
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ` + token,
+          },
+          method: "GET",
+          url: `listdosen/` + this.prodiid,
+        })
+        .then((response) => {
+          console.clear();
+          console.log(response.data.data);
+          this.listdosen = response.data.data;
         })
         .catch(function (error) {
           // handle error
@@ -528,7 +614,6 @@ export default {
       return false;
     },
     setujui: async function (registerid) {
-      
       let token = localStorage.getItem("token");
       this.$swal
         .fire({
@@ -648,8 +733,7 @@ export default {
           }
         });
     },
-    isValid: async function (idx,idjenis) {
-      
+    isValid: async function (idx, idjenis) {
       let token = localStorage.getItem("token");
       this.$swal
         .fire({
@@ -710,7 +794,7 @@ export default {
           }
         });
     },
-    unValid: async function (idx,idjenis) {
+    unValid: async function (idx, idjenis) {
       let token = localStorage.getItem("token");
       this.$swal
         .fire({
@@ -729,7 +813,7 @@ export default {
               idx: idx,
               idjenis: idjenis,
               status: 0,
-            }
+            };
             console.clear();
             console.log(this.formdata);
             axios
@@ -768,6 +852,108 @@ export default {
               .finally(function () {
                 // always executed
               });
+          }
+        });
+    },
+    simpanPembimbing: async function () {
+      let token = localStorage.getItem("token");
+      // this.filedata = $('#perusahaanlogo').prop('files')[0];
+      const form = document.querySelector("form");
+      this.formdata = new FormData(form);
+      this.formdata.append("pembimbingregisterid", this.register.registerid);
+      this.formdata.append("pembimbingdosenid", this.dosenid);
+      console.log(this.formdata);
+      await axios
+        .request({
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ` + token,
+          },
+          method: "POST",
+          url: `pembimbing`,
+          data: this.formdata,
+        })
+        .then((response) => {
+          console.log(response.data);
+          if (response.data.code == 201) {
+            this.profile();
+            this.dosenid = "";
+            this.dosennama = "";
+            this.$bvModal.hide("bv-modal-example");
+            this.$swal.fire({
+              title: "Sukses",
+              text: response.data.message,
+              icon: "success",
+              confirmButtonText: "Ok",
+            });
+          } else {
+            this.$swal.fire({
+              title: "Gagal",
+              text: response.data.message,
+              icon: "error",
+              confirmButtonText: "Ok",
+            });
+          }
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        })
+        .finally(function () {
+          // always executed
+        });
+    },
+    hapusPembimbing: async function (id) {
+      this.$swal
+        .fire({
+          title: "Apakah anda yakin?",
+          text: "Anda akan menghapus data pembimbing!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Ya",
+          cancelButtonText: "Tidak",
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            let token = localStorage.getItem("token");
+            axios
+              .request({
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ` + token,
+                },
+                method: "DELETE",
+                url: `pembimbing/` + id,
+              })
+              .then((response) => {
+                console.log(response.data);
+
+                if (response.data.code == 200) {
+                  this.$swal.fire({
+                    title: "Deleted!",
+                    text: "Data anda berhasil diapus",
+                    icon: "success",
+                  });
+                  this.profile();
+                } else {
+                  this.$swal.fire({
+                    title: "Error!",
+                    text: response.data.message,
+                    icon: "warning",
+                    confirmButtonText: "Ok",
+                  });
+                }
+              })
+              .catch(function (error) {
+                // handle error
+                console.log(error);
+              })
+              .finally(function () {
+                // always executed
+              });
+            return false;
           }
         });
     },

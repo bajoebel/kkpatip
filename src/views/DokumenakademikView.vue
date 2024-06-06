@@ -79,7 +79,7 @@
                 variant="primary"
                 @click="rekomendasi(item.kuotaidx)"
                 ><b-icon icon="plus"></b-icon> Tambah Perusahaan</b-button> -->
-                <router-link :to="{ path: 'kuota/detail/'+item.kuotaidx}" class="btn btn-primary rounded-pill b1"><b-icon icon="plus"></b-icon> Detail</router-link>
+                <router-link :to="{ path: 'kuota/perusahaan/'+item.kuotaidx}" class="btn btn-primary rounded-0"><b-icon icon="plus"></b-icon> Tambah Perusahaan</router-link>
             </b-button-group>
             
           </td>
@@ -175,7 +175,7 @@
     <div class="kotak">
       <h3 class="text-center">
         Anda Belum Login <br />
-        <b-link class="text-center" to="/login">Silahkan Login Disini</b-link>
+        <b-link class="text-center" to="/">Silahkan Login Disini</b-link>
       </h3>
     </div>
   </div>

@@ -13,6 +13,7 @@
     "bootstrap-vue": "^2.23.1",
     "core-js": "^3.8.3",
     "register-service-worker": "^1.7.2",
+    "select2-vue-component": "^6.1.1",
     "vue": "^2.7.16",
     "vue-router": "^3.5.1",
     "vue-sweetalert2": "^5.0.7",
