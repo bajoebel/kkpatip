@@ -8,7 +8,7 @@
             <div class="icon-wrap">
               <div>
                 <img
-                  src="http://diylogodesigns.com/blog/wp-content/uploads/2016/04/whatsapp-logo-PNG-Transparent.png"
+                  src="img/menu/buildings.png"
                 />
               </div>
             </div>
@@ -16,7 +16,7 @@
             <div class="icon-wrap">
               <div>
                 <img
-                  src="http://diylogodesigns.com/blog/wp-content/uploads/2016/04/whatsapp-logo-PNG-Transparent.png"
+                  src="img/menu/mahasiswa.png"
                 />
               </div>
             </div>
@@ -26,7 +26,7 @@
             <div class="icon-wrap">
               <div>
                 <img
-                  src="http://diylogodesigns.com/blog/wp-content/uploads/2016/04/whatsapp-logo-PNG-Transparent.png"
+                  src="img/menu/scholarship.png"
                 />
               </div>
             </div>
@@ -34,7 +34,35 @@
             <div class="icon-wrap">
               <div>
                 <img
-                  src="http://diylogodesigns.com/blog/wp-content/uploads/2016/04/whatsapp-logo-PNG-Transparent.png"
+                  src="img/menu/customer-behavior.png"
+                />
+              </div>
+            </div>
+            <div class="icon-wrap">
+              <div>
+                <img
+                  src="img/menu/jeniskuota.png"
+                />
+              </div>
+            </div>
+            <div class="icon-wrap">
+              <div>
+                <img
+                  src="img/menu/dokumenfile.png"
+                />
+              </div>
+            </div>
+            <div class="icon-wrap">
+              <div>
+                <img
+                  src="img/menu/majority.png"
+                />
+              </div>
+            </div>
+            <div class="icon-wrap">
+              <div>
+                <img
+                  src="img/menu/register.png"
                 />
               </div>
             </div>
