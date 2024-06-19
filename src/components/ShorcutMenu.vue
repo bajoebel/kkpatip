@@ -1,71 +1,103 @@
 <template>
   <b-row>
-    <b-col cols="12" md="6" class="mt10">
+    <b-col cols="12" md="12" class="mt10">
       <fieldset class="menu-border">
         <legend class="menu-border">Menu Utama</legend>
-        <b-row>
-          <b-col>
-            <div class="icon-wrap">
-              <div>
-                <img
-                  src="img/menu/buildings.png"
-                />
-              </div>
-            </div>
-
-            <div class="icon-wrap">
+        <b-row v-if="level=='1'">
+          <b-col class="">
+            <b-link to="/perusahaan" v-b-tooltip.hover title="Perusahaan" class="icon-wrap">
+                <div>
+                  <img
+                    src="img/menu/buildings.png"
+                  />
+                </div>
+              </b-link>
+            <b-link to="mahasiswa" class="icon-wrap" v-b-tooltip.hover title="Mahasiswa" >
               <div>
                 <img
                   src="img/menu/mahasiswa.png"
                 />
               </div>
-            </div>
+            </b-link>
+            
 
             <!-- <div></div> -->
 
-            <div class="icon-wrap">
+            <b-link to="/prodi" class="icon-wrap" v-b-tooltip.hover title="Program Studi" >
               <div>
                 <img
                   src="img/menu/scholarship.png"
                 />
               </div>
-            </div>
+            </b-link>
 
-            <div class="icon-wrap">
+            <b-link to="/jenis" class="icon-wrap" v-b-tooltip.hover title="Jenis" >
               <div>
                 <img
                   src="img/menu/customer-behavior.png"
                 />
               </div>
-            </div>
-            <div class="icon-wrap">
+            </b-link>
+            <b-link to="/jeniskuota" class="icon-wrap" v-b-tooltip.hover title="Jenis Kuota" >
               <div>
                 <img
                   src="img/menu/jeniskuota.png"
                 />
               </div>
-            </div>
-            <div class="icon-wrap">
+            </b-link>
+            <b-link to="/dokumen" class="icon-wrap" v-b-tooltip.hover title="Dokumen" >
               <div>
                 <img
                   src="img/menu/dokumenfile.png"
                 />
               </div>
-            </div>
-            <div class="icon-wrap">
+            </b-link>
+            <b-link to="/kuota" class="icon-wrap" v-b-tooltip.hover title="Kuota" >
               <div>
                 <img
                   src="img/menu/majority.png"
                 />
               </div>
-            </div>
-            <div class="icon-wrap">
+            </b-link>
+            <b-link to="/register" class="icon-wrap" v-b-tooltip.hover title="Register" >
               <div>
                 <img
                   src="img/menu/register.png"
                 />
               </div>
-            </div>
+            </b-link>
+          </b-col>
+        </b-row>
+        <b-row v-else-if="level=='2'">
+          <b-col class="">
+            
+            <b-link to="mahasiswa" class="icon-wrap" v-b-tooltip.hover title="Mahasiswa" >
+              <div>
+                <img
+                  src="img/menu/mahasiswa.png"
+                />
+              </div>
+            </b-link>
+            
+
+            <!-- <div></div> -->
+
+            <b-link to="/dosen" class="icon-wrap" v-b-tooltip.hover title="Dosen" >
+              <div>
+                <img
+                  src="img/menu/dosen.png"
+                />
+              </div>
+            </b-link>
+
+            
+            <b-link to="/register" class="icon-wrap" v-b-tooltip.hover title="Register" >
+              <div>
+                <img
+                  src="img/menu/register.png"
+                />
+              </div>
+            </b-link>
           </b-col>
         </b-row>
         <!-- <b-row>
@@ -107,13 +139,21 @@
         </b-row> -->
       </fieldset>
     </b-col>
-    <b-col cols="12" md="6" class="mt10">
+    <!-- <b-col cols="12" md="6" class="mt10">
       <fieldset class="menu-border">
         <legend class="menu-border">Grafik</legend>
       </fieldset>
-    </b-col>
+    </b-col> -->
   </b-row>
 </template>
+<script>
+export default {
+  name:"ShorcutMenu",
+  props: {
+    level: String,
+  },
+}
+</script>
 <style lang="scss">
 // fieldset.menu-border {
 //   border: 1px groove #ddd !important;
@@ -166,7 +206,7 @@ div {
 .icon-wrap {
   display: inline-block;
   padding: 10px;
-  width: 80px;
+  width: 78px;
   height: 70px;
 }
 .icon-wrap > div {
@@ -229,5 +269,12 @@ div {
   height: 40px;
   top: -60px;
   left: 9px;
+}
+.title-menu{
+  font-size: 9pt;
+  color: #111010;
+  width: 85px;
+  text-align: center;
+  margin-top: -10px;
 }
 </style>

@@ -63,25 +63,67 @@
             <td>Total Gagal</td>
             <td>: {{ nilai_d_e }}</td>
           </tr>
+          <tr>
+            <td>Status Saat Ini</td>
+            <td v-if="register.registerdisetujui==null"><b>Belum Proses</b></td>
+            <td v-else-if="register.registerdisetujui=='1'"><b>Disetujui</b></td>
+            <td v-else-if="register.registerdisetujui=='0'"><b>Tidak Disetujui</b></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <div>
+                <b-button-group
+                  size="sm"
+                  v-if="register.registerdisetujui == '1'"
+                >
+                  <b-button
+                    squared
+                    variant="warning"
+                    @click="resetStatus(register.registerid)"
+                    ><b-icon icon="check"></b-icon> Reset Status</b-button
+                  >
+                  <b-button
+                    squared
+                    variant="danger"
+                    @click="batalSetujui(register.registerid)"
+                    ><b-icon icon="check"></b-icon> Tidak Setuju</b-button
+                  >
+                </b-button-group>
+                <b-button-group
+                  size="sm"
+                  v-else-if="register.registerdisetujui == '0'"
+                >
+                  <b-button
+                    squared
+                    variant="warning"
+                    @click="resetStatus(register.registerid)"
+                    ><b-icon icon="check"></b-icon> Reset Status</b-button
+                  >
+                  <b-button
+                    squared
+                    variant="success"
+                    @click="setujui(register.registerid)"
+                    ><b-icon icon="check"></b-icon>Setuju</b-button
+                  >
+                </b-button-group>
+                <b-button-group size="sm" v-else>
+                  <b-button
+                    squared
+                    variant="success"
+                    @click="setujui(register.registerid)"
+                    ><b-icon icon="check"></b-icon>Setuju</b-button
+                  >
+                  <b-button
+                    squared
+                    variant="danger"
+                    @click="batalSetujui(register.registerid)"
+                    ><b-icon icon="check"></b-icon>Tidak Setuju</b-button
+                  >
+                </b-button-group>
+              </div>
+            </td>
+          </tr>
         </table>
-        <div>
-          <b-button
-            squared
-            block
-            variant="success"
-            @click="batalSetujui(register.registerid)"
-            v-if="register.registerdisetujui == '1'"
-            ><b-icon icon="check"></b-icon> Disetujui</b-button
-          >
-          <b-button
-            squared
-            block
-            variant="danger"
-            @click="setujui(register.registerid)"
-            v-else
-            ><b-icon icon="check"></b-icon>Belum Disetujui</b-button
-          >
-        </div>
       </div>
     </b-col>
     <b-col cols="12" lg="8">
@@ -126,13 +168,15 @@
                       <th class="w200">KODE DOSEN</th>
                       <td>
                         : {{ register.pembimbing.pembimbingdosenid }}
-                        <button type="button"
+                        <button
+                          type="button"
                           @click="
                             hapusPembimbing(register.pembimbing.pembimbingid)
                           "
                           class="btn btn-danger btn-sm rounded-pill"
-                          ><b-icon icon="person-x-fill"></b-icon
-                        ></button>
+                        >
+                          <b-icon icon="person-x-fill"></b-icon>
+                        </button>
                       </td>
                     </tr>
                     <tr>
@@ -164,7 +208,7 @@
                 </td>
                 <td>
                   <b-button-group size="sm">
-                    <b-button
+                    <!-- <b-button
                       squared
                       variant="warning"
                       @click="isValid(item.idx, item.dokumenjenisid)"
@@ -177,8 +221,21 @@
                       v-else
                       @click="unValid(item.idx, item.dokumenjenisid)"
                       ><b-icon icon="check"></b-icon> Sudah Divalidasi</b-button
+                    > -->
+                    <b-button
+                      squared
+                      variant="warning"
+                      @click="isValid(item.idx, item.dokumenjenisid)"
+                      v-if="item.status != '1' && item.files"
+                      ><b-icon icon="check"></b-icon> Belum Divalidasi
+                    </b-button>
+                    <b-button
+                      squared
+                      variant="success"
+                      v-else-if="item.status == '1' && item.files"
+                      @click="unValid(item.idx, item.dokumenjenisid)"
+                      ><b-icon icon="check"></b-icon> Sudah Divalidasi</b-button
                     >
-
                     <a
                       :href="endpoint + item.files"
                       class="btn btn-danger rounded-0"
@@ -194,6 +251,7 @@
               </tr>
             </table>
           </b-tab>
+          
           <b-tab
             title="Lihat Dokumen Konsultasi"
             v-if="register.dokumenkonsultasi.length > 0"
@@ -214,27 +272,6 @@
                 </td>
                 <td>
                   <b-button-group size="sm">
-                    <!-- <b-button
-                      squared
-                      variant="warning"
-                      @click="isValid(item.idx,item.dokumenjenisid)"
-                      v-if="item.status != '1' && item.files"
-                      ><b-icon icon="check"></b-icon> Belum Divalidasi</b-button
-                    >
-                    <b-button
-                      squared
-                      variant="warning"
-                      @click="isValid(item.idx,item.dokumenjenisid)"
-                      v-if="item.status != '1' && item.files"
-                      ><b-icon icon="check"></b-icon> Belum Divalidasi </b-button
-                    >
-                    <b-button
-                      squared
-                      variant="success"
-                      v-else
-                      @click="unValid(item.idx,item.dokumenjenisid)"
-                      ><b-icon icon="check"></b-icon> Sudah Divalidasi {{ item.status + ' ' +item.files}}</b-button
-                    > -->
                     <b-button
                       squared
                       variant="warning"
@@ -618,7 +655,7 @@ export default {
       this.$swal
         .fire({
           title: "Apakah anda yakin?",
-          text: "Menyetujui Permintaan magang ini",
+          text: "Mahasiswa atas nama "+this.register.registermhsnama+" disetujui untuk magang di "+this.register.registernamaperusahaan+'?',
           icon: "question",
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
@@ -678,7 +715,7 @@ export default {
       this.$swal
         .fire({
           title: "Apakah anda yakin?",
-          text: "Membatalkan persetujuan magang ini",
+          text: "Mahasiswa atas nama "+this.register.registermhsnama+" tidak disetujui untuk magang di "+this.register.registernamaperusahaan+'?',
           icon: "question",
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
@@ -733,8 +770,69 @@ export default {
           }
         });
     },
+    resetStatus: async function (registerid) {
+      let token = localStorage.getItem("token");
+      this.$swal
+        .fire({
+          title: "Apakah anda yakin?",
+          text: "Akn mereset status persetujuan magang mahasiswa atas nama "+this.register.registermhsnama+" untuk perusahaan "+this.register.registernamaperusahaan+'?',
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Ya",
+          cancelButtonText: "Tidak",
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            this.formdata = {
+              registerid: registerid,
+              registerdisetujui: null,
+            };
+            console.clear();
+            console.log(this.formdata);
+            axios
+              .request({
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                  Authorization: `Bearer ` + token,
+                },
+                method: "POST",
+                url: `register/persetujuan`,
+                data: this.formdata,
+              })
+              .then((response) => {
+                console.log(response.data);
+                if (response.data.code == 200) {
+                  this.profile();
+                  this.$swal.fire({
+                    title: "Sukses",
+                    text: response.data.message,
+                    icon: "success",
+                    confirmButtonText: "Ok",
+                  });
+                } else {
+                  this.$swal.fire({
+                    title: "Gagal",
+                    text: response.data.message,
+                    icon: "error",
+                    confirmButtonText: "Ok",
+                  });
+                }
+              })
+              .catch(function (error) {
+                // handle error
+                console.log(error);
+              })
+              .finally(function () {
+                // always executed
+              });
+          }
+        });
+    },
     isValid: async function (idx, idjenis) {
       let token = localStorage.getItem("token");
+      // alert(idx);
       this.$swal
         .fire({
           title: "Apakah anda yakin?",

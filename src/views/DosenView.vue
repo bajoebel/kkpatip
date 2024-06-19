@@ -1,6 +1,13 @@
 <template>
   <div class="kotak" v-if="isLogin">
-    <h3>Data Mahasiswa</h3>
+    <div class="header">
+      <b-row>
+        <b-col>
+        <h3>Data Dosen</h3>
+        </b-col>
+        <b-col class="text-right"><b-link to="/" class="close-btn"><b-icon icon="x-circle-fill"></b-icon></b-link></b-col>
+      </b-row>
+    </div>
     <!-- <b-table striped hover :items="items"></b-table> -->
     <b-row>
       <b-col cols="2" lg="1">

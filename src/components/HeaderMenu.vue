@@ -11,14 +11,15 @@
         >
           <!-- <b-container> -->
           <b-navbar-brand href="#" style="padding-left: 10px">
-            <b-img
-              src="http://localhost:8081/img/logo.png"
+            <!-- <b-img
+              src="img/logo.png"  
               fluid
               alt="Fluid image"
               v-b-toggle.sidebar-1
               v-if="isLogin"
             ></b-img>
-            <b-img src="img/logo.png" fluid alt="Fluid image" v-else></b-img>
+            <b-img src="img/logo.png" fluid alt="Fluid image" v-else></b-img> -->
+            <b-img :src="baseurl+'img/logo.png'" fluid alt="Fluid image"></b-img>
           </b-navbar-brand>
           <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
           <b-collapse id="nav-collapse" is-nav>
@@ -44,7 +45,7 @@
             </b-navbar-nav>
             <b-navbar-nav right v-else-if="isLogin && level=='Mahasiswa'">
               <b-link to="/" class="nav-link"><b-icon icon="house-fill"></b-icon> Home</b-link>
-              <b-link to="/profile" class="nav-link"><b-icon icon="file-check"></b-icon> Laporan Magang</b-link>
+              <b-link to="/laporan" class="nav-link"><b-icon icon="file-check"></b-icon> Laporan Magang</b-link>
               <!-- <b-link to="/about" class="nav-link">About</b-link> -->
               
             </b-navbar-nav>
@@ -124,26 +125,31 @@ export default {
   data: () => {
     return {
       isLogin: localStorage.getItem("isLogin"),
-      nama: "Ujang",
-      level: "Guest",
+      nama: "",
+      level: "",
+      baseurl:'http://localhost:8081/'
+      // baseurl:process.env.VUE_BASE_URL
     };
   },
   mounted() {
     this.isLogin = localStorage.getItem("isLogin");
-    // alert('getInfo');
+    // alert(this.baseurl);
     this.getInfo()
     // alert(token)
     // alert(this.nama)
   },
   methods: {
     logout() {
-      let self = this;
+      // let self = this;
       localStorage.clear();
-      self.$router.go("/");
+      this.$router.go("/");
     },
     getInfo: async function() {
       let token = localStorage.getItem("token");
-      await axios
+      console.clear();
+      console.log('Token '+token)
+      if(token!=null){
+        await axios
       .request({
         headers: {
           Authorization: `Bearer ` + token,
@@ -164,6 +170,8 @@ export default {
       .finally(function () {
         // always executed
       });
+      }
+      
       return false;
     },
   },

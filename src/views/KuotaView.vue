@@ -1,6 +1,13 @@
 <template>
   <div class="kotak" v-if="isLogin">
-    <h3>Data Mahasiswa</h3>
+    <div class="header">
+      <b-row>
+        <b-col>
+        <h3>Data Kuota</h3>
+        </b-col>
+        <b-col class="text-right"><b-link to="/" class="close-btn"><b-icon icon="x-circle-fill"></b-icon></b-link></b-col>
+      </b-row>
+    </div>
     <!-- <b-table striped hover :items="items"></b-table> -->
     <b-row>
       <b-col cols="2" lg="1">
@@ -38,7 +45,6 @@
           </b-input-group-append>
         </b-input-group>
       </b-col>
-      <!-- <b-col cols="1"><b-button pill variant="primary">Tambah</b-button></b-col> -->
     </b-row>
     <hr />
     <table responsive class="table b-table table-striped table-hover">
@@ -74,12 +80,7 @@
               <b-button squared variant="danger" @click="hapus(item.kuotaidx)"
                 ><b-icon icon="trash2"></b-icon></b-button
               >
-              <!-- <b-button
-                squared
-                variant="primary"
-                @click="rekomendasi(item.kuotaidx)"
-                ><b-icon icon="plus"></b-icon> Tambah Perusahaan</b-button> -->
-                <router-link :to="{ path: 'kuota/detail/'+item.kuotaidx}" class="btn btn-primary rounded-pill b1"><b-icon icon="plus"></b-icon> Detail</router-link>
+              <router-link :to="{ path: 'kuota/detail/'+item.kuotaidx}" class="btn btn-primary b1"><b-icon icon="plus"></b-icon> Detail</router-link>
             </b-button-group>
             
           </td>
@@ -175,7 +176,7 @@
     <div class="kotak">
       <h3 class="text-center">
         Anda Belum Login <br />
-        <b-link class="text-center" to="/login">Silahkan Login Disini</b-link>
+        <b-link class="text-center" to="/">Silahkan Login Disini</b-link>
       </h3>
     </div>
   </div>

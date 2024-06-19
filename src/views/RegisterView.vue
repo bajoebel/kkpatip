@@ -1,6 +1,13 @@
 <template>
   <div class="kotak" v-if="isLogin">
-    <h3>Data Mahasiswa</h3>
+    <div class="header">
+      <b-row>
+        <b-col>
+        <h3>Data Pendaftaran</h3>
+        </b-col>
+        <b-col class="text-right"><b-link to="/" class="close-btn"><b-icon icon="x-circle-fill"></b-icon></b-link></b-col>
+      </b-row>
+    </div>
     <!-- <b-table striped hover :items="items"></b-table> -->
     <b-row>
         <b-col cols="2" lg="1">
@@ -81,11 +88,10 @@
   
   <div v-else >
     <div class="kotak">
-    <h3 class="text-center">
+      <h3 class="text-center">
       Anda Belum Login <br>
-      <b-link class="text-center" to="/login">Silahkan Login Disini</b-link>
+      <b-link class="text-center" to="/">Silahkan Login Disini</b-link>
       </h3>
-    
     </div>
   </div>
 </template>

@@ -15,6 +15,7 @@ import KuotaperusahaanView from '../views/KuotaperusahaanView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import RegisterdetailView from '../views/RegisterdetailView.vue'
 import DokumenakademikView from '../views/DokumenakademikView.vue'
+import LaporanView from '../views/LaporanView.vue'
 
 Vue.use(VueRouter)
 
@@ -93,6 +94,11 @@ const routes = [
     path: '/dokumenakademik',
     name: 'dokumenakademik',
     component: DokumenakademikView
+  },
+  {
+    path: '/laporan',
+    name: 'laporan',
+    component: LaporanView
   },
   {
     path: '/about',
