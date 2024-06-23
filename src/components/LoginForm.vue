@@ -27,6 +27,7 @@
           >
             <option value="admin">Admin prodi / Admin akademik</option>
             <option value="mahasiswa">Mahasiswa</option>
+            <option value="dosen">Dosen</option>
           </select>
         </b-input-group>
         <b-input-group class="mt10">
@@ -80,10 +81,19 @@
               type="button"
               variant="primary"
               @click="onLoginMahasiswa()"
-              v-else
+              v-else-if="form.level=='mahasiswa'"
             >
               <b-icon icon="key"></b-icon>
               Login Mahasiswa
+            </b-button>
+            <b-button
+              type="button"
+              variant="info"
+              @click="onLoginDosen()"
+              v-else
+            >
+              <b-icon icon="key"></b-icon>
+              Login Dosen
             </b-button>
 
             <!-- <b-button type="reset" variant="danger">Reset</b-button> -->
@@ -189,6 +199,51 @@ export default {
         await axios
           .post(
             "login_mahasiswa",
+            {
+              username: this.form.username,
+              userpass: this.form.password,
+            },
+            {}
+          )
+          .then(function (response) {
+            console.log(response);
+            // alert(response.data.token)
+            if (response.data.status == 200) {
+              localStorage.setItem("token", response.data.token);
+              localStorage.setItem("isLogin", true);
+              // this.$router.push({ path: '/' })
+              self.$router.go("/");
+              // self.$router.push('/')
+              // location.reload();
+            } else {
+              // alert(response.data.message);
+              // alert('Test')
+              self.pesan = response.data.message;
+            }
+
+            return response;
+          })
+          .catch(function (error) {
+            // console.clear();
+            console.log("Caching Error : ");
+            console.log(error);
+          });
+      } catch (error) {
+        console.clear();
+        console.log("Error Message : ");
+        console.log(error);
+      }
+    },
+    async onLoginDosen() {
+      let self = this;
+      // alert(this.form.level)
+      try {
+        console.clear();
+        console.log(this.form.username);
+        console.log(this.form.password);
+        await axios
+          .post(
+            "login_dosen",
             {
               username: this.form.username,
               userpass: this.form.password,

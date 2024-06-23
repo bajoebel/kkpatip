@@ -69,12 +69,12 @@
       <div class="kotak">
         <!-- Tabs with card integration -->
         <b-tabs pills content-class="mt-3" lazy>
-          <b-tab title="Input Laporan Mingguan">
+          <b-tab title="Validasi Laporan Mingguan">
             <!-- <b-row>Kuota Aktif {{ kuotaaktif }}</b-row> -->
             <b-row>
               <b-col>
                 <fieldset class="menu-border">
-                  <legend class="menu-border">Form Laporan Mingguan</legend>
+                  <legend class="menu-border">Validasi Laporan Mingguan</legend>
                   <b-row>
                     <b-col>
                       <b-form-select
@@ -117,7 +117,6 @@
                             <th>Laporan</th>
                             <th style="width: 100px">Lampiran</th>
                             <th style="width: 200px">Status</th>
-                            <th style="width: 50px">#</th>
                           </tr>
                         </thead>
                         <tbody >
@@ -153,6 +152,7 @@
                                 variant="success"
                                 size="sm"
                                 v-if="item.detail_verifikasi == '1'"
+                                @click="unValid(item.detail_idx)"
                                 ><b-icon icon="check"></b-icon> Sudah
                                 Divalidasi</b-button
                               >
@@ -160,42 +160,13 @@
                                 squared
                                 variant="warning"
                                 size="sm"
+                                @click="isValid(item.detail_idx)"
                                 v-else
                                 ><b-icon icon="check"></b-icon>Belum
                                 Divalidasi</b-button
                               >
                             </td>
-                            <td v-if="item.detail_idx == null">
-                              <b-button
-                                squared
-                                variant="primary"
-                                size="sm"
-                                @click="buatLaporan(item.periode_idx)"
-                                ><b-icon icon="plus"></b-icon
-                              ></b-button>
-                            </td>
-                            <td v-else>
-                              <b-button-group
-                                size="sm"
-                                v-if="item.detail_verifikasi == '0'"
-                              >
-                                <b-button
-                                  squared
-                                  variant="warning"
-                                  @click="editLaporan(item.detail_idx)"
-                                  ><b-icon icon="pencil"></b-icon
-                                ></b-button>
-                                <b-button
-                                  squared
-                                  variant="danger"
-                                  @click="hapusLaporan(item.detail_idx)"
-                                  ><b-icon icon="trash2"></b-icon
-                                ></b-button>
-                              </b-button-group>
-                              <b-button squared variant="info" size="sm" v-else
-                                ><b-icon icon="check"></b-icon
-                              ></b-button>
-                            </td>
+                            
                           </tr>
                         </tbody>
                       </table>
@@ -222,7 +193,7 @@
                         <b-img
                           center
                           rounded="circle"
-                          src="img/male.png"
+                          src="../img/male.png"
                           alt="Center image"
                           class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15"
                           v-if="mhsjkl == 'L'"
@@ -230,7 +201,7 @@
                         <b-img
                           center
                           rounded="circle"
-                          src="img/female.png"
+                          src="../img/female.png"
                           alt="Center image"
                           class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15"
                           v-else
@@ -266,7 +237,7 @@
                         <b-img
                           center
                           rounded="circle"
-                          src="img/dosen.png"
+                          src="../img/dosen.png"
                           alt="Center image"
                           class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15"
                         ></b-img>
@@ -297,12 +268,12 @@
               </b-col>
             </b-row>
           </b-tab>
-          <b-tab title="Bimbingan Laporan Akhir Magang">
+          <b-tab title="Validasi Laporan Akhir Magang">
             <b-row>
               <b-col>
                 <fieldset class="menu-border">
                   <legend class="menu-border">
-                    Bimbingan laporan akhir magang
+                    Validasi laporan akhir magang
                   </legend>
                   <div v-if="showformlaporan">
                   <b-form id="formakhir" >
@@ -415,7 +386,7 @@
                         <b-img
                           center
                           rounded="circle"
-                          src="img/male.png"
+                          src="../img/male.png"
                           alt="Center image"
                           class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15"
                           v-if="mhsjkl == 'L'"
@@ -423,7 +394,7 @@
                         <b-img
                           center
                           rounded="circle"
-                          src="img/female.png"
+                          src="../img/female.png"
                           alt="Center image"
                           class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15"
                           v-else
@@ -459,7 +430,7 @@
                         <b-img
                           center
                           rounded="circle"
-                          src="img/dosen.png"
+                          src="../img/dosen.png"
                           alt="Center image"
                           class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15"
                         ></b-img>
@@ -597,7 +568,7 @@
 <script>
 import axios from "axios";
 export default {
-  name: "ProfileMahasiswa",
+  name: "LaporanDetail",
   data() {
     return {
       isnew: true,
@@ -670,6 +641,7 @@ export default {
   mounted() {
     console.clear();
     console.log("Profile is inisialize...");
+    this.id = this.$route.params.id;
     this.profile();
   },
   methods: {
@@ -682,11 +654,10 @@ export default {
             Authorization: `Bearer ` + token,
           },
           method: "GET",
-          url: `mahasiswa/info`,
+          url: `register/` + this.id,
         })
         .then((response) => {
           console.log(response.data);
-
           this.mhsnobp = response.data.data.mhsnobp;
           this.mhsnama = response.data.data.mhsnama;
           this.mhstelp = response.data.data.mhstelp;
@@ -702,26 +673,11 @@ export default {
           this.prodiid = response.data.data.mhsprodiid;
           this.rekomendasi = response.data.data.rekomendasi;
           this.register = response.data.data.register;
-          if (this.register) {
-            // alert(response.data.data.register.dokumenaktif.length)
-            this.dokumenbalasan = response.data.data.register.dokumenbalasan;
-            if (response.data.data.register.dokumenaktif) {
-              this.idjenisdokumen =
-                response.data.data.register.dokumenaktif[0].dokumenjenisid;
-              if (this.idjenisdokumen == 1)
-                this.jenisdokumen = "Dokumen Registrasi";
-              else if (this.idjenisdokumen == 2)
-                this.jenisdokumen = "Dokumen Konsultasi";
-              else if (this.idjenisdokumen == 3)
-                this.jenisdokumen = "Dokumen Akademik";
-              else if (this.idjenisdokumen == 4)
-                this.jenisdokumen = "Dokumen Keberangkatan";
-              // alert(response.data.data.register.dokumenaktif[0].dokumenjenisid)
-            }
-          }
           this.getTahun();
           this.getLaporanAkhir();
-          this.config = response.data.data.config;
+          // alert(this.prodiid)
+          // this.config = response.data.data.config;
+          // this.kuotaAktif();
         })
         .catch(function (error) {
           // handle error
@@ -903,98 +859,7 @@ export default {
         });
       return false;
     },
-    async tampilListPerusahaan() {
-      let token = localStorage.getItem("token");
-      await axios
-        .request({
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ` + token,
-          },
-          method: "GET",
-          url: `perusahaan?page=20&keyword=` + this.keyword,
-        })
-        .then((response) => {
-          // console.clear();
-          // console.log(response.data.data);
-          if (response.data.code == 200) {
-            this.listperusahaan = response.data.data;
-          } else {
-            this.listperusahaan = null;
-          }
-        })
-        .catch(function (error) {
-          // handle error
-          console.log(error);
-        })
-        .finally(function () {
-          // always executed
-        });
-      return false;
-    },
-    async cariPerusahaan() {
-      this.$bvModal.show("bv-modal-perusahaan");
-      this.tampilListPerusahaan();
-    },
-    async upload(dokumenid, registerid, dokumentipe) {
-      console.clear();
-      console.log(dokumenid);
-      console.log(registerid);
-      // alert(dokumentipe)
-      this.dokumenid = dokumenid;
-      this.registerid = registerid;
-      this.dokumentipe = dokumentipe;
-      this.$bvModal.show("bv-modal-example");
-    },
-    uploadDokumen: async function () {
-      let token = localStorage.getItem("token");
-      const form = document.querySelector("form");
-      this.formdata = new FormData(form);
-      this.formdata.append("dokumenid", this.dokumenid);
-      this.formdata.append("registerid", this.registerid);
-      this.formdata.append("dokumentipe", this.dokumentipe);
-      this.formdata.append("idjenisdokumen", this.idjenisdokumen);
-      this.formdata.append("files", this.files);
-      console.log(this.formdata);
-      await axios
-        .request({
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ` + token,
-          },
-          method: "POST",
-          url: `uploaddokumen`,
-          data: this.formdata,
-        })
-        .then((response) => {
-          console.log(response.data);
-          if (response.data.code == 200 || response.data.code == 201) {
-            this.profile();
-            this.resetForm();
-            this.$bvModal.hide("bv-modal-example");
-            this.$swal.fire({
-              title: "Sukses",
-              text: response.data.message,
-              icon: "success",
-              confirmButtonText: "Ok",
-            });
-          } else {
-            this.$swal.fire({
-              title: "Gagal",
-              text: response.data.message,
-              icon: "error",
-              confirmButtonText: "Ok",
-            });
-          }
-        })
-        .catch(function (error) {
-          // handle error
-          console.log(error);
-        })
-        .finally(function () {
-          // always executed
-        });
-    },
+    
     resetForm() {
       this.detail_idx = "";
       this.detail_hari = "";
@@ -1005,83 +870,6 @@ export default {
     tambahLaporanAkhir(){
       this.showformlaporan=true;
     },
-    longDate(date) {
-      var ms = [
-        "Januari",
-        "Februari",
-        "Maret",
-        "April",
-        "Mei",
-        "Juni",
-        "Juli",
-        "Agustus",
-        "September",
-        "Oktober",
-        "November",
-        "Desember",
-      ];
-
-      return (
-        date.getDate() + " " + ms[date.getMonth()] + " " + date.getFullYear()
-      );
-    },
-    resetPerusahaan() {
-      this.perusahaanid = "";
-      this.perusahaannama = "";
-      this.perusahaanalamat = "";
-      this.perusahaannotelp = "";
-      this.perusahaanemail = "";
-    },
-    // async edit(id) {
-    //   let token = localStorage.getItem("token");
-    //   await axios
-    //     .request({
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         Authorization: `Bearer ` + token,
-    //       },
-    //       method: "GET",
-    //       url: `kuota/` + id,
-    //     })
-    //     .then((response) => {
-    //       console.log(response.data);
-
-    //       if (response.data.code == 200) {
-    //         this.isnew = false;
-    //         this.modaltitle = "Update Data Kuota";
-    //         this.kuotaidx = response.data.data.kuotaidx;
-    //         this.kuotajenisid = response.data.data.kuotajenisid;
-    //         this.kuotasemid = response.data.data.kuotasemid;
-    //         this.kuotasemnama = response.data.data.kuotasemnama;
-    //         this.kuotaprodiid = response.data.data.kuotaprodiid;
-    //         this.kuotaprodinama = response.data.data.kuotaprodinama;
-    //         this.kuotapria = response.data.data.kuotapria;
-    //         this.kuotawanita = response.data.data.kuotawanita;
-    //         this.kuotamulairegistrasi = response.data.data.kuotamulairegistrasi;
-    //         this.kuotaselesairegistrasi =
-    //           response.data.data.kuotaselesairegistrasi;
-    //         this.kuotaselesaiuploaddokumen =
-    //           response.data.data.kuotaselesaiuploaddokumen;
-    //         // alert(this.jeniskuota)
-    //         this.$bvModal.show("bv-modal-example");
-    //       } else {
-    //         this.$swal.fire({
-    //           title: "Error!",
-    //           text: response.data.message,
-    //           icon: "warning",
-    //           confirmButtonText: "Ok",
-    //         });
-    //       }
-    //     })
-    //     .catch(function (error) {
-    //       // handle error
-    //       console.log(error);
-    //     })
-    //     .finally(function () {
-    //       // always executed
-    //     });
-    //   return false;
-    // },
     async editLaporan(id) {
       let token = localStorage.getItem("token");
       await axios
@@ -1436,13 +1224,13 @@ export default {
           }
         });
     },
-    daftarMandiri: async function () {
+    isValid: async function (idx) {
       let token = localStorage.getItem("token");
+      // alert(idx);
       this.$swal
         .fire({
           title: "Apakah anda yakin?",
-          text:
-            "Anda memilih perusahaan " + this.perusahaannama + " Untuk magang",
+          text: "Akan memvalidasi laporan ini",
           icon: "question",
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
@@ -1453,14 +1241,8 @@ export default {
         .then((result) => {
           if (result.isConfirmed) {
             this.formdata = {
-              registerkuotaid: this.kuotaaktif.kuotaidx,
-              perusahaanid: this.perusahaanid,
-              perusahaannama: this.perusahaannama,
-              perusahaanalamat: this.perusahaanalamat,
-              perusahaannotelp: this.perusahaannotelp,
-              perusahaanemail: this.perusahaanemail,
-              registernobp: this.mhsnobp,
-              registermhsnama: this.mhsnama,
+              detail_idx: idx,
+              status: 1,
             };
             console.clear();
             console.log(this.formdata);
@@ -1471,13 +1253,13 @@ export default {
                   Authorization: `Bearer ` + token,
                 },
                 method: "POST",
-                url: `register/mandiri`,
+                url: `validasilaporan`,
                 data: this.formdata,
               })
               .then((response) => {
                 console.log(response.data);
-                if (response.data.code == 201) {
-                  this.profile();
+                if (response.data.code == 200) {
+                  this.getTanggal();
                   this.$swal.fire({
                     title: "Sukses",
                     text: response.data.message,
@@ -1503,151 +1285,65 @@ export default {
           }
         });
     },
-
-    hapus: async function (id) {
-      this.$swal
-        .fire({
-          title: "Apakah anda yakin?",
-          text: "Anda akan menghapus data Jenis Kuota!",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Ya, Tolong Hapus!",
-        })
-        .then((result) => {
-          if (result.isConfirmed) {
-            let token = localStorage.getItem("token");
-            axios
-              .request({
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ` + token,
-                },
-                method: "DELETE",
-                url: `laporan/` + id,
-              })
-              .then((response) => {
-                console.log(response.data);
-
-                if (response.data.code == 200) {
-                  this.$swal.fire({
-                    title: "Deleted!",
-                    text: "Data anda berhasil diapus",
-                    icon: "success",
-                  });
-                  this.getData();
-                } else {
-                  this.$swal.fire({
-                    title: "Error!",
-                    text: response.data.message,
-                    icon: "warning",
-                    confirmButtonText: "Ok",
-                  });
-                }
-              })
-              .catch(function (error) {
-                // handle error
-                console.log(error);
-              })
-              .finally(function () {
-                // always executed
-              });
-            return false;
-          }
-        });
-    },
-    hapusLaporan: async function (id) {
-      this.$swal
-        .fire({
-          title: "Apakah anda yakin?",
-          text: "Anda akan menghapus data Laporan!",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Ya, Tolong Hapus!",
-        })
-        .then((result) => {
-          if (result.isConfirmed) {
-            let token = localStorage.getItem("token");
-            axios
-              .request({
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ` + token,
-                },
-                method: "DELETE",
-                url: `laporan/` + id,
-              })
-              .then((response) => {
-                console.log(response.data);
-
-                if (response.data.code == 200) {
-                  this.$swal.fire({
-                    title: "Deleted!",
-                    text: "Data anda berhasil diapus",
-                    icon: "success",
-                  });
-                  this.getTanggal();
-                } else {
-                  this.$swal.fire({
-                    title: "Error!",
-                    text: response.data.message,
-                    icon: "warning",
-                    confirmButtonText: "Ok",
-                  });
-                }
-              })
-              .catch(function (error) {
-                // handle error
-                console.log(error);
-              })
-              .finally(function () {
-                // always executed
-              });
-            return false;
-          }
-        });
-    },
-    async pilihPerusahaan(id) {
+    unValid: async function (idx) {
       let token = localStorage.getItem("token");
-      await axios
-        .request({
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ` + token,
-          },
-          method: "GET",
-          url: `perusahaan/` + id,
+      this.$swal
+        .fire({
+          title: "Apakah anda yakin?",
+          text: "Membatalkan validasi dokumen",
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Ya",
+          cancelButtonText: "Tidak",
         })
-        .then((response) => {
-          console.log(response.data);
-
-          if (response.data.code == 200) {
-            this.perusahaanid = response.data.data.perusahaanid;
-            this.perusahaannama = response.data.data.perusahaannama;
-            this.perusahaanalamat = response.data.data.perusahaanalamat;
-            this.perusahaanemail = response.data.data.perusahaanemail;
-            this.perusahaannotelp = response.data.data.perusahaannotelp;
-            this.$bvModal.hide("bv-modal-perusahaan");
-          } else {
-            this.$swal.fire({
-              title: "Error!",
-              text: response.data.message,
-              icon: "warning",
-              confirmButtonText: "Ok",
-            });
+        .then((result) => {
+          if (result.isConfirmed) {
+            this.formdata = {
+              detail_idx: idx,
+              status: 0,
+            };
+            console.clear();
+            console.log(this.formdata);
+            axios
+              .request({
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                  Authorization: `Bearer ` + token,
+                },
+                method: "POST",
+                url: `validasilaporan`,
+                data: this.formdata,
+              })
+              .then((response) => {
+                console.log(response.data);
+                if (response.data.code == 200) {
+                  this.getTanggal();
+                  this.$swal.fire({
+                    title: "Sukses",
+                    text: response.data.message,
+                    icon: "success",
+                    confirmButtonText: "Ok",
+                  });
+                } else {
+                  this.$swal.fire({
+                    title: "Gagal",
+                    text: response.data.message,
+                    icon: "error",
+                    confirmButtonText: "Ok",
+                  });
+                }
+              })
+              .catch(function (error) {
+                // handle error
+                console.log(error);
+              })
+              .finally(function () {
+                // always executed
+              });
           }
-        })
-        .catch(function (error) {
-          // handle error
-          console.log(error);
-        })
-        .finally(function () {
-          // always executed
         });
-      return false;
     },
   },
 };

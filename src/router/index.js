@@ -5,6 +5,9 @@ import LoginView from '../views/LoginView.vue'
 import LoginmahasiswaView from '../views/LoginmahasiswaView.vue'
 import PerusahaanView from '../views/PerusahaanView.vue'
 import MahasiswaView from '../views/MahasiswaView.vue'
+import MahasiswabimbinganView from '../views/MahasiswabimbinganView.vue'
+import MonitoringView from '../views/MonitoringView.vue'
+import MonitoringdetailView from '../views/MonitoringdetailView.vue'
 import DosenView from '../views/DosenView.vue'
 import JenisView from '../views/JenisView.vue'
 import JenisKuotaView from '../views/JenisKuotaView.vue'
@@ -16,6 +19,7 @@ import RegisterView from '../views/RegisterView.vue'
 import RegisterdetailView from '../views/RegisterdetailView.vue'
 import DokumenakademikView from '../views/DokumenakademikView.vue'
 import LaporanView from '../views/LaporanView.vue'
+import LaporandetailView from '../views/LaporandetailView.vue'
 
 Vue.use(VueRouter)
 
@@ -99,6 +103,26 @@ const routes = [
     path: '/laporan',
     name: 'laporan',
     component: LaporanView
+  },
+  {
+    path: '/mahasiswabimbingan',
+    name: 'mahasiswabimbingan',
+    component: MahasiswabimbinganView
+  },
+  {
+    path: '/mahasiswabimbingan/:id',
+    name: 'mahasiswabimbingan',
+    component: LaporandetailView
+  },
+  {
+    path: '/monitoring',
+    name: 'monitoring',
+    component: MonitoringView
+  },
+  {
+    path: '/monitoring/:id',
+    name: 'monitoring',
+    component: MonitoringdetailView
   },
   {
     path: '/about',

@@ -33,6 +33,7 @@
               <b-link to="/dokumen" class="nav-link"><b-icon icon="folder-fill"></b-icon> Dokumen</b-link>
               <b-link to="/kuota" class="nav-link"><b-icon icon="alarm-fill"></b-icon> Kuota</b-link>
               <b-link to="/register" class="nav-link"><b-icon icon="card-list"></b-icon> Register</b-link>
+              <b-link to="/monitoring" class="nav-link"><b-icon icon="display"></b-icon> Monitoring</b-link>
               <!-- <b-link to="/dokumen_akademik" class="nav-link"><b-icon icon="folder"></b-icon> Dokumen Akademik</b-link> -->
               <!-- <b-link to="/about" class="nav-link">About</b-link> -->
               
@@ -46,6 +47,12 @@
             <b-navbar-nav right v-else-if="isLogin && level=='Mahasiswa'">
               <b-link to="/" class="nav-link"><b-icon icon="house-fill"></b-icon> Home</b-link>
               <b-link to="/laporan" class="nav-link"><b-icon icon="file-check"></b-icon> Laporan Magang</b-link>
+              <!-- <b-link to="/about" class="nav-link">About</b-link> -->
+              
+            </b-navbar-nav>
+            <b-navbar-nav right v-else>
+              <b-link to="/" class="nav-link"><b-icon icon="house-fill"></b-icon> Home</b-link>
+              <b-link to="/mahasiswabimbingan" class="nav-link"><b-icon icon="people-fill"></b-icon> Mahasiswa Bimbingan</b-link>
               <!-- <b-link to="/about" class="nav-link">About</b-link> -->
               
             </b-navbar-nav>

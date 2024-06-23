@@ -333,389 +333,613 @@
                           </b-col>
                         </b-row>
                       </div>
-                      <b-row v-else>
-                        <b-col>
-                          <!-- <b-alert variant="success" show
-                            >Anda terdaftar untuk magang di
-                            {{ register.registernamaperusahaan }}
-                          </b-alert> -->
-                          <b-alert
-                            variant="warning"
-                            show
-                            v-if="register.registerdisetujui == null"
-                            >Status permintaan magang di
-                            {{ register.registernamaperusahaan }} sedang
-                            menunggu proses dari admin prodi</b-alert
-                          >
-                          <b-alert
-                            variant="success"
-                            show
-                            v-if="register.registerdisetujui == 1"
-                            >Status permintaan magang di
-                            {{ register.registernamaperusahaan }} sudah
-                            disetujui admin prodi</b-alert
-                          >
-                          <b-alert
-                            variant="danger"
-                            show
-                            v-if="register.registerdisetujui == 0"
-                            >Status permintaan magang di
-                            {{ register.registernamaperusahaan }} tidak
-                            disetujui admin prodi</b-alert
-                          >
-                          <b-alert
-                            variant="warning"
-                            show
-                            v-else-if="!register.pembimbing"
-                            >Menunggu penetapan pembimbing magang oleh admin
-                            prodi</b-alert
-                          >
-                          <!-- <b-alert variant="warning" v-if="register.registerdisetujui == null">Status registrasi magang saat ini sedang menunggu proses dari admin prodi</b-alert> -->
-                          <b-tabs content-class="mt-3" lazy>
-                            <b-tab
-                              :title="jenisdokumen"
-                              v-if="register.dokumenaktif"
-                            >
-                              <div v-if="dokumenbalasan">
-                                <fieldset class="menu-border">
-                                  <legend class="menu-border">
-                                    Dokumen Balasan
-                                  </legend>
-                                  <table
-                                    responsive
-                                    class="table b-table table-striped table-hover"
-                                  >
-                                    <tr>
-                                      <th class="w50">No</th>
-                                      <th>Nama Dokumen</th>
-                                      <th style="width:260px;">Aksi</th>
-                                    </tr>
-                                    <tr
-                                      v-for="(
-                                        item, index
-                                      ) in register.dokumenaktif"
-                                      :key="item.dokumenid"
-                                    >
-                                      <td>{{ index + 1 }}</td>
-                                      <td>
-                                        {{
-                                          item.dokumennama +
-                                          " (File : " +
-                                          item.dokumentipe +
-                                          ")"
-                                        }}
-                                      </td>
-                                      <td>
-                                        <b-button-group size="sm">
-                                          <b-button
-                                            squared
-                                            variant="primary"
-                                            @click="
-                                              upload(
-                                                item.dokumenid,
-                                                register.registerid,
-                                                item.dokumentipe
-                                              )
-                                            "
-                                            v-if="item.status != '1'"
-                                            ><b-icon icon="upload"></b-icon>
-                                            Upload</b-button
-                                          >
-                                          <b-button
-                                            squared
-                                            variant="success"
-                                            v-else
-                                            ><b-icon icon="check"></b-icon>
-                                            Sudah Divalidasi</b-button
-                                          >
-                                          <!-- <b-button
-                                        squared
-                                        variant="danger"
-                                        @click="lihat(item.files)"
-                                        v-if="item.files"
+                      <div v-else>
+                        <div v-if="register.registerdisetujui != 0">
+                          
+                          <b-row>
+                            <b-col>
+                              <!-- <b-alert variant="success" show
+                                >Anda terdaftar untuk magang di
+                                {{ register.registernamaperusahaan }}
+                              </b-alert> -->
+                              <b-alert
+                                variant="warning"
+                                show
+                                v-if="register.registerdisetujui == null"
+                                >Status permintaan magang di
+                                {{ register.registernamaperusahaan }} sedang
+                                menunggu proses dari admin prodi</b-alert
+                              >
+                              <b-alert
+                                variant="success"
+                                show
+                                v-if="register.registerdisetujui == 1"
+                                >Status permintaan magang di
+                                {{ register.registernamaperusahaan }} sudah
+                                disetujui admin prodi</b-alert
+                              >
+                              
+                              <b-alert
+                                variant="warning"
+                                show
+                                v-else-if="!register.pembimbing"
+                                >Menunggu penetapan pembimbing magang oleh admin
+                                prodi</b-alert
+                              >
+                              <!-- <b-alert variant="warning" v-if="register.registerdisetujui == null">Status registrasi magang saat ini sedang menunggu proses dari admin prodi</b-alert> -->
+                              <b-tabs content-class="mt-3" lazy>
+                                <b-tab
+                                  :title="jenisdokumen"
+                                  v-if="register.dokumenaktif"
+                                >
+                                  <div v-if="dokumenbalasan">
+                                    <fieldset class="menu-border">
+                                      <legend class="menu-border">
+                                        Dokumen Balasan
+                                      </legend>
+                                      <table
+                                        responsive
+                                        class="table b-table table-striped table-hover"
                                       >
-                                        <b-icon icon="eye"></b-icon> Lihat
-                                      </b-button> -->
-                                          <a
-                                            :href="endpoint + item.files"
-                                            class="btn btn-danger rounded-0"
+                                        <tr>
+                                          <th class="w50">No</th>
+                                          <th>Nama Dokumen</th>
+                                          <th style="width:260px;">Aksi</th>
+                                        </tr>
+                                        <tr
+                                          v-for="(
+                                            item, index
+                                          ) in register.dokumenaktif"
+                                          :key="item.dokumenid"
+                                        >
+                                          <td>{{ index + 1 }}</td>
+                                          <td>
+                                            {{
+                                              item.dokumennama +
+                                              " (File : " +
+                                              item.dokumentipe +
+                                              ")"
+                                            }}
+                                          </td>
+                                          <td>
+                                            <b-button-group size="sm">
+                                              <b-button
+                                                squared
+                                                variant="primary"
+                                                @click="
+                                                  upload(
+                                                    item.dokumenid,
+                                                    register.registerid,
+                                                    item.dokumentipe
+                                                  )
+                                                "
+                                                v-if="item.status != '1'"
+                                                ><b-icon icon="upload"></b-icon>
+                                                Upload</b-button
+                                              >
+                                              <b-button
+                                                squared
+                                                variant="success"
+                                                v-else
+                                                ><b-icon icon="check"></b-icon>
+                                                Sudah Divalidasi</b-button
+                                              >
+                                              <!-- <b-button
+                                            squared
+                                            variant="danger"
+                                            @click="lihat(item.files)"
                                             v-if="item.files"
-                                            target="_blank"
-                                            ><b-icon icon="eye"></b-icon>
-                                            Lihat</a
                                           >
-                                        </b-button-group>
-                                      </td>
-                                    </tr>
-                                  </table>
-                                </fieldset>
+                                            <b-icon icon="eye"></b-icon> Lihat
+                                          </b-button> -->
+                                              <a
+                                                :href="endpoint + item.files"
+                                                class="btn btn-danger rounded-0"
+                                                v-if="item.files"
+                                                target="_blank"
+                                                ><b-icon icon="eye"></b-icon>
+                                                Lihat</a
+                                              >
+                                            </b-button-group>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </fieldset>
+                                  </div>
+                                  <div v-else>
+                                    <b-alert
+                                      variant="warning"
+                                      show
+                                      v-if="this.idjenisdokumen != '1'"
+                                      >Menunggu surat balasan dari
+                                      perusahaan</b-alert
+                                    >
+                                    <table
+                                      responsive
+                                      class="table b-table table-striped table-hover"
+                                      v-else
+                                    >
+                                      <tr>
+                                        <th class="w50">No</th>
+                                        <th>Nama Dokumen</th>
+                                        <th style="width:260px;">Aksi</th>
+                                      </tr>
+                                      <tr
+                                        v-for="(
+                                          item, index
+                                        ) in register.dokumenaktif"
+                                        :key="item.dokumenid"
+                                      >
+                                        <td>{{ index + 1 }}</td>
+                                        <td>
+                                          {{
+                                            item.dokumennama +
+                                            " (File : " +
+                                            item.dokumentipe +
+                                            ")"
+                                          }}
+                                        </td>
+                                        <td>
+                                          <b-button-group size="sm">
+                                            <b-button
+                                              squared
+                                              variant="primary"
+                                              @click="
+                                                upload(
+                                                  item.dokumenid,
+                                                  register.registerid,
+                                                  item.dokumentipe
+                                                )
+                                              "
+                                              v-if="item.status != '1'"
+                                              ><b-icon icon="upload"></b-icon>
+                                              Upload</b-button
+                                            >
+                                            <b-button
+                                              squared
+                                              variant="success"
+                                              v-else
+                                              ><b-icon icon="check"></b-icon> Sudah
+                                              Divalidasi</b-button
+                                            >
+                                            <!-- <b-button
+                                            squared
+                                            variant="danger"
+                                            @click="lihat(item.files)"
+                                            v-if="item.files"
+                                          >
+                                            <b-icon icon="eye"></b-icon> Lihat
+                                          </b-button> -->
+                                            <a
+                                              :href="endpoint + item.files"
+                                              class="btn btn-danger rounded-0"
+                                              v-if="item.files"
+                                              target="_blank"
+                                              ><b-icon icon="eye"></b-icon> Lihat</a
+                                            >
+                                          </b-button-group>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </div>
+                                </b-tab>
+                                <b-tab
+                                  title="Lihat Dokumen Register"
+                                  v-if="register.dokumenregister.length > 0"
+                                >
+                                  <fieldset class="menu-border">
+                                    <legend class="menu-border">
+                                      List Dokumen
+                                    </legend>
+                                    <table
+                                      responsive
+                                      class="table b-table table-striped table-hover"
+                                    >
+                                      <tr>
+                                        <th calass="w50">No</th>
+                                        <th>Nama Dokumen</th>
+                                        <th style="width:260px;">Aksi</th>
+                                      </tr>
+                                      <tr
+                                        v-for="(
+                                          item, index
+                                        ) in register.dokumenregister"
+                                        :key="item.dokumenid"
+                                      >
+                                        <td>{{ index + 1 }}</td>
+                                        <td>
+                                          {{
+                                            item.dokumennama +
+                                            " (File : " +
+                                            item.dokumentipe +
+                                            ")"
+                                          }}
+                                        </td>
+                                        <td>
+                                          <b-button-group size="sm">
+                                            <b-button
+                                              squared
+                                              variant="info"
+                                              v-if="item.status != '1'"
+                                              ><b-icon icon="upload"></b-icon> Belum
+                                              Validasi</b-button
+                                            >
+                                            <b-button
+                                              squared
+                                              variant="success"
+                                              v-else
+                                              ><b-icon icon="check"></b-icon> Sudah
+                                              Divalidasi</b-button
+                                            >
+
+                                            <a
+                                              :href="endpoint + item.files"
+                                              class="btn btn-danger rounded-0"
+                                              v-if="item.files"
+                                              target="_blank"
+                                              ><b-icon icon="eye"></b-icon> Lihat</a
+                                            >
+                                          </b-button-group>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </fieldset>
+                                </b-tab>
+                                <b-tab
+                                  title="Lihat Dokumen Konsultasi"
+                                  v-if="register.dokumenkonsultasi"
+                                >
+                                  <fieldset class="menu-border">
+                                    <legend class="menu-border">
+                                      List Dokumen
+                                    </legend>
+                                    <table
+                                      responsive
+                                      class="table b-table table-striped table-hover"
+                                    >
+                                      <tr>
+                                        <th class="w50">No</th>
+                                        <th>Nama Dokumen</th>
+                                        <th style="width:260px;">Aksi</th>
+                                      </tr>
+                                      <tr
+                                        v-for="(
+                                          item, index
+                                        ) in register.dokumenkonsultasi"
+                                        :key="item.dokumenid"
+                                      >
+                                        <td>{{ index + 1 }}</td>
+                                        <td>
+                                          {{
+                                            item.dokumennama +
+                                            " (File : " +
+                                            item.dokumentipe +
+                                            ")"
+                                          }}
+                                        </td>
+                                        <td>
+                                          <b-button-group size="sm">
+                                            <b-button
+                                              squared
+                                              variant="info"
+                                              v-if="item.status != '1'"
+                                              ><b-icon icon="upload"></b-icon> Belum
+                                              Validasi</b-button
+                                            >
+                                            <b-button
+                                              squared
+                                              variant="success"
+                                              v-else
+                                              ><b-icon icon="check"></b-icon> Sudah
+                                              Divalidasi</b-button
+                                            >
+
+                                            <a
+                                              :href="endpoint + item.files"
+                                              class="btn btn-danger rounded-0"
+                                              v-if="item.files"
+                                              target="_blank"
+                                              ><b-icon icon="eye"></b-icon> Lihat</a
+                                            >
+                                          </b-button-group>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </fieldset>
+                                </b-tab>
+                                <b-tab
+                                  title="Lihat Dokumen Keberangkatan"
+                                  v-if="register.dokumenkeberangkatan"
+                                >
+                                  <fieldset class="menu-border">
+                                    <legend class="menu-border">
+                                      List Dokumen
+                                    </legend>
+                                    <table
+                                      responsive
+                                      class="table b-table table-striped table-hover"
+                                    >
+                                      <tr>
+                                        <th class="w50">No</th>
+                                        <th>Nama Dokumen</th>
+                                        <th style="width:260px;">Aksi</th>
+                                      </tr>
+                                      <tr
+                                        v-for="(
+                                          item, index
+                                        ) in register.dokumenkeberangkatan"
+                                        :key="item.dokumenid"
+                                      >
+                                        <td>{{ index + 1 }}</td>
+                                        <td>
+                                          {{
+                                            item.dokumennama +
+                                            " (File : " +
+                                            item.dokumentipe +
+                                            ")"
+                                          }}
+                                        </td>
+                                        <td>
+                                          <b-button-group size="sm">
+                                            <b-button
+                                              squared
+                                              variant="info"
+                                              v-if="item.status != '1'"
+                                              ><b-icon icon="upload"></b-icon> Belum
+                                              Validasi</b-button
+                                            >
+                                            <b-button
+                                              squared
+                                              variant="success"
+                                              v-else
+                                              ><b-icon icon="check"></b-icon> Sudah
+                                              Divalidasi</b-button
+                                            >
+
+                                            <a
+                                              :href="endpoint + item.files"
+                                              class="btn btn-info rounded-0"
+                                              v-if="item.files"
+                                              target="_blank"
+                                              ><b-icon icon="eye"></b-icon> Lihat</a
+                                            >
+                                          </b-button-group>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </fieldset>
+                                </b-tab>
+                              </b-tabs>
+                            </b-col>
+                          </b-row>
+                        </div>
+                        <div v-else>
+                          <b-row>
+                            <b-col>
+                              <b-alert
+                                variant="danger"
+                                show
+                                v-if="register.registerdisetujui == 0"
+                                >Status permintaan magang di
+                                {{ register.registernamaperusahaan }} tidak
+                                disetujui admin prodi silahkan pilih perusahaan lain</b-alert
+                              >
+                            </b-col>
+                          </b-row>
+                          <b-row v-if="kuotaaktif.jenismou == '1'">
+                          <b-col
+                            cols="12"
+                            lg="3"
+                            v-for="item in kuotadetail"
+                            :key="item.idx"
+                          >
+                            <div class="kotak-relative shadow">
+                              <img
+                                :src="endpoint + item.perusahaanlogo"
+                                :alt="item.perusahaannama"
+                                class="w150 rounded-circle mx-auto d-block"
+                              />
+                              <br />
+                              <h3 class="text-center">
+                                <b> {{ item.perusahaannama }} </b>
+                              </h3>
+                              <table class="table b-table table-hover">
+                                <tr>
+                                  <td>Pria</td>
+                                  <td>{{ item.kuotapria }}</td>
+                                </tr>
+                                <tr>
+                                  <td>Wanita</td>
+                                  <td>{{ item.kuotawanita }}</td>
+                                </tr>
+                                <tr>
+                                  <td>Pria / Wanita</td>
+                                  <td>{{ item.kuotapriawanita }}</td>
+                                </tr>
+                                <tr>
+                                  <td>Terisi</td>
+                                  <td>{{ item.jmlregister }}</td>
+                                </tr>
+                              </table>
+                              <div v-if="mhsjkl == 'L'">
+                                <b-button
+                                  squared
+                                  block
+                                  variant="primary"
+                                  @click="
+                                    pilih(
+                                      item.perusahaanid,
+                                      item.perusahaannama
+                                    )
+                                  "
+                                  v-if="
+                                    item.kuotapria +
+                                      item.kuotapriawanita -
+                                      item.jmlregister >
+                                    0
+                                  "
+                                >
+                                  <b-icon icon="check"></b-icon> Pilih</b-button
+                                >
+                                <b-button squared block variant="danger" v-else>
+                                  <b-icon icon="file-x"></b-icon>
+                                  Penuh</b-button
+                                >
                               </div>
                               <div v-else>
-                                <b-alert
-                                  variant="warning"
-                                  show
-                                  v-if="this.idjenisdokumen != '1'"
-                                  >Menunggu surat balasan dari
-                                  perusahaan</b-alert
+                                <b-button
+                                  squared
+                                  block
+                                  variant="primary"
+                                  @click="
+                                    pilih(
+                                      item.perusahaanid,
+                                      item.perusahaannama
+                                    )
+                                  "
+                                  v-if="
+                                    item.kuotawanita +
+                                      item.kuotapriawanita -
+                                      item.jmlregister >
+                                    0
+                                  "
                                 >
-                                <table
-                                  responsive
-                                  class="table b-table table-striped table-hover"
-                                  v-else
+                                  <b-icon icon="check"></b-icon> Pilih</b-button
                                 >
-                                  <tr>
-                                    <th class="w50">No</th>
-                                    <th>Nama Dokumen</th>
-                                    <th style="width:260px;">Aksi</th>
-                                  </tr>
-                                  <tr
-                                    v-for="(
-                                      item, index
-                                    ) in register.dokumenaktif"
-                                    :key="item.dokumenid"
-                                  >
-                                    <td>{{ index + 1 }}</td>
-                                    <td>
-                                      {{
-                                        item.dokumennama +
-                                        " (File : " +
-                                        item.dokumentipe +
-                                        ")"
-                                      }}
-                                    </td>
-                                    <td>
-                                      <b-button-group size="sm">
-                                        <b-button
-                                          squared
-                                          variant="primary"
-                                          @click="
-                                            upload(
-                                              item.dokumenid,
-                                              register.registerid,
-                                              item.dokumentipe
-                                            )
-                                          "
-                                          v-if="item.status != '1'"
-                                          ><b-icon icon="upload"></b-icon>
-                                          Upload</b-button
-                                        >
-                                        <b-button
-                                          squared
-                                          variant="success"
-                                          v-else
-                                          ><b-icon icon="check"></b-icon> Sudah
-                                          Divalidasi</b-button
-                                        >
-                                        <!-- <b-button
-                                        squared
-                                        variant="danger"
-                                        @click="lihat(item.files)"
-                                        v-if="item.files"
-                                      >
-                                        <b-icon icon="eye"></b-icon> Lihat
-                                      </b-button> -->
-                                        <a
-                                          :href="endpoint + item.files"
-                                          class="btn btn-danger rounded-0"
-                                          v-if="item.files"
-                                          target="_blank"
-                                          ><b-icon icon="eye"></b-icon> Lihat</a
-                                        >
-                                      </b-button-group>
-                                    </td>
-                                  </tr>
-                                </table>
+                                <b-button squared block variant="danger" v-else>
+                                  <b-icon icon="file-x"></b-icon>
+                                  Penuh</b-button
+                                >
                               </div>
-                            </b-tab>
-                            <b-tab
-                              title="Lihat Dokumen Register"
-                              v-if="register.dokumenregister.length > 0"
-                            >
-                              <fieldset class="menu-border">
-                                <legend class="menu-border">
-                                  List Dokumen
-                                </legend>
-                                <table
-                                  responsive
-                                  class="table b-table table-striped table-hover"
-                                >
-                                  <tr>
-                                    <th calass="w50">No</th>
-                                    <th>Nama Dokumen</th>
-                                    <th style="width:260px;">Aksi</th>
-                                  </tr>
-                                  <tr
-                                    v-for="(
-                                      item, index
-                                    ) in register.dokumenregister"
-                                    :key="item.dokumenid"
-                                  >
-                                    <td>{{ index + 1 }}</td>
-                                    <td>
-                                      {{
-                                        item.dokumennama +
-                                        " (File : " +
-                                        item.dokumentipe +
-                                        ")"
-                                      }}
-                                    </td>
-                                    <td>
-                                      <b-button-group size="sm">
-                                        <b-button
-                                          squared
-                                          variant="info"
-                                          v-if="item.status != '1'"
-                                          ><b-icon icon="upload"></b-icon> Belum
-                                          Validasi</b-button
-                                        >
-                                        <b-button
-                                          squared
-                                          variant="success"
-                                          v-else
-                                          ><b-icon icon="check"></b-icon> Sudah
-                                          Divalidasi</b-button
-                                        >
+                            </div>
+                          </b-col>
+                        </b-row>
+                        <b-row v-else>
+                          <b-col>
+                            <b-form id="form" v-if="show">
+                              <b-form-group
+                                id="input-group-1"
+                                label="Nama Perusahaan"
+                                label-for="perusahaannama"
+                                class="mt-2"
+                              >
+                                <b-input-group>
+                                  <b-form-input
+                                    id="perusahaannama"
+                                    placeholder="Masukkan Nama Perusahaan"
+                                    v-model="perusahaannama"
+                                    required
+                                    readonly
+                                    v-if="perusahaanid"
+                                  ></b-form-input>
+                                  <b-form-input
+                                    id="perusahaannama"
+                                    placeholder="Masukkan Nama Perusahaan"
+                                    v-model="perusahaannama"
+                                    required
+                                    v-else
+                                  ></b-form-input>
+                                  <b-input-group-append>
+                                    <b-button
+                                      squared
+                                      variant="primary"
+                                      @click="cariPerusahaan()"
+                                      >Cari Perusahaan</b-button
+                                    >
+                                  </b-input-group-append>
+                                </b-input-group>
+                              </b-form-group>
 
-                                        <a
-                                          :href="endpoint + item.files"
-                                          class="btn btn-danger rounded-0"
-                                          v-if="item.files"
-                                          target="_blank"
-                                          ><b-icon icon="eye"></b-icon> Lihat</a
-                                        >
-                                      </b-button-group>
-                                    </td>
-                                  </tr>
-                                </table>
-                              </fieldset>
-                            </b-tab>
-                            <b-tab
-                              title="Lihat Dokumen Konsultasi"
-                              v-if="register.dokumenkonsultasi"
-                            >
-                              <fieldset class="menu-border">
-                                <legend class="menu-border">
-                                  List Dokumen
-                                </legend>
-                                <table
-                                  responsive
-                                  class="table b-table table-striped table-hover"
-                                >
-                                  <tr>
-                                    <th class="w50">No</th>
-                                    <th>Nama Dokumen</th>
-                                    <th style="width:260px;">Aksi</th>
-                                  </tr>
-                                  <tr
-                                    v-for="(
-                                      item, index
-                                    ) in register.dokumenkonsultasi"
-                                    :key="item.dokumenid"
-                                  >
-                                    <td>{{ index + 1 }}</td>
-                                    <td>
-                                      {{
-                                        item.dokumennama +
-                                        " (File : " +
-                                        item.dokumentipe +
-                                        ")"
-                                      }}
-                                    </td>
-                                    <td>
-                                      <b-button-group size="sm">
-                                        <b-button
-                                          squared
-                                          variant="info"
-                                          v-if="item.status != '1'"
-                                          ><b-icon icon="upload"></b-icon> Belum
-                                          Validasi</b-button
-                                        >
-                                        <b-button
-                                          squared
-                                          variant="success"
-                                          v-else
-                                          ><b-icon icon="check"></b-icon> Sudah
-                                          Divalidasi</b-button
-                                        >
+                              <b-form-group
+                                id="input-group-2"
+                                label="Alamat:"
+                                label-for="perusahaanalamat"
+                                class="mt-2"
+                              >
+                                <b-form-input
+                                  id="perusahaanalamat"
+                                  placeholder="Masukkan alamat "
+                                  v-model="perusahaanalamat"
+                                  readonly
+                                  required
+                                  v-if="this.perusahaanid"
+                                ></b-form-input>
+                                <b-form-input
+                                  id="perusahaanalamat"
+                                  placeholder="Masukkan alamat "
+                                  v-model="perusahaanalamat"
+                                  required
+                                  v-else
+                                ></b-form-input>
+                              </b-form-group>
+                              <b-form-group
+                                id="input-group-1"
+                                label="Email Perusahaan"
+                                label-for="perusahaanemail"
+                                class="mt-2"
+                              >
+                                <b-form-input
+                                  id="perusahaanemail"
+                                  type="email"
+                                  placeholder="Masukkan Email Perusahaan"
+                                  v-model="perusahaanemail"
+                                  required
+                                  readonly
+                                  v-if="perusahaanid"
+                                ></b-form-input>
+                                <b-form-input
+                                  id="perusahaanemail"
+                                  type="email"
+                                  placeholder="Masukkan Email Perusahaan"
+                                  v-model="perusahaanemail"
+                                  required
+                                  v-else
+                                ></b-form-input>
+                              </b-form-group>
+                              <b-form-group
+                                id="input-group-2"
+                                label="No Telp:"
+                                label-for="perusahaannotelp"
+                                class="mt-2"
+                              >
+                                <b-form-input
+                                  id="perusahaannotelp"
+                                  placeholder="Masukkan No Telp "
+                                  v-model="perusahaannotelp"
+                                  required
+                                  readonly
+                                  v-if="perusahaanid"
+                                ></b-form-input>
+                                <b-form-input
+                                  id="perusahaannotelp"
+                                  placeholder="Masukkan No Telp "
+                                  v-model="perusahaannotelp"
+                                  required
+                                  v-else
+                                ></b-form-input>
+                              </b-form-group>
 
-                                        <a
-                                          :href="endpoint + item.files"
-                                          class="btn btn-danger rounded-0"
-                                          v-if="item.files"
-                                          target="_blank"
-                                          ><b-icon icon="eye"></b-icon> Lihat</a
-                                        >
-                                      </b-button-group>
-                                    </td>
-                                  </tr>
-                                </table>
-                              </fieldset>
-                            </b-tab>
-                            <b-tab
-                              title="Lihat Dokumen Keberangkatan"
-                              v-if="register.dokumenkeberangkatan"
-                            >
-                              <fieldset class="menu-border">
-                                <legend class="menu-border">
-                                  List Dokumen
-                                </legend>
-                                <table
-                                  responsive
-                                  class="table b-table table-striped table-hover"
+                              <div class="mt-2">
+                                <b-button
+                                  squared
+                                  type="button"
+                                  @click="daftarMandiri"
+                                  variant="primary"
+                                  >Daftar</b-button
                                 >
-                                  <tr>
-                                    <th class="w50">No</th>
-                                    <th>Nama Dokumen</th>
-                                    <th style="width:260px;">Aksi</th>
-                                  </tr>
-                                  <tr
-                                    v-for="(
-                                      item, index
-                                    ) in register.dokumenkeberangkatan"
-                                    :key="item.dokumenid"
-                                  >
-                                    <td>{{ index + 1 }}</td>
-                                    <td>
-                                      {{
-                                        item.dokumennama +
-                                        " (File : " +
-                                        item.dokumentipe +
-                                        ")"
-                                      }}
-                                    </td>
-                                    <td>
-                                      <b-button-group size="sm">
-                                        <b-button
-                                          squared
-                                          variant="info"
-                                          v-if="item.status != '1'"
-                                          ><b-icon icon="upload"></b-icon> Belum
-                                          Validasi</b-button
-                                        >
-                                        <b-button
-                                          squared
-                                          variant="success"
-                                          v-else
-                                          ><b-icon icon="check"></b-icon> Sudah
-                                          Divalidasi</b-button
-                                        >
-
-                                        <a
-                                          :href="endpoint + item.files"
-                                          class="btn btn-info rounded-0"
-                                          v-if="item.files"
-                                          target="_blank"
-                                          ><b-icon icon="eye"></b-icon> Lihat</a
-                                        >
-                                      </b-button-group>
-                                    </td>
-                                  </tr>
-                                </table>
-                              </fieldset>
-                            </b-tab>
-                          </b-tabs>
-                        </b-col>
-                      </b-row>
+                                <b-button
+                                  squared
+                                  type="button"
+                                  @click="resetPerusahaan"
+                                  variant="danger"
+                                  >Reset Form</b-button
+                                >
+                              </div>
+                            </b-form>
+                          </b-col>
+                        </b-row>
+                        </div>
+                      </div>
                     </fieldset>
                   </div>
                 </div>
@@ -944,6 +1168,7 @@ export default {
           this.prodiid = response.data.data.mhsprodiid;
           this.rekomendasi = response.data.data.rekomendasi;
           this.register = response.data.data.register;
+          this.registerid = response.data.data.register.registerid;
           this.kuotaAktif();
           if (this.register) {
             // alert(response.data.data.register.dokumenaktif.length)
@@ -1176,6 +1401,7 @@ export default {
         .then((result) => {
           if (result.isConfirmed) {
             this.formdata = {
+              registerid: this.registerid,
               registerkuotaid: this.kuotaaktif.kuotaidx,
               registerperusahaanid: perusahaanid,
               registernamaperusahaan: perusahaannama,
@@ -1196,7 +1422,7 @@ export default {
               })
               .then((response) => {
                 console.log(response.data);
-                if (response.data.code == 201) {
+                if (response.data.code == 201 || response.data.code == 200) {
                   this.profile();
                   this.$swal.fire({
                     title: "Sukses",
