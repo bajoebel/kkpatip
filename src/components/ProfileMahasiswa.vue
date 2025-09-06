@@ -6,7 +6,7 @@
         <b-img
           center
           rounded="circle"
-          src="http://localhost:8081/img/male.png"
+          src="https://kkp.poltekatipdg.ac.id/img/male.png"
           alt="Center image"
           class="w150"
           v-if="mhsjkl == 'L'"
@@ -14,7 +14,7 @@
         <b-img
           center
           rounded="circle"
-          src="http://localhost:8081/img/female.png"
+          src="https://kkp.poltekatipdg.ac.id/img/female.png"
           alt="Center image"
           class="w150"
           v-else
@@ -54,9 +54,22 @@
             <td>Total SKS</td>
             <td>: {{ totalsks }}</td>
           </tr>
+          
           <tr>
             <td>Total Gagal</td>
             <td>: {{ nilai_d_e }}</td>
+          </tr>
+          <tr>
+            <td>Perusahaan</td>
+            <td>
+              <b-form-select
+                        v-model="registerid"
+                        :options="listregister"
+                        value-field="registerid"
+                        text-field="registernamaperusahaan"
+                        @change="getRegister()"
+                      ></b-form-select>
+            </td>
           </tr>
         </table>
         <b-link
@@ -1116,6 +1129,7 @@ export default {
       config: null,
       rekomendasi: null,
       register: null,
+      listregister: null,
       registerid: "",
       idjenisdokumen: "",
       dokumenid: "",
@@ -1167,26 +1181,30 @@ export default {
           this.nilai_d_e = response.data.data.nilai_d_e;
           this.prodiid = response.data.data.mhsprodiid;
           this.rekomendasi = response.data.data.rekomendasi;
-          this.register = response.data.data.register;
-          this.registerid = response.data.data.register.registerid;
-          this.kuotaAktif();
-          if (this.register) {
-            // alert(response.data.data.register.dokumenaktif.length)
-            this.dokumenbalasan = response.data.data.register.dokumenbalasan;
-            if (response.data.data.register.dokumenaktif) {
-              this.idjenisdokumen =
-                response.data.data.register.dokumenaktif[0].dokumenjenisid;
-              if (this.idjenisdokumen == 1)
-                this.jenisdokumen = "Dokumen Registrasi";
-              else if (this.idjenisdokumen == 2)
-                this.jenisdokumen = "Dokumen Konsultasi";
-              else if (this.idjenisdokumen == 3)
-                this.jenisdokumen = "Dokumen Akademik";
-              else if (this.idjenisdokumen == 4)
-                this.jenisdokumen = "Dokumen Keberangkatan";
-              // alert(response.data.data.register.dokumenaktif[0].dokumenjenisid)
+          
+          if(response.data.data.register != null){
+            
+            var lr = response.data.data.register;
+            lr.push({
+              "registerid":0,
+              "registernamaperusahaan":"Daftarkan ke perusahaan lain"
+            })
+            console.clear();
+            console.log(lr)
+            this.listregister = lr;
+            // alert(lr.length)
+            if(lr.length>1){
+              let idx = lr.length - 2;
+              this.registerid = response.data.data.register[idx].registerid;
+              this.getRegister()
             }
+          }else{
+            // alert(response.data.data.register)
           }
+          
+          // alert('kuota Aktif')
+          this.kuotaAktif();
+          
 
           this.config = response.data.data.config;
         })
@@ -1221,6 +1239,59 @@ export default {
           } else {
             this.kuotaaktif = null;
           }
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        })
+        .finally(function () {
+          // always executed
+        });
+      return false;
+    },
+    async getRegister() {
+      let token = localStorage.getItem("token");
+      // alert('Kuota aktif')
+      await axios
+        .request({
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ` + token,
+          },
+          method: "GET",
+          url: `register/detail/` + this.registerid,
+        })
+        .then((response) => {
+          console.clear();
+          // console.log(response.data.data);
+          // alert(response.data.code)
+          if(response.data.code==200){
+            this.register = response.data.data.register
+            if (this.register) {
+              // alert(response.data.data.register.dokumenaktif.length)
+              this.dokumenbalasan = response.data.data.register.dokumenbalasan;
+              if (response.data.data.register.dokumenaktif) {
+                this.idjenisdokumen =
+                  response.data.data.register.dokumenaktif[0].dokumenjenisid;
+                if (this.idjenisdokumen == 1)
+                  this.jenisdokumen = "Dokumen Registrasi";
+                else if (this.idjenisdokumen == 2)
+                  this.jenisdokumen = "Dokumen Konsultasi";
+                else if (this.idjenisdokumen == 3)
+                  this.jenisdokumen = "Dokumen Akademik";
+                else if (this.idjenisdokumen == 4)
+                  this.jenisdokumen = "Dokumen Keberangkatan";
+                // alert(response.data.data.register.dokumenaktif[0].dokumenjenisid)
+              }
+            }
+          }else{
+            this.dokumenbalasan = null;
+            this.register = null;
+          }
+          
+          console.log("Response : ")
+          console.log(response.data.data)
+          // console.log(response)
         })
         .catch(function (error) {
           // handle error

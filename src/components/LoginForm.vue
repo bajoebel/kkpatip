@@ -174,6 +174,8 @@ export default {
               localStorage.setItem("isLogin", true);
               self.$router.go("/");
               // location.reload()
+            }else{
+              self.pesan = response.data.message;
             }
 
             return response;
@@ -261,9 +263,10 @@ export default {
               // self.$router.push('/')
               // location.reload();
             } else {
-              // alert(response.data.message);
-              // alert('Test')
               self.pesan = response.data.message;
+              // alert(response.data.messages[0].error);
+              // // alert('Test')
+              // self.pesan = response.data.messages[0].error;
             }
 
             return response;

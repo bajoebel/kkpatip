@@ -11,7 +11,7 @@
     <!-- <b-table striped hover :items="items"></b-table> -->
     <b-row>
       <b-col cols="2" lg="1">
-        <select class="custom-select" v-model="limit" @change="getData">
+        <select class="custom-select" v-model="limit" @change="getData(Event, 1)">
           <option value="10" selected>10</option>
           <option value="20">20</option>
           <option value="30">30</option>
@@ -34,9 +34,9 @@
       </b-col>
       <b-col cols="4" lg="5">
         <b-input-group>
-          <b-form-input v-model="keyword" @keyup="getData"></b-form-input>
+          <b-form-input v-model="keyword" @keyup="getData(Event, 1)"></b-form-input>
           <b-input-group-append>
-            <b-button squared variant="success" @click="getData()"
+            <b-button squared variant="success" @click="getData(Event, 1)"
               >Cari</b-button
             >
             <b-button squared block id="show-btn" variant="primary" @click="tambah"
@@ -111,6 +111,7 @@
             class="mt-2"
           >
             <b-form-select v-model="kuotajenisid" :options="listjenis" value-field="jenisid" text-field="jeniskuota" size="sm" class="form-control"></b-form-select>
+            <span v-if="error.kuotajenisid" class="text-error"> {{ error.kuotajenisid }} </span>
           </b-form-group>
           <b-form-group
             id="input-group-1"
@@ -119,6 +120,7 @@
             class="mt-2"
             >
             <b-form-select v-model="kuotaprodiid" :options="listprodi" value-field="prodiid" text-field="prodinama" size="sm" class="form-control" @change="getProdiById"></b-form-select>
+            <span v-if="error.kuotaprodiid" class="text-error"> {{ error.kuotaprodiid }} </span>
           </b-form-group>
           <b-form-group
             id="input-group-1"
@@ -127,6 +129,7 @@
             class="mt-2"
             >
             <b-form-select v-model="kuotasemid" :options="listsemester" value-field="semid" text-field="semnama" size="sm" class="form-control" @change="getSemesterById"></b-form-select>
+            <span v-if="error.kuotasemid" class="text-error"> {{ error.kuotasemid }} </span>
           </b-form-group>
           <b-form-group
             id="input-group-1"
@@ -135,6 +138,7 @@
             class="mt-2"
             >
             <b-form-datepicker id="kuotamulairegistrasi" size="sm" v-model="kuotamulairegistrasi" locale="id" class="mb-2"></b-form-datepicker>
+            <span v-if="error.kuotamulairegistrasi" class="text-error"> {{ error.kuotamulairegistrasi }} </span>
           </b-form-group>
           <b-form-group
             id="input-group-1"
@@ -143,6 +147,7 @@
             class="mt-2"
             >
             <b-form-datepicker id="kuotaselesairegistrasi" size="sm" v-model="kuotaselesairegistrasi" locale="id" class="mb-2"></b-form-datepicker>
+            <span v-if="error.kuotaselesairegistrasi" class="text-error"> {{ error.kuotaselesairegistrasi }} </span>
           </b-form-group>
           <b-form-group
             id="input-group-1"
@@ -151,6 +156,7 @@
             class="mt-2"
             >
             <b-form-datepicker id="kuotaselesaiuploaddokumen" size="sm" v-model="kuotaselesaiuploaddokumen" locale="id" class="mb-2"></b-form-datepicker>
+            <span v-if="error.kuotaselesaiuploaddokumen" class="text-error"> {{ error.kuotaselesaiuploaddokumen }} </span>
           </b-form-group>
           
           <div class="mt-2">
@@ -193,7 +199,7 @@ export default {
       limit: 10,
       keyword: "",
       prodiid: "11",
-      semester: 20231,
+      semester: "",
       page: 1,
       items: [],
       listsemester:[],
@@ -216,6 +222,14 @@ export default {
       kuotaselesairegistrasi:'',
       kuotaselesaiuploaddokumen:'',
       modaltitle:'Tambah Kuota',
+      error:{
+        kuotajenisid:'',
+        kuotasemid:'',
+        kuotaprodiid:'',
+        kuotamulairegistrasi:'',
+        kuotaselesairegistrasi:'',
+        kuotaselesaiuploaddokumen:'',
+      },
       show:1,
       isnew:true
     };
@@ -500,6 +514,7 @@ export default {
               confirmButtonText: "Ok",
             });
           } else {
+            this.error = response.data.error
             this.$swal.fire({
               title: "Gagal",
               text: response.data.message,

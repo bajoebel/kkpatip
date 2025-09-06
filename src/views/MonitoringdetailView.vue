@@ -6,7 +6,7 @@
         <b-img
           center
           rounded="circle"
-          src="http://localhost:8081/img/male.png"
+          src="https://kkp.poltekatipdg.ac.id/img/male.png"
           alt="Center image"
           class="w150"
           v-if="mhsjkl == 'L'"
@@ -14,7 +14,7 @@
         <b-img
           center
           rounded="circle"
-          src="http://localhost:8081/img/female.png"
+          src="https://kkp.poltekatipdg.ac.id/img/female.png"
           alt="Center image"
           class="w150"
           v-else
@@ -643,7 +643,7 @@ export default {
             Authorization: `Bearer ` + token,
           },
           method: "GET",
-          url: `jadwal/tahun/` + this.register.registerkuotaid,
+          url: `jadwal/tahun/` + this.register.registerkuotaid+`/`+this.register.registerperusahaanid,
         })
         .then((response) => {
           // console.clear();
@@ -675,7 +675,7 @@ export default {
           },
           method: "GET",
           url:
-            `jadwal/bulan/` + this.register.registerkuotaid + "/" + this.tahun,
+            `jadwal/bulan/` + this.register.registerkuotaid + "/" + this.tahun+ "/" + this.register.registerperusahaanid,
         })
         .then((response) => {
           // console.clear();
@@ -707,7 +707,7 @@ export default {
           },
           method: "GET",
           url:
-            `jadwal/minggu/` + this.register.registerkuotaid + "/" + this.bulan,
+            `jadwal/minggu/` + this.register.registerkuotaid + "/" + this.bulan+ "/" + this.register.registerperusahaanid,
         })
         .then((response) => {
           // console.clear();

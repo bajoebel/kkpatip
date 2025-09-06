@@ -6,7 +6,7 @@
         <b-img
           center
           rounded="circle"
-          src="http://localhost:8081/img/male.png"
+          src="https://kkp.poltekatipdg.ac.id/img/male.png"
           alt="Center image"
           class="w150"
           v-if="mhsjkl == 'L'"
@@ -14,7 +14,7 @@
         <b-img
           center
           rounded="circle"
-          src="http://localhost:8081/img/female.png"
+          src="https://kkp.poltekatipdg.ac.id/img/female.png"
           alt="Center image"
           class="w150"
           v-else
@@ -733,7 +733,7 @@ export default {
             Authorization: `Bearer ` + token,
           },
           method: "GET",
-          url: `jadwal/tahun/` + this.register.registerkuotaid,
+          url: `jadwal/tahun/` + this.register.registerkuotaid+`/`+this.register.registerperusahaanid,
         })
         .then((response) => {
           // console.clear();
@@ -765,7 +765,7 @@ export default {
           },
           method: "GET",
           url:
-            `jadwal/bulan/` + this.register.registerkuotaid + "/" + this.tahun,
+            `jadwal/bulan/` + this.register.registerkuotaid + "/" + this.tahun+`/`+this.register.registerperusahaanid,
         })
         .then((response) => {
           // console.clear();
@@ -797,7 +797,7 @@ export default {
           },
           method: "GET",
           url:
-            `jadwal/minggu/` + this.register.registerkuotaid + "/" + this.bulan,
+            `jadwal/minggu/` + this.register.registerkuotaid + "/" + this.bulan+`/`+this.register.registerperusahaanid,
         })
         .then((response) => {
           // console.clear();
@@ -820,7 +820,7 @@ export default {
     },
     async getTanggal() {
       let token = localStorage.getItem("token");
-      // alert('Kuota aktif')
+      
       await axios
         .request({
           headers: {
@@ -965,7 +965,7 @@ export default {
       this.formdata.append("laporan_tahun", this.periode_tahun);
       this.formdata.append("laporan_bulan", this.periode_bulan);
       this.formdata.append("laporan_bulanlabel", this.periode_labelbulan);
-      this.formdata.append("laporan_pekan", this.periode_pekan);
+      this.formdata.append("laporan_pekan", this.minggu);
       this.formdata.append("laporan_pekanlabel", this.periode_labelpekan);
       this.formdata.append("detail_idx", this.detail_idx);
       this.formdata.append("detail_laporanidx", this.detail_laporanidx);
@@ -974,6 +974,7 @@ export default {
       this.formdata.append("detail_isi", this.detail_isi);
       this.formdata.append("detail_lampiran", this.detail_lampiran);
       console.log(this.formdata);
+      var url = this.detail_idx == "" ? `laporan` : `laporan/` + this.detail_idx;
       await axios
         .request({
           headers: {
@@ -981,7 +982,7 @@ export default {
             Authorization: `Bearer ` + token,
           },
           method: "POST",
-          url: `laporan/` + this.detail_idx,
+          url: url,
           data: this.formdata,
         })
         .then((response) => {

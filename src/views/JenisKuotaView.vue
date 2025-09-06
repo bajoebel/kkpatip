@@ -94,6 +94,7 @@
               v-model="jeniskuota"
               required
             ></b-form-input>
+            <span v-if="error.jeniskuota" class="text-error"> {{ error.jeniskuota }} </span>
           </b-form-group>
 
           <b-form-checkbox
@@ -157,6 +158,9 @@ export default {
       modaltitle: "Tambah Jenis Kuota",
       filedata: "",
       formdata: {},
+      error: {
+        jeniskuota:''
+      },
     };
   },
   mounted() {
@@ -282,6 +286,7 @@ export default {
               confirmButtonText: "Ok",
             });
           } else {
+            this.error = response.data.error
             this.$swal.fire({
               title: "Gagal",
               text: response.data.message,

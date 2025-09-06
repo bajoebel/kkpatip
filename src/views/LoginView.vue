@@ -11,8 +11,5 @@ export default {
   components: {
     LoginForm
   },
-  data:()=>{
-    console.log(localStorage)
-  }
 }
 </script>

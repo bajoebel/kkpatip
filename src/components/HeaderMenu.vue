@@ -1,7 +1,6 @@
 <template>
   <nav>
     <div>
-      <!-- <b-col> -->
         <b-navbar
           toggleable="lg"
           type="light"
@@ -9,73 +8,25 @@
           style="border-bottom: solid 1px #ccc; border-collapse: collapse"
           class="header"
         >
-          <!-- <b-container> -->
           <b-navbar-brand href="#" style="padding-left: 10px">
-            <!-- <b-img
-              src="img/logo.png"  
-              fluid
-              alt="Fluid image"
-              v-b-toggle.sidebar-1
-              v-if="isLogin"
-            ></b-img>
-            <b-img src="img/logo.png" fluid alt="Fluid image" v-else></b-img> -->
+            
             <b-img :src="baseurl+'img/logo.png'" fluid alt="Fluid image"></b-img>
           </b-navbar-brand>
           <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
           <b-collapse id="nav-collapse" is-nav>
-            <b-navbar-nav right v-if="isLogin && level=='Administrator'">
+            <b-navbar-nav right >
               <b-link to="/" class="nav-link"><b-icon icon="house-fill"></b-icon> Home</b-link>
-              <b-link to="/perusahaan" class="nav-link"><b-icon icon="bank"></b-icon> Perusahaan</b-link>
-              <b-link to="/mahasiswa" class="nav-link"><b-icon icon="people-fill"></b-icon> Mahasiswa</b-link>
-              <b-link to="/prodi" class="nav-link"><b-icon icon="intersect"></b-icon> Prodi</b-link>
-              <b-link to="/jenis" class="nav-link"><b-icon icon="folder-check"></b-icon> Jenis</b-link>
-              <b-link to="/jeniskuota" class="nav-link"><b-icon icon="union"></b-icon> Jenis Kuota</b-link>
-              <b-link to="/dokumen" class="nav-link"><b-icon icon="folder-fill"></b-icon> Dokumen</b-link>
-              <b-link to="/kuota" class="nav-link"><b-icon icon="alarm-fill"></b-icon> Kuota</b-link>
-              <b-link to="/register" class="nav-link"><b-icon icon="card-list"></b-icon> Register</b-link>
-              <b-link to="/monitoring" class="nav-link"><b-icon icon="display"></b-icon> Monitoring</b-link>
-              <!-- <b-link to="/dokumen_akademik" class="nav-link"><b-icon icon="folder"></b-icon> Dokumen Akademik</b-link> -->
-              <!-- <b-link to="/about" class="nav-link">About</b-link> -->
-              
+              <div v-for="item in menu" :key="item.roleid">
+
+              <b-link :to="'/'+item.route" class="nav-link"><b-icon :icon="item.icon"></b-icon> {{ item.menunama }}</b-link>
+              </div>
             </b-navbar-nav>
-            <b-navbar-nav right v-else-if="isLogin && level=='Admin Prodi'">
-              <b-link to="/" class="nav-link"><b-icon icon="house-fill"></b-icon> Home</b-link>
-              <b-link to="/mahasiswa" class="nav-link"><b-icon icon="people-fill"></b-icon> Mahasiswa</b-link>
-              <b-link to="/dosen" class="nav-link"><b-icon icon="people"></b-icon> Dosen</b-link>
-              <b-link to="/register" class="nav-link"><b-icon icon="card-list"></b-icon> Register</b-link>
-            </b-navbar-nav>
-            <b-navbar-nav right v-else-if="isLogin && level=='Mahasiswa'">
-              <b-link to="/" class="nav-link"><b-icon icon="house-fill"></b-icon> Home</b-link>
-              <b-link to="/laporan" class="nav-link"><b-icon icon="file-check"></b-icon> Laporan Magang</b-link>
-              <!-- <b-link to="/about" class="nav-link">About</b-link> -->
-              
-            </b-navbar-nav>
-            <b-navbar-nav right v-else>
-              <b-link to="/" class="nav-link"><b-icon icon="house-fill"></b-icon> Home</b-link>
-              <b-link to="/mahasiswabimbingan" class="nav-link"><b-icon icon="people-fill"></b-icon> Mahasiswa Bimbingan</b-link>
-              <!-- <b-link to="/about" class="nav-link">About</b-link> -->
-              
-            </b-navbar-nav>
+            
             <b-navbar-nav right>
               <a class="nav-link" @click="logout()" v-if="isLogin"><b-icon icon="power" aria-hidden="true"></b-icon>Logout</a>
-              </b-navbar-nav>
-            <!-- <b-navbar-nav class="ml-auto">
-                <b-nav-item-dropdown text="Lang" right>
-                  <b-dropdown-item href="#">EN</b-dropdown-item>
-                  <b-dropdown-item href="#">ES</b-dropdown-item>
-                  <b-dropdown-item href="#">RU</b-dropdown-item>
-                  <b-dropdown-item href="#">FA</b-dropdown-item>
-                </b-nav-item-dropdown>
-
-                <b-nav-item-dropdown text="User" right>
-                  <b-dropdown-item href="#">Account</b-dropdown-item>
-                  <b-dropdown-item href="#">Settings</b-dropdown-item>
-                </b-nav-item-dropdown>
-            </b-navbar-nav> -->
+            </b-navbar-nav>
           </b-collapse>
-          <!-- </b-container> -->
         </b-navbar>
-      <!-- </b-col> -->
     </div>
     <b-sidebar
       id="sidebar-1"
@@ -134,7 +85,8 @@ export default {
       isLogin: localStorage.getItem("isLogin"),
       nama: "",
       level: "",
-      baseurl:'http://localhost:8081/'
+      menu:'',
+      baseurl:'https://kkp.poltekatipdg.ac.id/'
       // baseurl:process.env.VUE_BASE_URL
     };
   },
@@ -149,7 +101,8 @@ export default {
     logout() {
       // let self = this;
       localStorage.clear();
-      this.$router.go("/");
+      this.$router.push("/");
+      location.reload();
     },
     getInfo: async function() {
       let token = localStorage.getItem("token");
@@ -167,6 +120,9 @@ export default {
       .then((response) => {
         console.log(response.data);
         this.nama = response.data.info.nama
+        this.menu = response.data.info.menu;
+        console.clear();
+        console.log(this.menu)
         this.level = (response.data.info.level==1?'Administrator':(response.data.info.level==2?'Admin Prodi':(response.data.info.level==3?"Mahasiswa":"Dosen")))
         localStorage.setItem('isLevel',response.data.info.level)
       })

@@ -6,7 +6,7 @@
         <b-img
           center
           rounded="circle"
-          src="http://localhost:8081/img/male.png"
+          src="https://kkp.poltekatipdg.ac.id/img/male.png"
           alt="Center image"
           class="w150"
           v-if="mhsjkl == 'L'"
@@ -14,7 +14,7 @@
         <b-img
           center
           rounded="circle"
-          src="http://localhost:8081/img/female.png"
+          src="https://kkp.poltekatipdg.ac.id/img/female.png"
           alt="Center image"
           class="w150"
           v-else

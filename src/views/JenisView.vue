@@ -93,6 +93,7 @@
               v-model="jenisdokumen"
               required
             ></b-form-input>
+            <span v-if="error.jenisdokumen" class="text-error"> {{ error.jenisdokumen }} </span>
           </b-form-group>
 
           <b-form-checkbox
@@ -156,6 +157,9 @@ export default {
       modaltitle: "Tambah Jenis Dokumen",
       filedata: "",
       formdata: {},
+      error:{
+        jenisdokumen:""
+      }
     };
   },
   mounted() {
@@ -281,12 +285,13 @@ export default {
               confirmButtonText: "Ok",
             });
           } else {
-            this.$swal.fire({
-              title: "Gagal",
-              text: response.data.message,
-              icon: "error",
-              confirmButtonText: "Ok",
-            });
+            this.error = response.data.error;
+            // this.$swal.fire({
+            //   title: "Gagal",
+            //   text: response.data.message,
+            //   icon: "error",
+            //   confirmButtonText: "Ok",
+            // });
           }
         })
         .catch(function (error) {

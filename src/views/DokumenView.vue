@@ -97,6 +97,7 @@
               v-model="dokumennama"
               required
             ></b-form-input>
+            <span v-if="error.dokumennama" class="text-error"> {{ error.dokumennama }} </span>
           </b-form-group>
           <b-form-group
             id="input-group-1"
@@ -105,6 +106,7 @@
             class="mt-2"
           >
             <b-form-select v-model="dokumenjenisid" :options="options" value-field="jenisidx" text-field="jenisdokumen" class="mt-3 form-control"></b-form-select>
+            <span v-if="error.dokumenjenisid" class="text-error"> {{ error.dokumenjenisid }} </span>
           </b-form-group>
           <b-form-group
             id="input-group-1"
@@ -127,6 +129,7 @@
                 <b-form-checkbox value="application/doc">DOC</b-form-checkbox>
                 <b-form-checkbox value="application/docx">DOCx</b-form-checkbox>
             </b-form-checkbox-group>
+            <span v-if="error.dokumentipe" class="text-error"> {{ error.dokumentipe }} </span>
           </b-form-group>
 
           <b-form-checkbox
@@ -193,6 +196,11 @@ export default {
       modaltitle: "Tambah Jenis Dokumen",
       filedata: "",
       formdata: {},
+      error: {
+        dokumennama:'',
+        dokumentipe:'',
+        dokumenjenisid:''
+      },
     };
   },
   mounted() {
@@ -347,6 +355,7 @@ export default {
               confirmButtonText: "Ok",
             });
           } else {
+            this.error = response.data.error
             this.$swal.fire({
               title: "Gagal",
               text: response.data.message,

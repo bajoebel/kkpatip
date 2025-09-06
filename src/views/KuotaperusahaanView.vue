@@ -1,4 +1,6 @@
 <template>
+  <!-- <h3 v-if="isLogin">Detail Kuota</h3>
+  <h3 v-else>Anda belum login</h3> -->
   <div class="kotak" v-if="isLogin">
     <h3>Info Kuota</h3>
     <b-row class="mt-0">
@@ -471,7 +473,7 @@
   <div v-else>
     <div class="kotak">
       <h3 class="text-center">
-        Anda Belum Login Ya<br />
+        Anda Belum Login Ya {{ isLogin }}<br />
         <b-link class="text-center" to="/">Silahkan Login Disini</b-link>
       </h3>
     </div>
@@ -484,7 +486,7 @@ export default {
   data: () => {
     return {
       isLogin: localStorage.getItem("isLogin"),
-      id: "",
+      id: 0,
       kuota: null,
       listperusahaan: null,
       detailid: "",
@@ -518,18 +520,25 @@ export default {
   },
   mounted() {
     // this.getData(Event, 1);
-    console.clear();
+    // console.clear();
     console.log(this.$route.params.id);
+    console.log("isLogin : "+this.isLogin);
+    console.log("sudahLogin : "+this.sudahLogin);
+    console.log("isLogin Storage: "+localStorage.getItem("isLogin"));
+    
     this.id = this.$route.params.id;
+    // alert(this.id)
     this.isLogin = localStorage.getItem("isLogin");
+    // alert(this.isLogin)
+    this.sudahLogin = localStorage.getItem("isLogin");
     this.kuotaById();
+    console.log("Kuota : " + this.kuota);
     this.getListPerusahaan();
     this.getListDokumen();
     this.getDetailPerusahaan();
     this.getDetailDokumen();
     this.getListJadwal();
-
-    // alert(this.isLogin)
+    // alert(localStorage.getItem("isLogin"))
   },
   methods: {
     async kuotaById() {
@@ -545,7 +554,6 @@ export default {
         })
         .then((response) => {
           console.log(response.data);
-
           if (response.data.code == 200) {
             this.kuota = response.data.data;
             this.getListDokumenBalasan();
@@ -734,6 +742,10 @@ export default {
       this.formdata.append("detailkuotawanita", this.detailkuotawanita);
       this.formdata.append("detailkuotapriawanita", this.detailkuotapriawanita);
       console.log(this.formdata);
+      // return false;
+      // alert(this.detailid);
+      // return false;
+      var url = this.detailid ? `kuotadetail/` + this.detailid : `kuotadetail`;
       await axios
         .request({
           headers: {
@@ -741,7 +753,7 @@ export default {
             Authorization: `Bearer ` + token,
           },
           method: "POST",
-          url: `kuotadetail/` + this.detailid,
+          url: url,
           data: this.formdata,
         })
         .then((response) => {
@@ -781,8 +793,11 @@ export default {
       this.formdata.append("akdperusahaanid", this.akdperusahaanid);
       this.formdata.append("akddokumenid", this.akddokumenid);
       this.formdata.append("akddokumenfiles", this.akddokumenfiles);
-      console.clear();
+      // // console.clear();
       console.log(this.formdata);
+      var url = this.akdidx
+        ? `simpandokumenakademik/` + this.akdidx
+        : `simpandokumenakademik`;
       await axios
         .request({
           headers: {
@@ -790,7 +805,7 @@ export default {
             Authorization: `Bearer ` + token,
           },
           method: "POST",
-          url: `simpandokumenakademik/` + this.akdidx,
+          url: url,
           data: this.formdata,
         })
         .then((response) => {
@@ -831,6 +846,9 @@ export default {
       this.formdata.append("balasanfiles", this.balasanfiles);
       this.formdata.append("pilihmahasiswa", this.pilihmahasiswa);
       console.log(this.formdata);
+      var url = this.balasanidx
+        ? `dokumenbalasan/` + this.balasanidx
+        : `dokumenbalasan`;
       await axios
         .request({
           headers: {
@@ -838,7 +856,7 @@ export default {
             Authorization: `Bearer ` + token,
           },
           method: "POST",
-          url: `dokumenbalasan/` + this.balasanidx,
+          url: url,
           data: this.formdata,
         })
         .then((response) => {
@@ -882,6 +900,7 @@ export default {
       this.formdata.append("jadwalmulai", this.jadwalmulai);
       this.formdata.append("jadwalselesai", this.jadwalselesai);
       console.log(this.formdata);
+      var url = this.jadwalid ? `jadwal/` + this.jadwalid : `jadwal`;
       await axios
         .request({
           headers: {
@@ -889,7 +908,7 @@ export default {
             Authorization: `Bearer ` + token,
           },
           method: "POST",
-          url: `jadwal/` + this.jadwalid,
+          url: url,
           data: this.formdata,
         })
         .then((response) => {
@@ -935,7 +954,7 @@ export default {
           url: `all/kuotadetail/` + this.id,
         })
         .then((response) => {
-          console.clear();
+          // // console.clear();
           console.log(response.data.data);
           this.items = response.data.data;
           // alert(this.kuotaprodinama)
@@ -961,7 +980,7 @@ export default {
           url: `all/kuotadokumen/` + this.id,
         })
         .then((response) => {
-          console.clear();
+          // // console.clear();
           console.log(response.data.data);
           this.dokumens = response.data.data;
           // alert(this.kuotaprodinama)
@@ -987,7 +1006,7 @@ export default {
           url: `kuotadetail/` + id,
         })
         .then((response) => {
-          console.clear();
+          // // console.clear();
           console.log(response.data.data);
           this.detailid = response.data.data.detailid;
           this.detailperusahaanid = response.data.data.detailperusahaanid;
@@ -1017,7 +1036,7 @@ export default {
           url: `dokumenakademik/` + id,
         })
         .then((response) => {
-          console.clear();
+          // console.clear();
           console.log(response.data.data);
           this.akdidx = response.data.data.akdidx;
           this.akdperusahaanid = response.data.data.akdperusahaanid;
@@ -1046,7 +1065,7 @@ export default {
           url: `dokumenbalasan/` + id,
         })
         .then((response) => {
-          console.clear();
+          // console.clear();
           console.log(response.data.data);
           this.balasanidx = response.data.data.balasanidx;
           this.balasanperusahaanidx = response.data.data.balasanperusahaanidx;
@@ -1074,7 +1093,7 @@ export default {
           url: `jadwal/` + id,
         })
         .then((response) => {
-          console.clear();
+          // console.clear();
           console.log(response.data.data);
           this.jadwalid = response.data.data.jadwalid;
           this.jadwalperusahaanid = response.data.data.jadwalperusahaanid;

@@ -37,7 +37,7 @@ export default {
     };
   },
   mounted() {
-    document.title = "Aplikasi KKP Politeknik ATI Padang";
+    // document.title = "Aplikasi KKP Politeknik ATI Padang";
     console.clear()
     console.log(process.env.VUE_APP_BASE_URL)
     // alert(process.env.VUE_APP_BASE_URL)

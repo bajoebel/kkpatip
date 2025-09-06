@@ -6,7 +6,7 @@
         <b-img
           center
           rounded="circle"
-          src="http://localhost:8081/img/male.png"
+          src="https://kkp.poltekatipdg.ac.id/img/male.png"
           alt="Center image"
           class="w150"
           v-if="mhsjkl == 'L'"
@@ -14,7 +14,7 @@
         <b-img
           center
           rounded="circle"
-          src="http://localhost:8081/img/female.png"
+          src="https://kkp.poltekatipdg.ac.id/img/female.png"
           alt="Center image"
           class="w150"
           v-else
@@ -62,11 +62,19 @@
             <td>Pembimbing</td>
             <td>: {{ register.pembimbing.pembimbingdosennama +'('+register.pembimbing.pembimbingdosenid+')' }}</td>
           </tr>
+          <tr v-if="register">
+            <td>Perusahaan</td>
+            <td>: {{ register.registernamaperusahaan}}</td>
+          </tr>
         </table>
       </fieldset>
     </b-col>
     <b-col cols="12" lg="8">
-      <div class="kotak">
+      <div class="kotak" v-if="register == null">
+        <b-alert show variant="danger" >Anda belum terdaftar untuk magang</b-alert>
+        
+      </div>
+      <div class="kotak" v-else>
         <!-- Tabs with card integration -->
         <b-tabs pills content-class="mt-3" lazy>
           <b-tab title="Input Laporan Mingguan">
@@ -76,6 +84,15 @@
                 <fieldset class="menu-border">
                   <legend class="menu-border">Form Laporan Mingguan</legend>
                   <b-row>
+                    <b-col>
+                      <b-form-select
+                        v-model="registerid"
+                        :options="listregister"
+                        value-field="registerid"
+                        text-field="registernamaperusahaan"
+                        @change="getRegister()"
+                      ></b-form-select>
+                    </b-col>
                     <b-col>
                       <b-form-select
                         v-model="tahun"
@@ -662,6 +679,7 @@ export default {
       listtanggapan: null,
       listlaporanakhir: null,
       listtanggapanakhir: null,
+      listregister: null,
       showformlaporan: true,
       laporanakhiridx:'',
       endpoint: process.env.VUE_APP_BASE_URL,
@@ -701,27 +719,70 @@ export default {
           this.nilai_d_e = response.data.data.nilai_d_e;
           this.prodiid = response.data.data.mhsprodiid;
           this.rekomendasi = response.data.data.rekomendasi;
-          this.register = response.data.data.register;
-          if (this.register) {
+          // this.register = response.data.data.register;
+          if (response.data.data.register != null) {
             // alert(response.data.data.register.dokumenaktif.length)
-            this.dokumenbalasan = response.data.data.register.dokumenbalasan;
-            if (response.data.data.register.dokumenaktif) {
-              this.idjenisdokumen =
-                response.data.data.register.dokumenaktif[0].dokumenjenisid;
-              if (this.idjenisdokumen == 1)
-                this.jenisdokumen = "Dokumen Registrasi";
-              else if (this.idjenisdokumen == 2)
-                this.jenisdokumen = "Dokumen Konsultasi";
-              else if (this.idjenisdokumen == 3)
-                this.jenisdokumen = "Dokumen Akademik";
-              else if (this.idjenisdokumen == 4)
-                this.jenisdokumen = "Dokumen Keberangkatan";
-              // alert(response.data.data.register.dokumenaktif[0].dokumenjenisid)
+            this.listregister = response.data.data.register;
+            var lr = response.data.data.register;
+            console.clear();
+            console.log(lr)
+            // alert(lr.length)
+            if(lr.length>=1){
+              this.registerid = response.data.data.register[0].registerid;
+              this.getRegister()
             }
+            
+          }else{
+            console.clear()
+            console.log(response.data.data.register)
           }
-          this.getTahun();
-          this.getLaporanAkhir();
+          
           this.config = response.data.data.config;
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        })
+        .finally(function () {
+          // always executed
+        });
+      return false;
+    },
+    async getRegister() {
+      let token = localStorage.getItem("token");
+      // alert('Kuota aktif')
+      await axios
+        .request({
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ` + token,
+          },
+          method: "GET",
+          url: `register/detail/` + this.registerid,
+        })
+        .then((response) => {
+          console.clear();
+          this.register = response.data.data.register
+          this.perusahaanid = response.data.data.register.registerperusahaanid;
+          this.dokumenbalasan = response.data.data.register.dokumenbalasan;
+              if (response.data.data.register.dokumenaktif) {
+                this.idjenisdokumen =
+                  response.data.data.register.dokumenaktif[0].dokumenjenisid;
+                if (this.idjenisdokumen == 1)
+                  this.jenisdokumen = "Dokumen Registrasi";
+                else if (this.idjenisdokumen == 2)
+                  this.jenisdokumen = "Dokumen Konsultasi";
+                else if (this.idjenisdokumen == 3)
+                  this.jenisdokumen = "Dokumen Akademik";
+                else if (this.idjenisdokumen == 4)
+                  this.jenisdokumen = "Dokumen Keberangkatan";
+                // alert(response.data.data.register.dokumenaktif[0].dokumenjenisid)
+              }
+              this.getTahun();
+              this.getLaporanAkhir();
+          console.log("Response : ")
+          console.log(response.data.data)
+          // console.log(response)
         })
         .catch(function (error) {
           // handle error
@@ -777,7 +838,7 @@ export default {
             Authorization: `Bearer ` + token,
           },
           method: "GET",
-          url: `jadwal/tahun/` + this.register.registerkuotaid,
+          url: `jadwal/tahun/` + this.register.registerkuotaid+'/'+this.perusahaanid,
         })
         .then((response) => {
           // console.clear();
@@ -809,7 +870,7 @@ export default {
           },
           method: "GET",
           url:
-            `jadwal/bulan/` + this.register.registerkuotaid + "/" + this.tahun,
+            `jadwal/bulan/`+this.register.registerkuotaid + "/" + this.tahun+`/`+this.perusahaanid,
         })
         .then((response) => {
           // console.clear();
@@ -841,7 +902,7 @@ export default {
           },
           method: "GET",
           url:
-            `jadwal/minggu/` + this.register.registerkuotaid + "/" + this.bulan,
+            `jadwal/minggu/` + this.register.registerkuotaid + "/" + this.bulan+`/`+this.perusahaanid,
         })
         .then((response) => {
           // console.clear();
@@ -865,6 +926,12 @@ export default {
     async getTanggal() {
       let token = localStorage.getItem("token");
       // alert('Kuota aktif')
+      // alert(`jadwal/tanggal/` +
+      //       this.register.registerkuotaid +
+      //       "/" +
+      //       this.minggu +
+      //       "/" +
+      //       this.register.registerid)
       await axios
         .request({
           headers: {
@@ -1146,6 +1213,7 @@ export default {
             this.periode_tahun = response.data.data.periode_tahun;
             this.periode_bulan = response.data.data.periode_bulan;
             this.periode_labelbulan = response.data.data.periode_labelbulan;
+            this.periode_pekan = response.data.data.periode_pekan;
             this.periode_labelpekan = response.data.data.periode_labelpekan;
             this.periode_hari = response.data.data.periode_hari;
             this.periode_tgl = response.data.data.periode_tgl;
@@ -1170,6 +1238,7 @@ export default {
     },
     simpanLaporan: async function () {
       let token = localStorage.getItem("token");
+      
       const form = document.querySelector("form");
       this.formdata = new FormData(form);
       this.formdata.append("laporan_registeridx", this.register.registerid);

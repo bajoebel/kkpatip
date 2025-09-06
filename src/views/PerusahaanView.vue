@@ -95,6 +95,7 @@
               v-model="perusahaannama"
               required
             ></b-form-input>
+            <span v-if="error.perusahaannama" class="text-error"> {{ error.perusahaannama }} </span>
           </b-form-group>
 
           <b-form-group
@@ -109,10 +110,11 @@
               v-model="perusahaanalamat"
               required
             ></b-form-input>
+            <span v-if="error.perusahaanalamat" class="text-error"> {{ error.perusahaanalamat }} </span>
           </b-form-group>
           <b-form-group
             id="input-group-1"
-            label="Nama Perusahaan"
+            label="Email Perusahaan"
             label-for="perusahaanemail"
             class="mt-2"
           >
@@ -123,6 +125,7 @@
               v-model="perusahaanemail"
               required
             ></b-form-input>
+            <span v-if="error.perusahaanemail" class="text-error"> {{ error.perusahaanemail }} </span>
           </b-form-group>
           <b-form-group
             id="input-group-2"
@@ -136,7 +139,7 @@
               v-model="perusahaannotelp"
               required
             ></b-form-input>
-            
+            <span v-if="error.perusahaannotelp" class="text-error"> {{ error.perusahaannotelp }} </span>
           </b-form-group>
           
           <b-form-group
@@ -157,6 +160,7 @@
               placeholder="Choose a file or drop it here..."
               drop-placeholder="Drop file here..."
             ></b-form-file>
+            <span v-if="error.perusahaanlogo" class="text-error"> {{ error.perusahaanlogo }} </span>
           </b-form-group>
           <div class="mt-2">
             <b-button
@@ -214,6 +218,7 @@ export default {
       modaltitle: "Tambah Perusahaan",
       filedata: "",
       formdata: {},
+      error:{}
     };
   },
   mounted() {
@@ -354,12 +359,14 @@ export default {
               confirmButtonText: "Ok",
             });
           } else {
-            this.$swal.fire({
-              title: "Gagal",
-              text: response.data.message,
-              icon: "error",
-              confirmButtonText: "Ok",
-            });
+            // alert("error")
+            this.error = response.data.error;
+            // this.$swal.fire({
+            //   title: "Gagal",
+            //   text: response.data.message,
+            //   icon: "error",
+            //   confirmButtonText: "Ok",
+            // });
           }
         })
         .catch(function (error) {

@@ -20,6 +20,7 @@ import RegisterdetailView from '../views/RegisterdetailView.vue'
 import DokumenakademikView from '../views/DokumenakademikView.vue'
 import LaporanView from '../views/LaporanView.vue'
 import LaporandetailView from '../views/LaporandetailView.vue'
+import PersyaratanView from '../views/PersyaratanView.vue'
 
 Vue.use(VueRouter)
 
@@ -91,7 +92,7 @@ const routes = [
   },
   {
     path: '/kuota/detail/:id',
-    name: 'perusahaan',
+    name: 'kuotaperusahaan',
     component: KuotaperusahaanView
   },
   {
@@ -123,6 +124,11 @@ const routes = [
     path: '/monitoring/:id',
     name: 'monitoring',
     component: MonitoringdetailView
+  },
+  {
+    path: '/pengaturan',
+    name: 'pengaturan',
+    component: PersyaratanView
   },
   {
     path: '/about',
