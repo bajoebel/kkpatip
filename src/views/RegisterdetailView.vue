@@ -71,7 +71,7 @@
           </tr>
           <tr>
             <td colspan="2">
-              <div>
+              <div v-if="islevel=='1'">
                 <b-button-group
                   size="sm"
                   v-if="register.registerdisetujui == '1'"
@@ -131,8 +131,8 @@
         <b-tabs content-class="mt-3" lazy>
           <b-tab title="Dosen Pembimbing">
             <div v-if="register.pembimbing == null">
-              <h3>Masukkan dosen pembimbing</h3>
-              <b-form id="form1">
+              <h3 v-if="isLevel=='1'">Masukkan dosen pembimbing</h3>
+              <b-form id="form1" v-if="isLevel=='1'">
                 <b-input-group>
                   <b-form-select
                     v-model="dosenid"
@@ -159,6 +159,9 @@
                   </b-input-group-btn>
                 </b-input-group> -->
               </b-form>
+              <div v-else>
+                <b-alert variant="success" show><p>Dosen pembiming belum di setting oleh admin akademik</p></b-alert> 
+              </div>  
             </div>
             <div v-else>
               <b-row>
@@ -207,7 +210,7 @@
                   {{ item.dokumennama + " (File : " + item.dokumentipe + ")" }}
                 </td>
                 <td>
-                  <b-button-group size="sm">
+                  <b-button-group size="sm" v-if="islevel=='1'">
                     <!-- <b-button
                       squared
                       variant="warning"
@@ -247,6 +250,31 @@
                       ><b-icon icon="upload"></b-icon> Belum Upload</b-button
                     >
                   </b-button-group>
+                  <b-button-group size="sm" v-else>
+                    
+                    <b-button
+                      squared
+                      variant="warning"
+                      v-if="item.status != '1' && item.files"
+                      ><b-icon icon="check"></b-icon> Belum Divalidasi
+                    </b-button>
+                    <b-button
+                      squared
+                      variant="success"
+                      v-else-if="item.status == '1' && item.files"
+                      ><b-icon icon="check"></b-icon> Sudah Divalidasi</b-button
+                    >
+                    <a
+                      :href="endpoint + item.files"
+                      class="btn btn-danger rounded-0"
+                      v-if="item.files"
+                      target="_blank"
+                      ><b-icon icon="eye"></b-icon> Lihat</a
+                    >
+                    <b-button squared variant="danger" v-else
+                      ><b-icon icon="upload"></b-icon> Belum Upload</b-button
+                    >
+                  </b-button-group>
                 </td>
               </tr>
             </table>
@@ -271,7 +299,7 @@
                   {{ item.dokumennama + " (File : " + item.dokumentipe + ")" }}
                 </td>
                 <td>
-                  <b-button-group size="sm">
+                  <b-button-group size="sm" v-if="islevel=='1'">
                     <b-button
                       squared
                       variant="warning"
@@ -284,6 +312,30 @@
                       variant="success"
                       v-else-if="item.status == '1' && item.files"
                       @click="unValid(item.idx, item.dokumenjenisid)"
+                      ><b-icon icon="check"></b-icon> Sudah Divalidasi</b-button
+                    >
+                    <a
+                      :href="endpoint + item.files"
+                      class="btn btn-danger rounded-0"
+                      v-if="item.files"
+                      target="_blank"
+                      ><b-icon icon="eye"></b-icon> Lihat</a
+                    >
+                    <b-button squared variant="danger" v-else
+                      ><b-icon icon="upload"></b-icon> Belum Upload</b-button
+                    >
+                  </b-button-group>
+                  <b-button-group size="sm" v-else>
+                    <b-button
+                      squared
+                      variant="warning"
+                      v-if="item.status != '1' && item.files"
+                      ><b-icon icon="check"></b-icon> Belum Divalidasi
+                    </b-button>
+                    <b-button
+                      squared
+                      variant="success"
+                      v-else-if="item.status == '1' && item.files"
                       ><b-icon icon="check"></b-icon> Sudah Divalidasi</b-button
                     >
                     <a
@@ -320,7 +372,7 @@
                   {{ item.dokumennama + " (File : " + item.dokumentipe + ")" }}
                 </td>
                 <td>
-                  <b-button-group size="sm">
+                  <b-button-group size="sm" v-if="islevel=='1'">
                     <b-button
                       squared
                       variant="warning"
@@ -333,6 +385,31 @@
                       variant="success"
                       v-else-if="item.status == '1' && item.files"
                       @click="unValid(item.idx, item.dokumenjenisid)"
+                      ><b-icon icon="check"></b-icon> Sudah Divalidasi</b-button
+                    >
+
+                    <a
+                      :href="endpoint + item.files"
+                      class="btn btn-danger rounded-0"
+                      v-if="item.files"
+                      target="_blank"
+                      ><b-icon icon="eye"></b-icon> Lihat</a
+                    >
+                    <b-button squared variant="danger" v-else
+                      ><b-icon icon="upload"></b-icon> Belum Upload</b-button
+                    >
+                  </b-button-group>
+                  <b-button-group size="sm" v-else>
+                    <b-button
+                      squared
+                      variant="warning"
+                      v-if="item.status != '1' && item.files"
+                      ><b-icon icon="check"></b-icon> Belum Divalidasi
+                    </b-button>
+                    <b-button
+                      squared
+                      variant="success"
+                      v-else-if="item.status == '1' && item.files"
                       ><b-icon icon="check"></b-icon> Sudah Divalidasi</b-button
                     >
 
@@ -397,12 +474,14 @@
 </template>
 <script>
 import axios from "axios";
+// import { is } from "core-js/core/object";
 export default {
   name: "RegisterdetailMahasiswa",
   data() {
     return {
       isnew: true,
       show: true,
+      islevel: '',
       id: "",
       mhsnobp: "",
       mhsnama: "",
@@ -440,6 +519,8 @@ export default {
   mounted() {
     this.id = this.$route.params.id;
     this.profile();
+    this.islevel = localStorage.getItem("isLevel");
+    // this.kuotaAktif();
     // alert(this.prodiid)
     // this.getDosen();
   },

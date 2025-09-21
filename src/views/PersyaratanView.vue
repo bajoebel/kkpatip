@@ -30,7 +30,7 @@
               <b-form-checkbox-group
                 id="menuid"
                 v-model="selected2"
-                
+                @change="updateRole(2)"
                 name="menuid"
               >
                 <div class="col" v-for="item in prodi" :key="item.menuid">
@@ -50,7 +50,7 @@
               <b-form-checkbox-group
                 id="menuid"
                 v-model="selected3"
-                
+                @change="updateRole(3)"
                 name="menuid"
               >
                 <div class="col" v-for="item in dosen" :key="item.menuid">
@@ -70,10 +70,30 @@
               <b-form-checkbox-group
                 id="menuid"
                 v-model="selected4"
-                
+                @change="updateRole(4)"
                 name="menuid"
               >
                 <div class="col" v-for="item in mahasiswa" :key="item.menuid">
+                  <b-form-checkbox
+                  :value="item.menuid"
+                  >
+                    {{ item.menunama }}
+                  </b-form-checkbox>
+                </div>
+              </b-form-checkbox-group>
+              
+            </fieldset>
+          </b-tab>
+          <b-tab title="Wadir">
+            <fieldset class="menu-border">
+              <legend class="menu-border">Menu</legend>
+              <b-form-checkbox-group
+                id="menuid"
+                v-model="selected5"
+                @change="updateRole(9)"
+                name="menuid"
+              >
+                <div class="col" v-for="item in wadir" :key="item.menuid">
                   <b-form-checkbox
                   :value="item.menuid"
                   >
@@ -183,10 +203,12 @@ export default {
       prodi: null,
       dosen: null,
       mahasiswa: null,
+      wadir: null,
       selected1: [],
       selected2: [],
       selected3: [],
       selected4: [],
+      selected5: [],
       currentPage: 1,
       rows: 0,
       perPage: 0,
@@ -239,10 +261,12 @@ export default {
             this.prodi = response.data.hakakses.prodi;
             this.dosen = response.data.hakakses.dosen;
             this.mahasiswa = response.data.hakakses.mahasiswa;
+            this.wadir = response.data.hakakses.wadir;
             this.selected1 = response.data.hakakses.akademikrole;
             this.selected2 = response.data.hakakses.prodirole;
             this.selected3 = response.data.hakakses.mahasiswarole;
             this.selected4 = response.data.hakakses.dosenrole;
+            this.selected5 = response.data.hakakses.wadirrole;
           } else {
             this.isnew = true;
           }
@@ -311,7 +335,8 @@ export default {
       if(level==1) this.formdata.append("menuid", this.selected1);
       else if(level==2) this.formdata.append("menuid", this.selected2);
       else if(level==3) this.formdata.append("menuid", this.selected3);
-      else this.formdata.append("menuid", this.selected4);
+      else if(level==4)this.formdata.append("menuid", this.selected4);
+      else this.formdata.append("menuid", this.selected5);
       console.log(this.formdata);
       await axios
         .request({

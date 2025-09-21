@@ -17,6 +17,7 @@ import KuotaView from '../views/KuotaView.vue'
 import KuotaperusahaanView from '../views/KuotaperusahaanView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import RegisterdetailView from '../views/RegisterdetailView.vue'
+import TokenView from '../views/TokenView.vue'
 import DokumenakademikView from '../views/DokumenakademikView.vue'
 import LaporanView from '../views/LaporanView.vue'
 import LaporandetailView from '../views/LaporandetailView.vue'
@@ -34,6 +35,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginView
+  },
+  {
+    path: '/token/:id',
+    name: 'token',
+    component: TokenView
   },
   {
     path: '/login-mahasiswa',

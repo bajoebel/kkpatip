@@ -1255,6 +1255,7 @@ export default {
       this.formdata.append("detail_isi", this.detail_isi);
       this.formdata.append("detail_lampiran", this.detail_lampiran);
       console.log(this.formdata);
+      var url = this.detail_idx ? `laporan/` + this.detail_idx : `laporan`;
       await axios
         .request({
           headers: {
@@ -1262,7 +1263,7 @@ export default {
             Authorization: `Bearer ` + token,
           },
           method: "POST",
-          url: `laporan/` + this.detail_idx,
+          url: url,
           data: this.formdata,
         })
         .then((response) => {

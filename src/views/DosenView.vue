@@ -138,7 +138,8 @@ export default {
       la.push(myobj);
     }
     this.getConfig();
-    this.getListProdi();
+    // this.getListProdi()
+    this.getAksesRuang();
     this.listangkatan = la;
     this.getData(Event, 1);
     // console.log(this.listangkatan)
@@ -296,6 +297,34 @@ export default {
                 });
             }
           });
+    },
+    getAksesRuang: async function () {
+      let token = localStorage.getItem("token");
+      console.clear();
+      console.log('Token ' + token)
+      if (token != null) {
+        await axios
+          .request({
+            headers: {
+              Authorization: `Bearer ` + token,
+            },
+            method: "GET",
+            url: `me`,
+          })
+          .then((response) => {
+            console.log(response.data);
+            this.listprodi = response.data.info.prodi;
+          })
+          .catch(function (error) {
+            // handle error
+            console.log(error);
+          })
+          .finally(function () {
+            // always executed
+          });
+      }
+
+      return false;
     },
     hapusRekomendasi: async function (mhsnobp = null) {
       let token = localStorage.getItem("token");

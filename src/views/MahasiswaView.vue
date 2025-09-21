@@ -179,7 +179,8 @@ export default {
       la.push(myobj);
     }
     this.getConfig();
-    this.getListProdi();
+    //this.getListProdi();
+    this.getAksesRuang();
     this.listangkatan = la;
     this.getData(Event, 1);
     // console.log(this.listangkatan)
@@ -214,30 +215,58 @@ export default {
         });
       return false;
     },
-    async getListProdi() {
+    getAksesRuang: async function () {
       let token = localStorage.getItem("token");
-      await axios
-        .request({
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ` + token,
-          },
-          method: "GET",
-          url: `all/prodi`,
-        })
-        .then((response) => {
-          console.log(response.data);
-          this.listprodi = response.data.data;
-        })
-        .catch(function (error) {
-          // handle error
-          console.log(error);
-        })
-        .finally(function () {
-          // always executed
-        });
+      console.clear();
+      console.log('Token ' + token)
+      if (token != null) {
+        await axios
+          .request({
+            headers: {
+              Authorization: `Bearer ` + token,
+            },
+            method: "GET",
+            url: `me`,
+          })
+          .then((response) => {
+            console.log(response.data);
+            this.listprodi = response.data.info.prodi;
+          })
+          .catch(function (error) {
+            // handle error
+            console.log(error);
+          })
+          .finally(function () {
+            // always executed
+          });
+      }
+
       return false;
     },
+    // async getListProdi() {
+    //   let token = localStorage.getItem("token");
+    //   await axios
+    //     .request({
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: `Bearer ` + token,
+    //       },
+    //       method: "GET",
+    //       url: `all/prodi`,
+    //     })
+    //     .then((response) => {
+    //       console.log(response.data);
+    //       this.listprodi = response.data.data;
+    //     })
+    //     .catch(function (error) {
+    //       // handle error
+    //       console.log(error);
+    //     })
+    //     .finally(function () {
+    //       // always executed
+    //     });
+    //   return false;
+    // },
     getData: async function (event, page) {
       let token = localStorage.getItem("token");
       this.page = page;
