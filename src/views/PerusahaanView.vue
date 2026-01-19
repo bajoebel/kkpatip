@@ -46,7 +46,15 @@
           <td style="width:50px;">#</td>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="isLoading">
+        <tr>
+          <td colspan="5" class="text-center">
+            <b-spinner small type="grow"></b-spinner>
+            Loading...
+          </td>
+        </tr>
+      </tbody>
+      <tbody v-else>
         <tr v-for="(item, index) in items" :key="item.perusahaanid">
           <td>{{ index + 1 }}</td>
           <td>{{ item.perusahaannama }}</td>
@@ -162,7 +170,13 @@
             ></b-form-file>
             <span v-if="error.perusahaanlogo" class="text-error"> {{ error.perusahaanlogo }} </span>
           </b-form-group>
-          <div class="mt-2">
+          <div class="mt-2" v-if="isLoadingBtn">
+            <b-button squared variant="primary" disabled>
+              <b-spinner small type="grow"></b-spinner>
+              Loading...
+            </b-button>
+          </div>
+          <div class="mt-2" v-else>
             <b-button
               squared
               type="button"
@@ -197,6 +211,8 @@ export default {
   data: () => {
     return {
       isLogin: localStorage.getItem("isLogin"),
+      isLoading: false,
+      isLoadingBtn: false,
       show: true,
       limit: 10,
       keyword: "",
@@ -243,6 +259,7 @@ export default {
       this.$bvModal.show("bv-modal-example");
     },
     async getData(event,page) {
+      this.isLoading = true;
       let token = localStorage.getItem("token");
       await axios
         .request({
@@ -266,6 +283,7 @@ export default {
           this.rows=response.data.page.total
           this.perPage=response.data.page.perPage
           this.pageCount=response.data.page.pageCount
+          this.isLoading = false;
         })
         .catch(function (error) {
           // handle error
@@ -322,6 +340,7 @@ export default {
       return false;
     },
     simpan: async function () {
+      this.isLoadingBtn = true;
       let token = localStorage.getItem("token");
       // this.filedata = $('#perusahaanlogo').prop('files')[0];
       const form = document.querySelector("form");
@@ -344,6 +363,7 @@ export default {
         })
         .then((response) => {
           console.log(response.data);
+          this.isLoadingBtn = false;
           if (response.data.code == 201) {
             this.getData();
             this.perusahaannama = "";
@@ -378,6 +398,7 @@ export default {
         });
     },
     update: async function () {
+      this.isLoadingBtn = true;
       let token = localStorage.getItem("token");
       // this.filedata = $('#perusahaanlogo').prop('files')[0];
       const form = document.querySelector("form");
@@ -401,6 +422,7 @@ export default {
         })
         .then((response) => {
           console.log(response.data);
+          this.isLoadingBtn = false;  
           if (response.data.code == 200) {
             this.getData();
             this.perusahaanid = "";

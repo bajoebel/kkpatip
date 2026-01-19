@@ -79,10 +79,15 @@
                               placeholder="Kuota Pria/Wanita"
                             ></b-form-input>
                             <b-input-group-append>
+
+                              <b-button squared variant="primary" disabled v-if="isLoadingBtn">
+                                <b-spinner small type="grow"></b-spinner> Loading...
+                              </b-button>
                               <b-button
                                 squared
                                 variant="success"
                                 @click="simpan()"
+                                v-else
                               >
                                 <b-icon icon="save"></b-icon>
                               </b-button>
@@ -111,7 +116,15 @@
                               <td>Pria / Wanita</td>
                             </tr>
                           </thead>
-                          <tbody>
+                          <tbody v-if="isLoading">
+                            <tr>
+                              <td colspan="6" class="text-center">
+                                <b-spinner small type="grow"></b-spinner>
+                                Loading...
+                              </td>
+                            </tr>
+                          </tbody>
+                          <tbody v-else>
                             <tr
                               v-for="(item, index) in items"
                               :key="item.detailid"
@@ -201,11 +214,17 @@
                       ><br />
                     </div>
                   </fieldset>
+                  <div v-if="isLoadingBtn">
+                    <b-button squared variant="primary" disabled>
+                      <b-spinner small type="grow"></b-spinner> Loading...
+                    </b-button>
+                  </div>
                   <b-button
                     squared
                     block
                     variant="primary"
                     @click="simpanBalasan()"
+                    v-else
                     ><b-icon icon="save"></b-icon> Simpan Balasan</b-button
                   >
                 </b-col>
@@ -223,6 +242,14 @@
                         <td>Download</td>
                         <td>#</td>
                       </tr>
+                      <tbody v-if="isLoading">
+                        <tr>
+                          <td colspan="5" class="text-center">
+                            <b-spinner small type="grow"></b-spinner> Loading...
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
                       <tr
                         v-for="(item, index) in listdokumenbalasan"
                         :key="item.akdidx"
@@ -260,6 +287,7 @@
                           </b-button-group>
                         </td>
                       </tr>
+                      </tbody>
                     </table>
                   </fieldset>
                 </b-col>
@@ -300,10 +328,14 @@
                         drop-placeholder="Drop file here..."
                       ></b-form-file>
                       <b-input-group-append>
+                        <b-button squared variant="primary" v-if="isLoadingBtn" disabled>
+                          <b-spinner small type="grow"></b-spinner> Loading...
+                        </b-button>
                         <b-button
                           squared
                           variant="success"
                           @click="simpanDok()"
+                          v-else
                         >
                           <b-icon icon="save"></b-icon>
                         </b-button>
@@ -324,7 +356,15 @@
                   <td>Download</td>
                   <td>#</td>
                 </tr>
-                <tr v-for="(item, index) in dokumens" :key="item.akdidx">
+                <tbody v-if="isLoading">
+                  <tr>
+                    <td colspan="5" class="text-center">
+                      <b-spinner small type="grow"></b-spinner> Loading...
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody v-else>
+                  <tr v-for="(item, index) in dokumens" :key="item.akdidx">
                   <td>{{ index + 1 }}</td>
                   <td>{{ item.perusahaannama }}</td>
                   <td>{{ item.dokumennama }}</td>
@@ -357,6 +397,8 @@
                     </b-button-group>
                   </td>
                 </tr>
+                </tbody>
+                
               </table>
             </fieldset>
           </b-tab>
@@ -410,12 +452,15 @@
                         ></b-form-datepicker>
                       </b-form-group>
                     </fieldset>
-                    
+                    <b-button squared variant="primary" v-if="isLoadingBtn" disabled>
+                          <b-spinner small type="grow"></b-spinner> Loading...
+                        </b-button>
                     <b-button
                       squared
                       block
                       variant="primary"
                       @click="simpanJadwal()"
+                      v-else
                       ><b-icon icon="save"></b-icon> Simpan Jadwal</b-button
                     >
                   </b-col>
@@ -426,6 +471,7 @@
                         class="table table-bordered table-striped table-hover"
                         style="padding: 10px"
                       >
+                      
                         <tr>
                           <td>No</td>
                           <td>Nama Perusahaan</td>
@@ -433,6 +479,14 @@
                           <td>Selesai</td>
                           <td>#</td>
                         </tr>
+                        <tbody v-if="isLoading">
+                        <tr>
+                          <td colspan="5" class="text-center">
+                            <b-spinner small type="grow"></b-spinner> Loading...
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
                         <tr
                           v-for="(item, index) in listjadwal"
                           :key="item.akdidx"
@@ -458,6 +512,8 @@
                             </b-button-group>
                           </td>
                         </tr>
+                      </tbody>
+                        
                       </table>
                     </fieldset>
                   </b-col>
@@ -485,6 +541,8 @@ import axios from "axios";
 export default {
   data: () => {
     return {
+      isLoading: false,
+      isLoadingBtn: false,
       isLogin: localStorage.getItem("isLogin"),
       id: 0,
       kuota: null,
@@ -576,6 +634,7 @@ export default {
       return false;
     },
     async getListJadwal() {
+      this.isLoading = true;
       let token = localStorage.getItem("token");
       await axios
         .request({
@@ -588,7 +647,7 @@ export default {
         })
         .then((response) => {
           console.log(response.data);
-
+          this.isLoading = false;
           if (response.data.code == 200) {
             this.listjadwal = response.data.data;
           } else {
@@ -702,6 +761,7 @@ export default {
       return false;
     },
     async getListDokumenBalasan() {
+      this.isLoading = true;
       let token = localStorage.getItem("token");
       // alert("list dokumen")
       await axios
@@ -714,6 +774,7 @@ export default {
           url: `listdokumenbalasan/` + this.kuota.kuotaidx,
         })
         .then((response) => {
+          this.isLoading = false;
           console.log(response.data);
           if (response.data.code == 200) {
             this.listdokumenbalasan = response.data.data;
@@ -732,6 +793,7 @@ export default {
     },
 
     simpan: async function () {
+      this.isLoadingBtn = true;
       let token = localStorage.getItem("token");
       // this.filedata = $('#perusahaanlogo').prop('files')[0];
       const form = document.querySelector("form");
@@ -758,6 +820,7 @@ export default {
         })
         .then((response) => {
           console.log(response.data);
+          this.isLoadingBtn = false;
           if (response.data.code == 201 || response.data.code == 200) {
             this.getDetailPerusahaan();
             this.resetForm();
@@ -778,6 +841,7 @@ export default {
         })
         .catch(function (error) {
           // handle error
+          this.isLoadingBtn = false;
           console.log(error);
         })
         .finally(function () {
@@ -785,6 +849,7 @@ export default {
         });
     },
     simpanDok: async function () {
+      this.isLoadingBtn = true;
       let token = localStorage.getItem("token");
       // this.filedata = $('#perusahaanlogo').prop('files')[0];
       const form = document.querySelector("form");
@@ -810,6 +875,7 @@ export default {
         })
         .then((response) => {
           console.log(response.data);
+          this.isLoadingBtn = false;
           if (response.data.code == 201 || response.data.code == 200) {
             this.getDetailDokumen();
             this.resetFormDokumen();
@@ -837,13 +903,14 @@ export default {
         });
     },
     simpanBalasan: async function () {
+      this.isLoadingBtn = true;
       let token = localStorage.getItem("token");
       // this.filedata = $('#perusahaanlogo').prop('files')[0];
       const form = document.querySelector("form");
       this.formdata = new FormData(form);
       this.formdata.append("balasankuotaidx", this.kuota.kuotaidx);
       this.formdata.append("balasanperusahaanidx", this.balasanperusahaanidx);
-      this.formdata.append("balasanfiles", this.balasanfiles);
+      this.formdata.append("balasanfiles", this.baslasanfiles);
       this.formdata.append("pilihmahasiswa", this.pilihmahasiswa);
       console.log(this.formdata);
       var url = this.balasanidx
@@ -860,6 +927,7 @@ export default {
           data: this.formdata,
         })
         .then((response) => {
+          this.isLoadingBtn = false;
           console.log(response.data);
           if (response.data.code == 201) {
             this.getListDokumenBalasan();
@@ -891,6 +959,7 @@ export default {
         });
     },
     simpanJadwal: async function () {
+      this.isLoadingBtn = true;
       let token = localStorage.getItem("token");
       // this.filedata = $('#perusahaanlogo').prop('files')[0];
       const form = document.querySelector("form");
@@ -912,6 +981,7 @@ export default {
           data: this.formdata,
         })
         .then((response) => {
+          this.isLoadingBtn = false;
           console.log(response.data);
           if (response.data.code == 201 || response.data.code == 200) {
             this.jadwalperusahaanid = null;
@@ -943,6 +1013,7 @@ export default {
         });
     },
     async getDetailPerusahaan() {
+      this.isLoading = true;
       let token = localStorage.getItem("token");
       await axios
         .request({
@@ -957,6 +1028,7 @@ export default {
           // // console.clear();
           console.log(response.data.data);
           this.items = response.data.data;
+          this.isLoading = false;
           // alert(this.kuotaprodinama)
         })
         .catch(function (error) {
@@ -969,6 +1041,7 @@ export default {
       return false;
     },
     async getDetailDokumen() {
+      this.isLoading = true;
       let token = localStorage.getItem("token");
       await axios
         .request({
@@ -983,6 +1056,7 @@ export default {
           // // console.clear();
           console.log(response.data.data);
           this.dokumens = response.data.data;
+          this.isLoading = false;
           // alert(this.kuotaprodinama)
         })
         .catch(function (error) {
@@ -1111,6 +1185,7 @@ export default {
       return false;
     },
     update: async function () {
+      this.isLoadingBtn = true;
       let token = localStorage.getItem("token");
       // this.filedata = $('#perusahaanlogo').prop('files')[0];
       const form = document.querySelector("form");
@@ -1133,6 +1208,7 @@ export default {
         })
         .then((response) => {
           console.log(response.data);
+          this.isLoadingBtn = false;
           if (response.data.code == 200) {
             this.getData();
             this.resetForm();

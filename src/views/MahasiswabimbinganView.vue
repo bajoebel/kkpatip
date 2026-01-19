@@ -76,7 +76,14 @@
           <td>Belum Baca</td>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="isLoading">
+        <tr>
+          <td colspan="13" class="text-center">
+            <b-spinner small type="grow"></b-spinner> Loading...
+          </td>
+        </tr>
+      </tbody>
+      <tbody v-else>
         <tr v-for="(item, index) in items" :key="item.perusahaanid">
           <td>{{ index + 1 }}</td>
           <td>{{ item.registernobp + " - " + item.registermhsnama }}</td>
@@ -136,10 +143,12 @@
 </template>
 <script>
 import axios from "axios";
+// import { is } from "core-js/core/object";
 export default {
   data: () => {
     return {
       isLogin: localStorage.getItem("isLogin"),
+      isLoading: false,
       aku: "Aku",
       limit: 10,
       keyword: "",
@@ -247,6 +256,7 @@ export default {
       return false;
     },
     getData: async function (event, page) {
+      this.isLoading = true;
       let token = localStorage.getItem("token");
       this.page = page;
       await axios
@@ -275,6 +285,7 @@ export default {
           this.rows = response.data.page.total;
           this.perPage = response.data.page.perPage;
           this.pageCount = response.data.page.pageCount;
+          this.isLoading = false;
         })
         .catch(function (error) {
           // handle error

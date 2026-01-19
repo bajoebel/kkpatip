@@ -1,0 +1,23 @@
+const path = require('path')
+
+module.exports = {
+  configureWebpack: {
+    output: {
+      filename: 'js/kkp.custom.js', // Customize main JS filename
+      chunkFilename: 'js/kkp.custom.chunk.js' // Customize chunk JS filename
+    }
+  },
+  chainWebpack: config => {
+    if (config.plugins.has('extract-css')) {
+      const extractCSSPlugin = config.plugin('extract-css');
+      extractCSSPlugin && extractCSSPlugin.tap(() => [{
+        filename: 'css/kkp.custom.css', // Customize main CSS filename
+        chunkFilename: 'css/kkp.custom.chunk.css' // Customize chunk CSS filename
+      }]);
+    }
+  }
+}
+// const { defineConfig } = require('@vue/cli-service')
+// module.exports = defineConfig({
+//   transpileDependencies: true
+// })

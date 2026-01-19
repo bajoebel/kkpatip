@@ -64,10 +64,17 @@
           <td>SKS Diambil</td>
           <td>SKS Nilai D/E</td>
           <td>Di Rekomendasi Sistem</td>
-          <td style="width: 50px">#</td>
+          <td style="width: 150px">#</td>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="isLoading">
+        <tr>
+          <td colspan="10" class="text-center">
+            <b-spinner small type="grow"></b-spinner> Loading...
+          </td>
+        </tr>
+      </tbody>
+      <tbody v-else>
         <tr v-for="(item, index) in items" :key="item.perusahaanid">
           <td>{{ index + 1 }}</td>
           <td>{{ item.mhsnobp + " - " + item.mhsnama }}</td>
@@ -105,6 +112,12 @@
                 v-else
                 ><b-icon icon="person-x"></b-icon
               ></b-button>
+              <b-button
+                squared
+                variant="warning"
+                @click="registerPasien(item.mhsnobp)"
+                ><b-icon icon="person-plus"></b-icon
+              > Register</b-button>
             </b-button-group>
           </td>
         </tr>
@@ -123,6 +136,97 @@
         </div>
       </b-col>
     </b-row>
+
+    <b-modal id="bv-modal-example" hide-footer>
+      <template #modal-title> {{ modaltitle }}</template>
+      <div class="d-block">
+        <b-form id="form">
+          <b-alert show variant="success">{{ this.registerkuotadesc }}</b-alert>
+          <b-form-group
+            id="input-group-1"
+            label="Nobp"
+            label-for="registernobp"
+            class="mt-2"
+          >
+            <b-form-input
+              id="registernobp"
+              placeholder="NoBP"
+              v-model="registernobp"
+              required
+            ></b-form-input>
+            <span v-if="error.registernobp" class="text-error"> {{ error.registernobp }} </span>
+          </b-form-group>
+
+          <b-form-group
+            id="input-group-2"
+            label="Nama :"
+            label-for="registermhsnama"
+            class="mt-2"
+          >
+            <b-form-input
+              id="registermhsnama"
+              placeholder="Masukkan Nama "
+              v-model="registermhsnama"
+              required
+            ></b-form-input>
+            <span v-if="error.registermhsnama" class="text-error"> {{ error.registermhsnama }} </span>
+          </b-form-group>
+          
+          <!-- <b-form-group
+            id="input-group-1"
+            label="Periode Kuota"
+            label-for="registerkuotaid"
+            class="mt-2"
+          >
+          <b-form-input
+              id="registerkuotadesc"
+              placeholder="Kuota ID"
+              v-model="registerkuotadesc"
+              required
+            ></b-form-input>
+            
+            <span v-if="error.registerkuotaid" class="text-error"> {{ error.registerkuotaid }} </span>
+          </b-form-group> -->
+          <b-form-group
+            id="input-group-2"
+            label="Perusahaan:"
+            label-for="registerperusahaanid"
+            class="mt-2"
+          >
+            
+            <b-form-select
+                          v-model="registerperusahaanid"
+                          :options="perusahaan"
+                          value-field="perusahaanid"
+                          text-field="perusahaannama"
+                          @change="getPerusahaanById()"
+                        ></b-form-select>
+            <span v-if="error.registerperusahaanid" class="text-error"> {{ error.registerperusahaanid }} </span>
+          </b-form-group>
+          
+          <div class="mt-2" v-if="isLoadingBtn==true">
+            <b-button squared variant="primary" disabled>
+              <b-spinner small type="grow"></b-spinner>
+              Loading...
+            </b-button>
+          </div>
+          <div class="mt-2" v-else>
+            <b-button
+              squared
+              type="button"
+              @click="simpan"
+              variant="primary"
+              v-if="isnew"
+              >Simpan</b-button
+            >
+            <b-button squared type="button" @click="update" variant="primary" v-else
+              >Update</b-button
+            >
+            <b-button squared type="reset" variant="danger">Reset</b-button>
+          </div>
+        </b-form>
+      </div>
+    </b-modal>
   </div>
 
   <div v-else>
@@ -136,11 +240,24 @@
 </template>
 <script>
 import axios from "axios";
+// import { register } from "register-service-worker";
 export default {
   data: () => {
     return {
       isLogin: localStorage.getItem("isLogin"),
       aku: "Aku",
+      registernobp: "",
+      registermhsnama: "",
+      registerkuotaid: "",
+      registerkuotadesc: "",
+      registerperusahaanid: "",
+      registernamaperusahaan: "",
+      mhsprodiid: "",
+      isnew: true,
+      isLoadingBtn: false,
+      // isLoadingBtn: false,
+      modaltitle: "Register Magang Mahasiswa",
+      isLoading: false,
       limit: 10,
       keyword: "",
       prodiid: "11",
@@ -150,6 +267,8 @@ export default {
       maximalsksgagal: 0,
       page: 1,
       items: [],
+      kuota: [],
+      perusahaan: [],
       listangkatan: [],
       listprodi: [],
       urut: 0,
@@ -157,6 +276,7 @@ export default {
       rows: 0,
       perPage: 0,
       pageCount: 0,
+      error: {},
     };
   },
   mounted() {
@@ -215,6 +335,75 @@ export default {
         });
       return false;
     },
+    simpan: async function () {
+      this.isLoadingBtn = true;
+      let token = localStorage.getItem("token");
+      // this.filedata = $('#perusahaanlogo').prop('files')[0];
+      const form = document.querySelector("form");
+      this.formdata = new FormData(form);
+      this.formdata.append("registerkuotaid", this.registerkuotaid);
+      this.formdata.append("registerperusahaanid", this.registerperusahaanid);
+      this.formdata.append("registernamaperusahaan", this.registernamaperusahaan);
+      this.formdata.append("registernobp", this.registernobp);
+      this.formdata.append("registermhsnama", this.registermhsnama);
+      this.formdata.append("registerstatus", 1);
+      console.log(this.formdata);
+      // alert(this.registernobp)
+      await axios
+        .request({
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ` + token,
+          },
+          method: "POST",
+          url: `register`,
+          data: this.formdata
+        })
+        .then((response) => {
+          this.isLoadingBtn = false;
+          console.clear();
+          console.log(response.data);
+          
+          if (response.data.code == 201) {
+            // this.getData();
+            this.isLoadingBtn = false;
+            this.registerkuotaid = "";
+            this.registerperusahaanid = "";
+            this.registernamaperusahaan = "";
+            this.registernobp = "";
+            this.registermhsnama = '';
+            this.$bvModal.hide("bv-modal-example");
+            this.$swal.fire({
+              title: "Sukses",
+              text: response.data.message,
+              icon: "success",
+              confirmButtonText: "Ok",
+            });
+          } else {
+            // alert("error")
+            this.isLoadingBtn = false;
+            this.error = response.data.error;
+            this.$swal.fire({
+              title: "Gagal",
+              text: response.data.message,
+              icon: "error",
+              confirmButtonText: "Ok",
+            });
+          }
+        })
+        .catch(function (error) {
+          // handle error
+          //this.isLoadingBtn = false;
+          // alert("error");
+          console.log(error);
+        })
+        .finally(function () {
+          // this.isLoadingBtn = false;
+          // always executed
+          // alert("finally");
+          
+        });
+    },
     getAksesRuang: async function () {
       let token = localStorage.getItem("token");
       console.clear();
@@ -243,31 +432,117 @@ export default {
 
       return false;
     },
-    // async getListProdi() {
-    //   let token = localStorage.getItem("token");
-    //   await axios
-    //     .request({
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         Authorization: `Bearer ` + token,
-    //       },
-    //       method: "GET",
-    //       url: `all/prodi`,
-    //     })
-    //     .then((response) => {
-    //       console.log(response.data);
-    //       this.listprodi = response.data.data;
-    //     })
-    //     .catch(function (error) {
-    //       // handle error
-    //       console.log(error);
-    //     })
-    //     .finally(function () {
-    //       // always executed
-    //     });
-    //   return false;
-    // },
+    getPerusahaanById: async function () {
+      let token = localStorage.getItem("token");
+      console.clear();
+      console.log('Token ' + token)
+      if (token != null) {
+        await axios
+          .request({
+            headers: {
+              Authorization: `Bearer ` + token,
+            },
+            method: "GET",
+            url: `perusahaan/`+this.registerperusahaanid ,
+          })
+          .then((response) => {
+            console.log(response.data.data);
+            // alert(response.data.data.perusahaannama)
+            this.registernamaperusahaan = response.data.data.perusahaannama;
+          })
+          .catch(function (error) {
+            // handle error
+            console.log(error);
+          })
+          .finally(function () {
+            // always executed
+          });
+      }
+
+      return false;
+    },
+    getPeriodeKuota: async function () {
+      let token = localStorage.getItem("token");
+      console.clear();
+      console.log('Token ' + token)
+      if (token != null) {
+        await axios
+          .request({
+            headers: {
+              Authorization: `Bearer ` + token,
+            },
+            method: "GET",
+            url: `kuotaaktif/`+this.mhsprodiid ,
+          })
+          .then((response) => {
+            console.log(response.data);
+            this.registerkuotaid = response.data.data.kuotaidx;
+            this.perusahaan = response.data.data.perusahaan;
+            this.registerkuotadesc = `Kuota `+response.data.data.jeniskuota+` Untuk Prodi `+response.data.data.kuotaprodinama+` - Periode `+response.data.data.kuotasemnama+` (`+response.data.data.kuotamulairegistrasi+` - ` +response.data.data.kuotaselesairegistrasi+`)`;
+            // this.kuota = response.data.data;
+          })
+          .catch((error) => {
+            this.registerkuotaid = '';
+            this.perusahaan = '';
+            this.registerkuotadesc = '';
+            console.log(error);
+          })
+          // .catch(function (error) {
+          //   // handle error
+          //   alert("error");
+          //   this.registerkuotaid = '';
+          //   this.perusahaan = '';
+          //   this.registerkuotadesc =''
+          //   console.log(error);
+          // })
+          .finally(function () {
+            // always executed
+          });
+      }
+
+      return false;
+    },
+    registerPasien: async function(nobp) {
+      let token = localStorage.getItem("token");
+      await axios
+        .request({
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ` + token,
+          },
+          method: "GET",
+          url: `mahasiswa/edit/`+nobp,
+        })
+        .then((response) => {
+          if (response.data.code == 200) {
+            this.isnew = true;
+            this.modaltitle = "Register Magang Mahasiswa";
+            this.registernobp = response.data.data.mhsnobp;
+            this.registermhsnama = response.data.data.mhsnama;
+            this.mhsprodiid = response.data.data.mhsprodiid;
+            this.$bvModal.show("bv-modal-example");
+            this.getPeriodeKuota();
+          } else {
+            this.$swal.fire({
+              title: "Error!",
+              text: response.data.message,
+              icon: "warning",
+              confirmButtonText: "Ok",
+            });
+          }
+        })
+        
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        })
+        .finally(function () {
+          // always executed
+        });
+      return false;
+    },
     getData: async function (event, page) {
+      this.isLoading = true;
       let token = localStorage.getItem("token");
       this.page = page;
       await axios
@@ -296,6 +571,7 @@ export default {
           this.rows = response.data.page.total;
           this.perPage = response.data.page.perPage;
           this.pageCount = response.data.page.pageCount;
+          this.isLoading = false;
         })
         .catch(function (error) {
           // handle error

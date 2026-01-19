@@ -63,7 +63,14 @@
             <td>Upload Dokumen</td>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="isLoading">
+        <tr>
+          <td colspan="8" class="text-center">
+            <b-spinner small type="grow"></b-spinner> Loading...
+          </td>
+        </tr>
+      </tbody>
+      <tbody v-else>
         <tr v-for="(item, index) in items" :key="item.kuotaidx">
           <td>{{ index + 1 }}</td>
           <td>{{ item.jeniskuota}}</td>
@@ -158,8 +165,12 @@
             <b-form-datepicker id="kuotaselesaiuploaddokumen" size="sm" v-model="kuotaselesaiuploaddokumen" locale="id" class="mb-2"></b-form-datepicker>
             <span v-if="error.kuotaselesaiuploaddokumen" class="text-error"> {{ error.kuotaselesaiuploaddokumen }} </span>
           </b-form-group>
-          
-          <div class="mt-2">
+          <div class="mt-2" v-if="isLoadingBtn">
+            <b-button squared variant="primary" disabled>
+              <b-spinner small type="grow"></b-spinner> Loading...
+            </b-button>
+          </div>
+          <div class="mt-2" v-else>
             <b-button
               squared
               type="button"
@@ -195,6 +206,8 @@ export default {
   data: () => {
     return {
       isLogin: localStorage.getItem("isLogin"),
+      isLoading: false,
+      isLoadingBtn: false,
       aku: "Aku",
       limit: 10,
       keyword: "",
@@ -392,6 +405,7 @@ export default {
       return false;
     },
     getData: async function (event, page) {
+      this.isLoading = true;
       let token = localStorage.getItem("token");
       await axios
         .request({
@@ -419,6 +433,7 @@ export default {
           this.rows = response.data.page.total;
           this.perPage = response.data.page.perPage;
           this.pageCount = response.data.page.pageCount;
+          this.isLoading = false; 
         })
         .catch(function (error) {
           // handle error
@@ -478,6 +493,7 @@ export default {
       return false;
     },
     simpan: async function () {
+      this.isLoadingBtn = true;
       let token = localStorage.getItem("token");
       // this.filedata = $('#perusahaanlogo').prop('files')[0];
       const form = document.querySelector("form");
@@ -502,6 +518,7 @@ export default {
           data: this.formdata,
         })
         .then((response) => {
+          this.isLoadingBtn = false;
           console.log(response.data);
           if (response.data.code == 201) {
             this.getData(Event,1);
@@ -532,6 +549,7 @@ export default {
         });
     },
     update: async function () {
+      this.isLoadingBtn = true;
       let token = localStorage.getItem("token");
       // this.filedata = $('#perusahaanlogo').prop('files')[0];
       const form = document.querySelector("form");
@@ -557,6 +575,7 @@ export default {
         })
         .then((response) => {
           console.log(response.data);
+          this.isLoadingBtn = false;
           if (response.data.code == 200) {
             this.getData();
             this.resetForm()

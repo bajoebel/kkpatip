@@ -131,17 +131,19 @@
         <b-tabs content-class="mt-3" lazy>
           <b-tab title="Dosen Pembimbing">
             <div v-if="register.pembimbing == null">
-              <h3 v-if="isLevel=='1'">Masukkan dosen pembimbing</h3>
-              <b-form id="form1" v-if="isLevel=='1'">
-                <b-input-group>
-                  <b-form-select
+              <h3>Masukkan dosen pembimbing</h3>
+              <b-form id="form1">
+                <b-row>
+                  <b-col cols="11">
+                    <vSelect
                     v-model="dosenid"
                     :options="listdosen"
-                    value-field="dosenid"
-                    text-field="dosennama"
-                    class="form-control"
-                  ></b-form-select>
-                  <b-input-group-append>
+                    label="dosennama"
+                    :reduce="dosen => dosen.dosenid"
+                    class="w-100"
+                  ></vSelect>
+                  </b-col>
+                  <b-col>
                     <b-button
                       squared
                       variant="success"
@@ -150,8 +152,30 @@
                     >
                       <b-icon icon="save"></b-icon>
                     </b-button>
+                  </b-col>
+                </b-row>
+                
+                <!-- <b-input-group>
+                  <b-form-select
+                    v-model="dosenid"
+                    :options="listdosen"
+                    value-field="dosenid"
+                    text-field="dosennama"
+                    class="form-control"
+                  ></b-form-select>
+                  <vSelect
+                    v-model="dosenid"
+                    :options="listdosen"
+                    label="dosennama"
+                    :reduce="dosen => dosen.dosenid"
+                    class="w-100"
+                  >
+                  </vSelect>
+
+                  <b-input-group-append>
+                    
                   </b-input-group-append>
-                </b-input-group>
+                </b-input-group> -->
                 <!-- <b-input-group>
                   <b-form-select v-model="dosenid" :options="listdosen" value-field="dosenid" text-field="dosennama" class="mt-3 form-control"></b-form-select>
                   <b-input-group-btn>
@@ -159,9 +183,6 @@
                   </b-input-group-btn>
                 </b-input-group> -->
               </b-form>
-              <div v-else>
-                <b-alert variant="success" show><p>Dosen pembiming belum di setting oleh admin akademik</p></b-alert> 
-              </div>  
             </div>
             <div v-else>
               <b-row>
@@ -474,9 +495,14 @@
 </template>
 <script>
 import axios from "axios";
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css'
 // import { is } from "core-js/core/object";
 export default {
   name: "RegisterdetailMahasiswa",
+  components: {
+    vSelect
+  },
   data() {
     return {
       isnew: true,

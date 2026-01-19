@@ -744,7 +744,8 @@ export default {
             "/" +
             this.minggu +
             "/" +
-            this.register.registerid,
+            this.register.registerid+
+            "/"+this.register.registerperusahaanid,
         })
         .then((response) => {
           // console.clear();

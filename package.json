@@ -16,6 +16,7 @@
     "select2-vue-component": "^6.1.1",
     "vue": "^2.7.16",
     "vue-router": "^3.5.1",
+    "vue-select": "^3.20.4",
     "vue-sweetalert2": "^5.0.7",
     "vuex": "^3.6.2"
   },

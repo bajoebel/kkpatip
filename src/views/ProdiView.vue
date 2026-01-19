@@ -41,7 +41,14 @@
                 <td>Akreditasi</td>
             </tr>
         </thead>
-        <tbody>
+        <tbody v-if="isLoading">
+          <tr>
+            <td colspan="4" class="text-center">
+              <b-spinner small type="grow"></b-spinner> Loading...
+            </td>
+          </tr>
+        </tbody>
+        <tbody v-else>
             <tr v-for="(item, index) in items" :key="item.prodiid">
                 <td>{{index+1}}</td>
                 <td>{{item.prodiid+' - '+item.prodinama}}</td>
@@ -83,6 +90,7 @@ export default {
   data: ()=>{
     return {
       isLogin: localStorage.getItem('isLogin'),
+      isLoading: false,
       aku: 'Aku',
       limit: 10,
       keyword: '',
@@ -106,6 +114,7 @@ export default {
         this.urut = this.urut+1;
     },
     getData: async function(event, page) {
+      this.isLoading = true;
       let token = localStorage.getItem("token");
       await axios
       .request({
@@ -123,6 +132,7 @@ export default {
         this.rows=response.data.page.total
         this.perPage=response.data.page.perPage
         this.pageCount=response.data.page.pageCount
+        this.isLoading = false;
       })
       .catch(function (error) {
         // handle error

@@ -264,8 +264,8 @@ export default {
             this.wadir = response.data.hakakses.wadir;
             this.selected1 = response.data.hakakses.akademikrole;
             this.selected2 = response.data.hakakses.prodirole;
-            this.selected3 = response.data.hakakses.mahasiswarole;
-            this.selected4 = response.data.hakakses.dosenrole;
+            this.selected3 = response.data.hakakses.dosenrole;
+            this.selected4 = response.data.hakakses.mahasiswarole;
             this.selected5 = response.data.hakakses.wadirrole;
           } else {
             this.isnew = true;

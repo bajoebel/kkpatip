@@ -300,11 +300,15 @@
                       max-rows="6"
                     ></b-form-textarea>
                     <div class="mt-2">
+                      <b-button squared variant="primary" disabled v-if="isLoadingbtn">
+                                <b-spinner small type="grow"></b-spinner> Loading...
+                              </b-button>
                       <b-button
                         squared
                         type="button"
                         @click="simpanTanggapan"
                         variant="primary"
+                        v-else
                         ><b-icon icon="chat"></b-icon> Simpan
                         Tanggapan</b-button
                       >
@@ -351,11 +355,15 @@
                       ></b-form-file>
                     </b-form-group>
                     <div class="mt-2">
+                      <b-button squared variant="primary" disabled v-if="isLoadingbtn">
+                                <b-spinner small type="grow"></b-spinner> Loading...
+                              </b-button>
                       <b-button
                         squared
                         type="button"
                         @click="simpanLaporanAkhir"
                         variant="primary"
+                        v-else
                         ><b-icon icon="upload"></b-icon> Simpan</b-button
                       >
                     </div>
@@ -493,11 +501,15 @@
                       max-rows="6"
                     ></b-form-textarea>
                     <div class="mt-2">
+                      <b-button squared variant="primary" disabled v-if="isLoadingbtn">
+                                <b-spinner small type="grow"></b-spinner> Loading...
+                              </b-button>
                       <b-button
                         squared
                         type="button"
                         @click="simpanTanggapanAkhir"
                         variant="primary"
+                        v-else
                         ><b-icon icon="chat"></b-icon> Simpan
                         Tanggapan</b-button
                       >
@@ -543,11 +555,15 @@
             ></b-form-file>
           </b-form-group>
           <div class="mt-2">
+            <b-button squared variant="primary" disabled v-if="isLoadingbtn">
+                                <b-spinner small type="grow"></b-spinner> Loading...
+                              </b-button>
             <b-button
               squared
               type="button"
               @click="simpanLaporan"
               variant="primary"
+              v-else
               ><b-icon icon="upload"></b-icon> Simpan</b-button
             >
           </div>
@@ -619,6 +635,8 @@ export default {
     return {
       isnew: true,
       show: true,
+      isLoading: false,
+      isLoadingbtn: false,
       mhsnobp: "",
       mhsnama: "",
       mhsnik: "",
@@ -945,7 +963,9 @@ export default {
             "/" +
             this.minggu +
             "/" +
-            this.register.registerid,
+            this.register.registerid+
+            "/" +
+            this.register.registerperusahaanid,
         })
         .then((response) => {
           // console.clear();
@@ -1237,6 +1257,7 @@ export default {
       return false;
     },
     simpanLaporan: async function () {
+      this.isLoadingbtn = true;
       let token = localStorage.getItem("token");
       
       const form = document.querySelector("form");
@@ -1267,6 +1288,7 @@ export default {
           data: this.formdata,
         })
         .then((response) => {
+          this.isLoadingbtn = false;
           console.log(response.data);
           if (response.data.code == 200 || response.data.code == 201) {
             this.getTanggal();
@@ -1297,6 +1319,7 @@ export default {
         });
     },
     simpanLaporanAkhir: async function () {
+      this.isLoadingbtn = true;
       let token = localStorage.getItem("token");
       const form = document.querySelector("form");
       this.formdata = new FormData(form);
@@ -1319,6 +1342,7 @@ export default {
         })
         .then((response) => {
           console.log(response.data);
+          this.isLoadingbtn = false;
           if (response.data.code == 200 || response.data.code == 201) {
             this.getLaporanAkhir();
             this.resetForm();
@@ -1348,6 +1372,7 @@ export default {
         });
     },
     simpanTanggapan: async function () {
+      this.isLoadingbtn = true;
       let token = localStorage.getItem("token");
       const form = document.querySelector("form");
       this.formdata = new FormData(form);
@@ -1365,6 +1390,7 @@ export default {
           data: this.formdata,
         })
         .then((response) => {
+          this.isLoadingbtn = false;
           console.log(response.data);
           if (response.data.code == 200 || response.data.code == 201) {
             this.getTanggal();
@@ -1396,6 +1422,7 @@ export default {
         });
     },
     simpanTanggapanAkhir: async function () {
+      this.isLoadingbtn = true;
       let token = localStorage.getItem("token");
       const form = document.querySelector("form");
       this.formdata = new FormData(form);
@@ -1413,6 +1440,7 @@ export default {
           data: this.formdata,
         })
         .then((response) => {
+          this.isLoadingbtn = false;
           console.log(response.data);
           if (response.data.code == 200 || response.data.code == 201) {
             this.getLaporanAkhir();

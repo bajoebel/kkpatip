@@ -60,7 +60,7 @@
           </tr>
           <tr v-if="register">
             <td>Pembimbing</td>
-            <td>: {{ register.pembimbing.pembimbingdosennama +'('+register.pembimbing.pembimbingdosenid+')' }}</td>
+            <td>: {{ register.pembimbing !=null ? register.pembimbing.pembimbingdosennama +'('+register.pembimbing.pembimbingdosenid+')':'' }}</td>
           </tr>
         </table>
       </fieldset>
@@ -639,7 +639,7 @@ export default {
     };
   },
   mounted() {
-    console.clear();
+    // console.clear();
     console.log("Profile is inisialize...");
     this.id = this.$route.params.id;
     this.profile();
@@ -657,6 +657,7 @@ export default {
           url: `register/` + this.id,
         })
         .then((response) => {
+          console.log("Response Data : ") 
           console.log(response.data);
           this.mhsnobp = response.data.data.mhsnobp;
           this.mhsnama = response.data.data.mhsnama;
@@ -700,10 +701,11 @@ export default {
           url: `laporanakhir/` + this.register.registerid,
         })
         .then((response) => {
-          console.clear();
+          // console.clear();
           console.log(response.data.code);
-          console.log(response.data.data);
+          
           if (response.data.code == 200) {
+            console.log(response.data.data);
             this.listlaporanakhir = response.data.data;
             this.laporanakhiridx = response.data.data.laporan_idx;
             this.listtanggapanakhir = response.data.data.tanggapan;
@@ -834,7 +836,8 @@ export default {
             "/" +
             this.minggu +
             "/" +
-            this.register.registerid,
+            this.register.registerid+
+            "/" +this.register.registerperusahaanid,
         })
         .then((response) => {
           // console.clear();
@@ -1184,7 +1187,7 @@ export default {
               registernobp: this.mhsnobp,
               registermhsnama: this.mhsnama,
             };
-            console.clear();
+            // console.clear();
             console.log(this.formdata);
             axios
               .request({
@@ -1245,7 +1248,7 @@ export default {
               detail_idx: idx,
               status: 1,
             };
-            console.clear();
+            // console.clear();
             console.log(this.formdata);
             axios
               .request({
@@ -1305,7 +1308,7 @@ export default {
               detail_idx: idx,
               status: 0,
             };
-            console.clear();
+            // console.clear();
             console.log(this.formdata);
             axios
               .request({
