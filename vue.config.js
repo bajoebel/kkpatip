@@ -1,7 +1,22 @@
 const path = require('path')
 
 module.exports = {
-  
+  filenameHashing: false,
+  configureWebpack: {
+    optimization: {
+      splitChunks: false
+    },
+    output: {
+      filename: 'js/app.js',
+      chunkFilename: 'js/[name].js'
+    }
+  },
+  css: {
+    extract: {
+      filename: 'css/app.css',
+      chunkFilename: 'css/[name].css'
+    }
+  },
   chainWebpack: config => {
     config.resolve.alias.set(
       'vue$',

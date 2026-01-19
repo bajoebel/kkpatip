@@ -534,7 +534,7 @@ export default {
       dokumenid: "",
       dokumentipe: "",
       dokumenaktif: null,
-      listdosen: null,
+      listdosen: [],
       dosenid: null,
       dosennama: null,
       files: null,
@@ -631,7 +631,7 @@ export default {
           url: `listdosen/` + this.prodiid,
         })
         .then((response) => {
-          console.clear();
+          // console.clear();
           console.log(response.data.data);
           this.listdosen = response.data.data;
         })

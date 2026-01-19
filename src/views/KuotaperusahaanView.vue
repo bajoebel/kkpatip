@@ -50,12 +50,20 @@
                       <b-row>
                         <b-col cols="5">
                           <label for="">Perusahaan</label>
-                          <b-form-select
+                          <!-- <b-form-select
                             v-model="detailperusahaanid"
                             :options="listperusahaan"
                             value-field="perusahaanid"
                             text-field="perusahaannama"
-                          ></b-form-select>
+                          ></b-form-select>  -->
+                          <vSelect
+                            v-model="detailperusahaanid"
+                            :options="listperusahaan"
+                            placeholder="Ketik untuk mencari..."
+                            label="perusahaannama"
+                            :reduce="p => p.perusahaanid"
+                            class="w-100"
+                          ></vSelect>
                         </b-col>
                         <b-col cols="2">
                           <label for="">Kuota Pria</label>
@@ -172,13 +180,22 @@
                       label-for="Prodi"
                       class="mt-2"
                     >
-                      <b-form-select
+                      <!-- <b-form-select
                         v-model="balasanperusahaanidx"
                         :options="items"
                         value-field="perusahaanid"
                         text-field="perusahaannama"
                         @change="getListMahasiswa"
-                      ></b-form-select>
+                      ></b-form-select> -->
+                      <vSelect
+                            v-model="balasanperusahaanidx"
+                            :options="items"
+                            placeholder="Ketik untuk mencari..."
+                            label="perusahaannama"
+                            :reduce="p => p.perusahaanid"
+                            @change="getListMahasiswa"
+                            class="w-100"
+                          ></vSelect>
                     </b-form-group>
                     <b-form-group
                       id="input-group-1"
@@ -301,12 +318,16 @@
                 <b-row>
                   <b-col cols="4">
                     <label for="">Perusahaan</label>
-                    <b-form-select
+                    
+                    <vSelect
                       v-model="akdperusahaanid"
                       :options="items"
-                      value-field="perusahaanid"
-                      text-field="perusahaannama"
-                    ></b-form-select>
+                      placeholder="Ketik untuk mencari..."
+                      label="perusahaannama"
+                      :reduce="p => p.perusahaanid"
+                      class="w-100"
+                    ></vSelect>
+
                   </b-col>
                   <b-col cols="4">
                     <label for="">Dokumen</label>
@@ -416,12 +437,21 @@
                         label-for="Prodi"
                         class="mt-2"
                       >
-                        <b-form-select
+                      
+                        <!-- <b-form-select
                           v-model="jadwalperusahaanid"
                           :options="items"
                           value-field="perusahaanid"
                           text-field="perusahaannama"
-                        ></b-form-select>
+                        ></b-form-select> -->
+                        <vSelect
+                            v-model="jadwalperusahaanid"
+                            :options="items"
+                            placeholder="Ketik untuk mencari..."
+                            label="perusahaannama"
+                            :reduce="p => p.perusahaanid"
+                            class="w-100"
+                          ></vSelect>
                       </b-form-group>
                       <b-form-group
                         id="input-group-1"
@@ -538,15 +568,20 @@
 
 <script>
 import axios from "axios";
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css'
 export default {
+  components: {
+    vSelect
+  },
   data: () => {
     return {
       isLoading: false,
       isLoadingBtn: false,
       isLogin: localStorage.getItem("isLogin"),
       id: 0,
-      kuota: null,
-      listperusahaan: null,
+      kuota: [],
+      listperusahaan: [],
       detailid: "",
       detailperusahaanid: "",
       detailkuotapria: "",
@@ -558,7 +593,7 @@ export default {
       akdperusahaanid: "",
       dokumenakademik: "",
       akddokumenfiles: null,
-      items: null,
+      items: [],
       dokumens: null,
       balasan: null,
       balasanidx: "",
