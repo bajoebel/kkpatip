@@ -19,16 +19,13 @@
             </b-input-group-text>
           </b-input-group-prepend>
 
-          <select
-            class="custom-select form-control-lg"
+          <v-select
             v-model="form.level"
-            size="lg"
-            style="border-radius: 0px"
-          >
-            <option value="admin">Admin prodi / Admin akademik</option>
-            <option value="mahasiswa">Mahasiswa</option>
-            <option value="dosen">Dosen</option>
-          </select>
+            :options="levelOptions"
+            placeholder="Pilih Level Login"
+            :clearable="false"
+            style="flex: 1;"
+          ></v-select>
         </b-input-group>
         <b-input-group class="mt10">
           <b-input-group-prepend>
@@ -65,6 +62,30 @@
             style="border-radius: 0px"
           ></b-form-input>
         </b-input-group>
+
+        <!-- Captcha Section -->
+        <b-input-group class="mt-3">
+          <b-input-group-prepend>
+            <b-input-group-text style="font-weight: bold; font-size: 14px; background: #5947c2; color: white;">
+              {{ captcha.num1 }} + {{ captcha.num2 }} = ?
+            </b-input-group-text>
+          </b-input-group-prepend>
+          <b-form-input
+            id="input-captcha"
+            v-model="form.captchaAnswer"
+            type="number"
+            placeholder="Hasil"
+            size="lg"
+            required
+            style="border-radius: 0px"
+          ></b-form-input>
+          <b-input-group-append>
+            <b-button variant="outline-secondary" @click="generateCaptcha" title="Captcha Baru">
+              <b-icon icon="arrow-repeat"></b-icon>
+            </b-button>
+          </b-input-group-append>
+        </b-input-group>
+        <b-alert variant="danger" v-if="captchaError" show class="mt-2">{{ captchaError }}</b-alert>
 
         <div>
           <b-button-group class="mt10">
@@ -121,9 +142,14 @@
 
 <script>
 import axios from "axios";
+import vSelect from "vue-select";
+import "vue-select/dist/vue-select.css";
 
 export default {
   name: "LoginForm",
+  components: {
+    vSelect,
+  },
   props: {
     title: String,
     level: String,
@@ -134,23 +160,53 @@ export default {
         username: "",
         password: "",
         level: "mahasiswa",
+        captchaAnswer: "",
       },
       show: true,
       pesan: null,
-      listlevel: [
-        {
-          id: "admin",
-          name: "Admin Prodi / Admin Akademik",
-        },
-        {
-          id: "mahasiswa",
-          name: "Mahasiswa",
-        },
+      captchaError: null,
+      captcha: {
+        num1: 0,
+        num2: 0,
+        correctAnswer: 0,
+      },
+      levelOptions: [
+        { id: "admin", label: "Admin Prodi / Admin Akademik" },
+        { id: "mahasiswa", label: "Mahasiswa" },
+        { id: "dosen", label: "Dosen" },
       ],
     };
   },
+  mounted() {
+    this.generateCaptcha();
+  },
   methods: {
+    generateCaptcha() {
+      this.captcha.num1 = Math.floor(Math.random() * 10) + 1;
+      this.captcha.num2 = Math.floor(Math.random() * 10) + 1;
+      this.captcha.correctAnswer = this.captcha.num1 + this.captcha.num2;
+      this.form.captchaAnswer = "";
+      this.captchaError = null;
+    },
+    validateCaptcha() {
+      if (!this.form.captchaAnswer) {
+        this.captchaError = "Mohon isi kode captcha";
+        return false;
+      }
+      if (parseInt(this.form.captchaAnswer) !== this.captcha.correctAnswer) {
+        this.captchaError = "Kode captcha salah! Silahkan coba lagi.";
+        this.generateCaptcha();
+        return false;
+      }
+      this.captchaError = null;
+      return true;
+    },
     async onLogin() {
+      // Validate captcha first
+      if (!this.validateCaptcha()) {
+        return;
+      }
+
       let self = this;
 
       try {
@@ -192,6 +248,11 @@ export default {
       }
     },
     async onLoginMahasiswa() {
+      // Validate captcha first
+      if (!this.validateCaptcha()) {
+        return;
+      }
+
       let self = this;
       // alert(this.form.level)
       try {
@@ -237,6 +298,11 @@ export default {
       }
     },
     async onLoginDosen() {
+      // Validate captcha first
+      if (!this.validateCaptcha()) {
+        return;
+      }
+
       let self = this;
       // alert(this.form.level)
       try {

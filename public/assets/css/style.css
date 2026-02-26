@@ -203,3 +203,134 @@
   font-size: 0.875em;
   color: #dc3545;
 }
+
+/* Login Form Improvements */
+.kotak-login {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px 25px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.kotak-login .title-login {
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 25px;
+}
+
+.kotak-login .custom-select,
+.kotak-login .form-control {
+  border: 2px solid #e0e0e0;
+  transition: border-color 0.3s ease;
+}
+
+.kotak-login .custom-select:focus,
+.kotak-login .form-control:focus {
+  border-color: #5947c2;
+  box-shadow: 0 0 0 0.2rem rgba(89, 71, 194, 0.15);
+}
+
+.kotak-login .input-group-text {
+  background: #5947c2;
+  color: white;
+  border: none;
+}
+
+.kotak-login .btn {
+  padding: 12px 30px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.kotak-login .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Captcha styling */
+.kotak-login .captcha-container {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 15px 0;
+}
+
+.kotak-login .captcha-question {
+  font-size: 18px;
+  font-weight: bold;
+  color: #5947c2;
+  text-align: center;
+  padding: 10px;
+  background: white;
+  border-radius: 5px;
+  border: 2px dashed #5947c2;
+}
+
+.kotak-login .captcha-refresh {
+  cursor: pointer;
+  color: #5947c2;
+  font-size: 20px;
+  transition: transform 0.3s ease;
+}
+
+.kotak-login .captcha-refresh:hover {
+  transform: rotate(180deg);
+}
+
+/* Footer marquee improvement */
+.footer-label {
+  background: linear-gradient(90deg, #5947c2 0%, #8b72d8 100%) !important;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .center-vertikal {
+    top: 50%;
+    transform: translateY(-50%);
+    width: 90% !important;
+  }
+  
+  .kotak-login {
+    padding: 20px 15px;
+  }
+}
+
+/* Vue Select Custom Styling */
+.vs__dropdown-toggle {
+  border: 2px solid #e0e0e0 !important;
+  border-radius: 0 !important;
+  padding: 5px 0;
+}
+
+.vs__dropdown-toggle:focus,
+.vs--focus .vs__dropdown-toggle {
+  border-color: #5947c2 !important;
+  box-shadow: 0 0 0 0.2rem rgba(89, 71, 194, 0.15) !important;
+}
+
+.vs__selected {
+  color: #333;
+  margin: 4px 4px 0 4px;
+}
+
+.vs__search {
+  margin: 0;
+  padding: 4px 8px;
+}
+
+.vs__dropdown-menu {
+  border-radius: 4px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.vs__dropdown-option {
+  padding: 10px 12px;
+}
+
+.vs__dropdown-option--highlight {
+  background: #5947c2;
+  color: white;
+}
