@@ -56,7 +56,7 @@
       </tbody>
       <tbody v-else>
         <tr v-for="(item, index) in items" :key="item.dokumenid">
-          <td>{{ index + 1 }}</td>
+          <td>{{ (currentPage - 1) * perPage + index + 1 }}</td>
           <td>{{ item.dokumennama }}</td>
           <td>{{ item.dokumentipe }}</td>
           <td>{{ item.jenisdokumen }}</td>
