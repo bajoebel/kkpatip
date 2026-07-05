@@ -59,7 +59,7 @@
       </thead>
       <tbody>
         <tr v-for="(item, index) in items" :key="item.kuotaidx">
-          <td>{{ index + 1 }}</td>
+          <td>{{ (currentPage - 1) * perPage + index + 1 }}</td>
           <td>{{ item.jeniskuota}}</td>
           <td>{{ item.kuotaprodinama }}</td>
           <td>{{ item.kuotasemnama }}</td>
@@ -229,7 +229,7 @@ export default {
     onCheck: () => {
       return localStorage.getItem("isLogin");
     },
-    getUrut: () => {
+    getUrut() {
       this.urut = this.urut + 1;
     },
     tambah() {

@@ -50,7 +50,7 @@
         </tbody>
         <tbody v-else>
             <tr v-for="(item, index) in items" :key="item.prodiid">
-                <td>{{index+1}}</td>
+                <td>{{ (currentPage - 1) * perPage + index + 1 }}</td>
                 <td>{{item.prodiid+' - '+item.prodinama}}</td>
                 <td>{{item.prodipejabat+' , '+ item.prodipejabat2}}</td>
                 <td>{{item.prodiakreditasi}}</td>
@@ -110,7 +110,7 @@ export default {
     onCheck:()=>{
       return localStorage.getItem('isLogin');
     },
-    getUrut:()=>{
+    getUrut() {
         this.urut = this.urut+1;
     },
     getData: async function(event, page) {

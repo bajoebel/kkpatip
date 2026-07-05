@@ -24,6 +24,7 @@
             :options="levelOptions"
             placeholder="Pilih Level Login"
             :clearable="false"
+            :reduce="opt => opt.id"
             style="flex: 1;"
           ></v-select>
         </b-input-group>

@@ -6,7 +6,7 @@
         <b-img
           center
           rounded="circle"
-          src="https://kkp.poltekatipdg.ac.id/img/male.png"
+          :src="baseurl + 'img/male.png'"
           alt="Center image"
           class="w150"
           v-if="mhsjkl == 'L'"
@@ -14,7 +14,7 @@
         <b-img
           center
           rounded="circle"
-          src="https://kkp.poltekatipdg.ac.id/img/female.png"
+          :src="baseurl + 'img/female.png'"
           alt="Center image"
           class="w150"
           v-else
@@ -469,7 +469,7 @@
               drop-placeholder="Drop file here..."
             ></b-form-file>
           </b-form-group>
-          <div class="mt-2">
+          <!-- <div class="mt-2">
             <b-button
               squared
               type="button"
@@ -478,7 +478,7 @@
               v-if="isnew"
               >Upload</b-button
             >
-          </div>
+          </div> -->
           <div class="mt-2">
             <b-button
               squared
@@ -540,6 +540,7 @@ export default {
       files: null,
       jenisdokumen: "",
       endpoint: process.env.VUE_APP_BASE_URL,
+      baseurl: process.env.BASE_URL,
     };
   },
   mounted() {

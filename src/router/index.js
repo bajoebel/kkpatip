@@ -118,7 +118,7 @@ const routes = [
   },
   {
     path: '/mahasiswabimbingan/:id',
-    name: 'mahasiswabimbingan',
+    name: 'mahasiswabimbingandetail',
     component: LaporandetailView
   },
   {
@@ -128,7 +128,7 @@ const routes = [
   },
   {
     path: '/monitoring/:id',
-    name: 'monitoring',
+    name: 'monitoringdetail',
     component: MonitoringdetailView
   },
   {
