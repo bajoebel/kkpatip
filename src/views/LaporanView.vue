@@ -85,40 +85,40 @@
                   <legend class="menu-border">Form Laporan Mingguan</legend>
                   <b-row>
                     <b-col>
-                      <b-form-select
+                      <v-select
                         v-model="registerid"
                         :options="listregister"
-                        value-field="registerid"
-                        text-field="registernamaperusahaan"
-                        @change="getRegister()"
-                      ></b-form-select>
+                        label="registernamaperusahaan"
+                        :reduce="item => item.registerid"
+                        @input="getRegister()"
+                      ></v-select>
                     </b-col>
                     <b-col>
-                      <b-form-select
+                      <v-select
                         v-model="tahun"
                         :options="listtahun"
-                        value-field="tahun"
-                        text-field="tahun"
-                        @change="getBulan()"
-                      ></b-form-select>
+                        label="tahun"
+                        :reduce="item => item.tahun"
+                        @input="getBulan()"
+                      ></v-select>
                     </b-col>
                     <b-col>
-                      <b-form-select
+                      <v-select
                         v-model="bulan"
                         :options="listbulan"
-                        value-field="bulan"
-                        text-field="bulanlabel"
-                        @change="getMinggu()"
-                      ></b-form-select>
+                        label="bulanlabel"
+                        :reduce="item => item.bulan"
+                        @input="getMinggu()"
+                      ></v-select>
                     </b-col>
                     <b-col>
-                      <b-form-select
+                      <v-select
                         v-model="minggu"
                         :options="listminggu"
-                        value-field="minggu"
-                        text-field="minggulabel"
-                        @change="getTanggal()"
-                      ></b-form-select>
+                        label="minggulabel"
+                        :reduce="item => item.minggu"
+                        @input="getTanggal()"
+                      ></v-select>
                     </b-col>
                   </b-row>
                   <hr />
@@ -1752,29 +1752,26 @@ export default {
 </script>
 <style lang="scss">
 fieldset.menu-border {
-  border: 1px solid #ccc !important;
-  border-radius: 15px 15px 0px 0px;
+  border: 1px solid #dbeafe !important;
+  border-radius: 14px;
   min-height: 100px;
-  padding: 10px;
+  padding: 12px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
 }
 legend.menu-border {
-  font-family: cursive;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   float: none;
   width: auto;
-  font-size: 1.2em !important;
-  font-weight: bold !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
   text-align: left !important;
   width: auto;
-  padding: 0 10px;
-  border: 1px solid #ccc;
-  border-radius: 15px;
-  margin-left: 10px;
-  background: linear-gradient(
-    90deg,
-    rgb(65, 65, 219) 0%,
-    rgb(66, 53, 66) 35%,
-    rgb(65, 65, 219) 100%
-  );
-  color: #ccc;
+  padding: 6px 14px;
+  border: 1px solid #c7d2fe;
+  border-radius: 999px;
+  margin-left: 4px;
+  background: linear-gradient(90deg, #eef2ff 0%, #e0f2fe 100%);
+  color: #334155;
 }
 </style>

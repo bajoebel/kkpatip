@@ -11,23 +11,21 @@
     <!-- <b-table striped hover :items="items"></b-table> -->
     <b-row>
       <b-col cols="2" lg="1">
-        <select class="custom-select" v-model="limit" @change="getData(Event, 1)">
-          <option value="10" selected>10</option>
-          <option value="20">20</option>
-          <option value="30">30</option>
-          <option value="40">40</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
-        </select>
+        <v-select
+          v-model="limit"
+          :options="[10, 20, 30, 40, 50, 100]"
+          :clearable="false"
+          @input="getData(Event, 1)"
+        />
       </b-col>
       <b-col cols="3" lg="3">
-        <b-form-select
+        <v-select
           v-model="prodiid"
           :options="listprodi"
-          value-field="prodiid"
-          text-field="prodinama"
-          @change="getData(Event, 1)"
-        ></b-form-select>
+          label="prodinama"
+          :reduce="item => item.prodiid"
+          @input="getData(Event, 1)"
+        ></v-select>
         <!-- <select class="form-control" v-model="prodiid" :options="listprodi" @change="getData">
           <option value="11" selected>TIA</option>
         </select> -->

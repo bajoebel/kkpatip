@@ -28,10 +28,16 @@
                       description=""
                       
                     >
-                    <select class="custom-select" v-model="form.level">
-                      <option value="admin">Admin prodi / Admin akademik</option>
-                      <option value="mahasiswa">Mahasiswa</option>
-                    </select>
+                    <v-select
+                      v-model="form.level"
+                      :options="[
+                        { value: 'admin', label: 'Admin prodi / Admin akademik' },
+                        { value: 'mahasiswa', label: 'Mahasiswa' }
+                      ]"
+                      label="label"
+                      :reduce="item => item.value"
+                      :clearable="false"
+                    ></v-select>
                       
                     </b-form-group>
                     <b-form-group

@@ -11,23 +11,33 @@
     <!-- <b-table striped hover :items="items"></b-table> -->
     <b-row>
       <b-col cols="2" lg="1">
-        <select class="custom-select" v-model="limit" @change="getData(Event, 1)">
-          <option value="10" selected>10</option>
-          <option value="20">20</option>
-          <option value="30">30</option>
-          <option value="40">40</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
-        </select>
+        <v-select
+          v-model="limit"
+          :options="[10, 20, 30, 40, 50, 100]"
+          :clearable="false"
+          @input="getData(Event, 1)"
+        />
       </b-col>
       <b-col cols="3" lg="3">
-        <b-form-select v-model="prodiid" :options="listprodi" value-field="prodiid" text-field="prodinama"  @change="getData(Event, 1)"></b-form-select>
+        <v-select
+          v-model="prodiid"
+          :options="listprodi"
+          label="prodinama"
+          :reduce="item => item.prodiid"
+          @input="getData(Event, 1)"
+        ></v-select>
         <!-- <select class="form-control" v-model="prodiid" :options="listprodi" @change="getData">
           <option value="11" selected>TIA</option>
         </select> -->
       </b-col>
       <b-col cols="3" lg="3">
-        <b-form-select v-model="semester" :options="listsemester" value-field="semid" text-field="semnama" @change="getData(Event, 1)"></b-form-select>
+        <v-select
+          v-model="semester"
+          :options="listsemester"
+          label="semnama"
+          :reduce="item => item.semid"
+          @input="getData(Event, 1)"
+        ></v-select>
         <!-- <select class="form-control" v-model="semester" @change="getData(Event, 1)">
           <option  v-for="item in listsemester" v-bind:key="item.semid" v-bind:value="item.semid" v-if="item.semaktif=1">{{item.semnama}}</option>
         </select> -->
@@ -117,7 +127,12 @@
             label-for="kuotajenisid"
             class="mt-2"
           >
-            <b-form-select v-model="kuotajenisid" :options="listjenis" value-field="jenisid" text-field="jeniskuota" size="sm" class="form-control"></b-form-select>
+            <v-select
+              v-model="kuotajenisid"
+              :options="listjenis"
+              label="jeniskuota"
+              :reduce="item => item.jenisid"
+            ></v-select>
             <span v-if="error.kuotajenisid" class="text-error"> {{ error.kuotajenisid }} </span>
           </b-form-group>
           <b-form-group
@@ -126,7 +141,13 @@
             label-for="Prodi"
             class="mt-2"
             >
-            <b-form-select v-model="kuotaprodiid" :options="listprodi" value-field="prodiid" text-field="prodinama" size="sm" class="form-control" @change="getProdiById"></b-form-select>
+            <v-select
+              v-model="kuotaprodiid"
+              :options="listprodi"
+              label="prodinama"
+              :reduce="item => item.prodiid"
+              @input="getProdiById"
+            ></v-select>
             <span v-if="error.kuotaprodiid" class="text-error"> {{ error.kuotaprodiid }} </span>
           </b-form-group>
           <b-form-group
@@ -135,7 +156,13 @@
             label-for="kuotasemid"
             class="mt-2"
             >
-            <b-form-select v-model="kuotasemid" :options="listsemester" value-field="semid" text-field="semnama" size="sm" class="form-control" @change="getSemesterById"></b-form-select>
+            <v-select
+              v-model="kuotasemid"
+              :options="listsemester"
+              label="semnama"
+              :reduce="item => item.semid"
+              @input="getSemesterById"
+            ></v-select>
             <span v-if="error.kuotasemid" class="text-error"> {{ error.kuotasemid }} </span>
           </b-form-group>
           <b-form-group

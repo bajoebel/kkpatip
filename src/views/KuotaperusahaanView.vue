@@ -331,12 +331,12 @@
                   </b-col>
                   <b-col cols="4">
                     <label for="">Dokumen</label>
-                    <b-form-select
+                    <v-select
                       v-model="akddokumenid"
                       :options="listdokumen"
-                      value-field="dokumenid"
-                      text-field="dokumennama"
-                    ></b-form-select>
+                      label="dokumennama"
+                      :reduce="item => item.dokumenid"
+                    ></v-select>
                   </b-col>
 
                   <b-col cols="4">

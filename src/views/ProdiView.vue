@@ -11,14 +11,12 @@
     <!-- <b-table striped hover :items="items"></b-table> -->
     <b-row>
         <b-col cols="2" lg="1">
-            <select class="custom-select" v-model="limit" @change="getData">
-                <option value="10" selected>10</option>
-                <option value="20">20</option>
-                <option value="30">30</option>
-                <option value="40">40</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-            </select>
+            <v-select
+              v-model="limit"
+              :options="[10, 20, 30, 40, 50, 100]"
+              :clearable="false"
+              @input="getData(Event, 1)"
+            />
         </b-col>
         <b-col cols="10" lg="11">
             <b-input-group >

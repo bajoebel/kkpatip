@@ -1,14 +1,17 @@
 <template>
   <b-row>
     <b-col cols="12" lg="4">
-      <fieldset class="menu-border" style="margin-top: 10px">
-        <legend class="menu-border">Profile Mahasiswa</legend>
+      <div class="kotak profile-side-card" style="margin-top: 10px">
+        <div class="profile-header">
+          <h3 class="text-center mb-1">Profile Mahasiswa</h3>
+          <p class="text-center profile-subtitle mb-0">Data identitas mahasiswa</p>
+        </div>
         <b-img
           center
           rounded="circle"
           src="https://kkp.poltekatipdg.ac.id/img/male.png"
           alt="Center image"
-          class="w150"
+          class="w150 profile-avatar"
           v-if="mhsjkl == 'L'"
         ></b-img>
         <b-img
@@ -16,18 +19,15 @@
           rounded="circle"
           src="https://kkp.poltekatipdg.ac.id/img/female.png"
           alt="Center image"
-          class="w150"
+          class="w150 profile-avatar"
           v-else
         ></b-img>
-        <h4 class="text-center">
-          <b-icon icon="arrow-left"></b-icon> {{ mhsnama }}
-          <b-icon icon="arrow-right"></b-icon>
-        </h4>
-        <p class="text-center">({{ mhsnobp }})</p>
-        <hr />
-        <table class="table table-striped">
+        <h4 class="text-center profile-name">{{ mhsnama }}</h4>
+        <p class="text-center profile-nobp">NOBP: {{ mhsnobp }}</p>
+        <hr class="profile-divider" />
+        <table class="table table-striped profile-info-table">
           <tr>
-            <td class="w175">NIK {{ mhsjkl }}</td>
+            <td class="w175">NIK</td>
             <td>: {{ mhsnik }}</td>
           </tr>
           <tr>
@@ -63,7 +63,7 @@
             <td>: {{ register.pembimbing.pembimbingdosennama +'('+register.pembimbing.pembimbingdosenid+')' }}</td>
           </tr>
         </table>
-      </fieldset>
+      </div>
     </b-col>
     <b-col cols="12" lg="8">
       <div class="kotak">
@@ -77,31 +77,31 @@
                   <legend class="menu-border">Laporan Mingguan</legend>
                   <b-row>
                     <b-col>
-                      <b-form-select
+                      <v-select
                         v-model="tahun"
                         :options="listtahun"
-                        value-field="tahun"
-                        text-field="tahun"
-                        @change="getBulan()"
-                      ></b-form-select>
+                        label="tahun"
+                        :reduce="item => (typeof item === 'object' ? item.tahun : item)"
+                        @input="getBulan()"
+                      ></v-select>
                     </b-col>
                     <b-col>
-                      <b-form-select
+                      <v-select
                         v-model="bulan"
                         :options="listbulan"
-                        value-field="bulan"
-                        text-field="bulanlabel"
-                        @change="getMinggu()"
-                      ></b-form-select>
+                        label="bulanlabel"
+                        :reduce="item => (typeof item === 'object' ? item.bulan : item)"
+                        @input="getMinggu()"
+                      ></v-select>
                     </b-col>
                     <b-col>
-                      <b-form-select
+                      <v-select
                         v-model="minggu"
                         :options="listminggu"
-                        value-field="minggu"
-                        text-field="minggulabel"
-                        @change="getTanggal()"
-                      ></b-form-select>
+                        label="minggulabel"
+                        :reduce="item => (typeof item === 'object' ? item.minggu : item)"
+                        @input="getTanggal()"
+                      ></v-select>
                     </b-col>
                   </b-row>
                   <hr />
@@ -520,9 +520,9 @@ export default {
       tahun: "",
       bulan: "",
       minggu: "",
-      listtahun: "",
-      listbulan: null,
-      listminggu: null,
+      listtahun: [],
+      listbulan: [],
+      listminggu: [],
       listtanggal: [],
       detail_idx: "",
       detail_laporanidx: "",
@@ -1260,30 +1260,111 @@ export default {
 };
 </script>
 <style lang="scss">
+.profile-side-card {
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+}
+
+.profile-header {
+  margin: -15px -15px 16px;
+  padding: 16px 14px;
+  background: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%);
+  color: #ffffff;
+}
+
+.profile-subtitle {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+.profile-avatar {
+  width: 128px !important;
+  height: 128px;
+  object-fit: cover;
+  border: 4px solid #ffffff;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.2);
+  margin: 8px auto 12px;
+}
+
+.profile-name {
+  font-size: 1.05rem;
+  margin-bottom: 4px;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.profile-nobp {
+  color: #334155;
+  font-size: 0.86rem;
+  letter-spacing: 0.2px;
+}
+
+.profile-divider {
+  border-top: 1px solid rgba(15, 23, 42, 0.1);
+}
+
+.profile-info-table {
+  margin-bottom: 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.profile-info-table td,
+.profile-info-table th {
+  vertical-align: middle;
+  border-color: rgba(15, 23, 42, 0.08);
+  font-size: 0.88rem;
+}
+
+.profile-info-table td:first-child {
+  width: 42%;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.profile-info-table td:last-child {
+  color: #334155;
+}
+
+.profile-info-table tbody tr:nth-of-type(odd) {
+  background-color: rgba(20, 184, 166, 0.06);
+}
+
+@media (max-width: 991.98px) {
+  .profile-side-card {
+    margin-bottom: 14px;
+  }
+
+  .profile-avatar {
+    width: 112px !important;
+    height: 112px;
+  }
+}
+
 fieldset.menu-border {
-  border: 1px solid #ccc !important;
-  border-radius: 15px 15px 0px 0px;
+  border: 1px solid #dbeafe !important;
+  border-radius: 14px;
   min-height: 100px;
-  padding: 10px;
+  padding: 12px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
 }
 legend.menu-border {
-  font-family: cursive;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   float: none;
   width: auto;
-  font-size: 1.2em !important;
-  font-weight: bold !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
   text-align: left !important;
   width: auto;
-  padding: 0 10px;
-  border: 1px solid #ccc;
-  border-radius: 15px;
-  margin-left: 10px;
-  background: linear-gradient(
-    90deg,
-    rgb(65, 65, 219) 0%,
-    rgb(66, 53, 66) 35%,
-    rgb(65, 65, 219) 100%
-  );
-  color: #ccc;
+  padding: 6px 14px;
+  border: 1px solid #c7d2fe;
+  border-radius: 999px;
+  margin-left: 4px;
+  background: linear-gradient(90deg, #eef2ff 0%, #e0f2fe 100%);
+  color: #334155;
 }
 </style>

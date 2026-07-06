@@ -3,7 +3,7 @@
   <div class="home" v-if="isLogin">
       <!-- <WelcomeMessage msg="Hello Wanhar Azri"/> -->
       <div v-if="isLevel!='4'">
-      <shorcut-menu :level=isLevel />
+      <shorcut-menu />
       </div>
       <div v-else>
         <!-- <h1>Profile Mahasiswa</h1> -->

@@ -1,14 +1,17 @@
 <template>
   <b-row>
     <b-col cols="12" lg="4">
-      <div class="kotak">
-        <h3 class="text-center">Profile Mahasiswa</h3>
+      <div class="kotak profile-side-card">
+        <div class="profile-header">
+          <h3 class="text-center mb-1">Profile Mahasiswa</h3>
+          <p class="text-center profile-subtitle mb-0">Data identitas mahasiswa</p>
+        </div>
         <b-img
           center
           rounded="circle"
           src="https://kkp.poltekatipdg.ac.id/img/male.png"
           alt="Center image"
-          class="w150"
+          class="w150 profile-avatar"
           v-if="mhsjkl == 'L'"
         ></b-img>
         <b-img
@@ -16,16 +19,13 @@
           rounded="circle"
           src="https://kkp.poltekatipdg.ac.id/img/female.png"
           alt="Center image"
-          class="w150"
+          class="w150 profile-avatar"
           v-else
         ></b-img>
-        <h4 class="text-center">
-          <b-icon icon="arrow-left"></b-icon> {{ mhsnama }}
-          <b-icon icon="arrow-right"></b-icon>
-        </h4>
-        <p class="text-center">({{ mhsnobp }})</p>
-        <hr />
-        <table class="table table-striped">
+        <h4 class="text-center profile-name">{{ mhsnama }}</h4>
+        <p class="text-center profile-nobp">NOBP: {{ mhsnobp }}</p>
+        <hr class="profile-divider" />
+        <table class="table table-striped profile-info-table">
           <tr>
             <td class="w175">NIK</td>
             <td>: {{ mhsnik }}</td>
@@ -1165,3 +1165,89 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.profile-side-card {
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+}
+
+.profile-header {
+  margin: -15px -15px 16px;
+  padding: 16px 14px;
+  background: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%);
+  color: #ffffff;
+}
+
+.profile-subtitle {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+.profile-avatar {
+  width: 128px !important;
+  height: 128px;
+  object-fit: cover;
+  border: 4px solid #ffffff;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.2);
+  margin: 8px auto 12px;
+}
+
+.profile-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+
+.profile-nobp {
+  font-size: 0.86rem;
+  color: #334155;
+  letter-spacing: 0.2px;
+}
+
+.profile-divider {
+  border-top: 1px solid rgba(15, 23, 42, 0.1);
+}
+
+.profile-info-table {
+  margin-bottom: 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.profile-info-table td,
+.profile-info-table th {
+  vertical-align: middle;
+  border-color: rgba(15, 23, 42, 0.08);
+  font-size: 0.88rem;
+}
+
+.profile-info-table tr td:first-child {
+  width: 42%;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.profile-info-table tr td:last-child {
+  color: #334155;
+}
+
+.profile-info-table tbody tr:nth-of-type(odd) {
+  background-color: rgba(20, 184, 166, 0.06);
+}
+
+@media (max-width: 991.98px) {
+  .profile-side-card {
+    margin-bottom: 14px;
+  }
+
+  .profile-avatar {
+    width: 112px !important;
+    height: 112px;
+  }
+}
+</style>

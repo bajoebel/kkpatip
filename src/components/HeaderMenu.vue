@@ -1,9 +1,8 @@
 <template>
-  <nav>
+  <nav class="top-nav-wrap">
     <div>
-      <b-navbar toggleable="lg" type="light" variant="default"
-        style="border-bottom: solid 1px #ccc; border-collapse: collapse" class="header">
-        <b-navbar-brand href="#" style="padding-left: 10px">
+      <b-navbar toggleable="lg" type="light" variant="default" class="header modern-navbar">
+        <b-navbar-brand href="#" class="brand-wrap">
 
           <b-img :src="baseurl + 'img/logo.png'" fluid alt="Fluid image"></b-img>
         </b-navbar-brand>
@@ -18,8 +17,8 @@
             </div>
           </b-navbar-nav>
 
-          <b-navbar-nav right>
-            <a class="nav-link" @click="logout()" v-if="isLogin"><b-icon icon="power"
+          <b-navbar-nav class="ml-auto logout-nav">
+            <a class="nav-link logout-link" @click="logout()" v-if="isLogin"><b-icon icon="power"
                 aria-hidden="true"></b-icon>Logout</a>
           </b-navbar-nav>
         </b-collapse>
@@ -125,22 +124,57 @@ export default {
 </script>
 <style scoped lang="scss">
 .navbar {
-  padding: 0px;
+  padding: 0;
+}
+
+.top-nav-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 1040;
+}
+
+.modern-navbar {
+  border-bottom: 1px solid rgba(148, 163, 184, 0.28);
+  background: rgba(147, 197, 253, 0.98);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 10px 24px rgba(30, 64, 175, 0.24);
+  position: relative;
+}
+
+.brand-wrap {
+  padding-left: 12px;
+}
+
+.brand-wrap img {
+  max-height: 44px;
+  width: auto;
+  filter: drop-shadow(0 2px 6px rgba(30, 64, 175, 0.18));
 }
 
 ul .nav-link {
-  padding: 15px 30px;
-  font-size: 14pt;
+  margin: 6px 6px;
+  padding: 10px 16px;
+  font-size: 11pt;
+  font-weight: 500;
+  color: #1f2937 !important;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: rgba(255, 255, 255, 0.55);
+  transition: all 0.25s ease;
 }
 
 ul .nav-link:hover {
-  color: #ccc;
-  border-bottom: 5px solid #0d6efd;
+  color: #0f172a !important;
+  border: 1px solid rgba(125, 211, 252, 0.5);
+  background: linear-gradient(90deg, rgba(186, 230, 253, 0.6) 0%, rgba(199, 210, 254, 0.55) 100%);
+  box-shadow: 0 8px 16px rgba(56, 189, 248, 0.18);
 }
 
 .router-link-exact-active {
-  color: #ccc;
-  border-bottom: 5px solid #0d6efd;
+  color: #ffffff !important;
+  border: 1px solid rgba(37, 99, 235, 0.75);
+  background: linear-gradient(90deg, rgba(37, 99, 235, 0.96) 0%, rgba(59, 130, 246, 0.92) 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14), 0 10px 20px rgba(37, 99, 235, 0.28);
 }
 
 ul .nav-item {
@@ -150,6 +184,49 @@ ul .nav-item {
 
 .dropdown-menu li {
   font-size: 14pt;
+}
+
+.logout-link {
+  color: #b91c1c !important;
+}
+
+.logout-link:hover {
+  color: #991b1b !important;
+  background: linear-gradient(90deg, rgba(254, 202, 202, 0.6) 0%, rgba(254, 205, 211, 0.55) 100%);
+}
+
+.logout-nav {
+  margin-left: auto;
+}
+
+@media (max-width: 991.98px) {
+  .modern-navbar :deep(.navbar-collapse) {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 10px;
+    right: 10px;
+    z-index: 2000;
+    padding: 10px;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    border-radius: 14px;
+    background: linear-gradient(120deg, rgba(248, 250, 252, 0.98) 0%, rgba(239, 246, 255, 0.97) 100%);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.16);
+  }
+
+  .modern-navbar :deep(.navbar-nav) {
+    flex-direction: column;
+  }
+
+  .modern-navbar :deep(.navbar-nav .nav-link) {
+    display: block;
+    width: 100%;
+    font-size: 10pt;
+    padding: 8px 12px;
+  }
+
+  .modern-navbar :deep(.navbar-brand img) {
+    max-height: 34px;
+  }
 }
 
 .navbrand {

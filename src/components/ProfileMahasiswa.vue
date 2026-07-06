@@ -1,14 +1,17 @@
 <template>
   <b-row>
     <b-col cols="12" lg="4">
-      <div class="kotak">
-        <h3 class="text-center">Profile Mahasiswa</h3>
+      <div class="kotak profile-card">
+        <div class="profile-header">
+          <h3 class="text-center mb-1">Profile Mahasiswa</h3>
+          <p class="text-center profile-subtitle mb-0">Data identitas mahasiswa</p>
+        </div>
         <b-img
           center
           rounded="circle"
           src="https://kkp.poltekatipdg.ac.id/img/male.png"
           alt="Center image"
-          class="w150"
+          class="w150 profile-avatar"
           v-if="mhsjkl == 'L'"
         ></b-img>
         <b-img
@@ -16,18 +19,28 @@
           rounded="circle"
           src="https://kkp.poltekatipdg.ac.id/img/female.png"
           alt="Center image"
-          class="w150"
+          class="w150 profile-avatar"
           v-else
         ></b-img>
-        <h4 class="text-center">
-          <b-icon icon="arrow-left"></b-icon> {{ mhsnama }}
-          <b-icon icon="arrow-right"></b-icon>
-        </h4>
-        <p class="text-center">({{ mhsnobp }})</p>
-        <hr />
-        <table class="table table-striped">
+        <h4 class="text-center profile-name">{{ mhsnama }}</h4>
+        <p class="text-center profile-nobp">NOBP: {{ mhsnobp }}</p>
+        <hr class="profile-divider" />
+        <table class="table table-striped profile-info-table">
           <tr>
-            <td class="w175">NIK {{ mhsjkl }}</td>
+            <td>Perusahaan</td>
+            <td>
+             
+              <v-select
+                v-model="registerid"
+                :options="listregister"
+                label="registernamaperusahaan"
+                :reduce="item => item.registerid"
+                @input="getRegister()"
+              ></v-select>
+            </td>
+          </tr>
+          <tr>
+            <td class="w175">NIK</td>
             <td>: {{ mhsnik }}</td>
           </tr>
           <tr>
@@ -59,18 +72,7 @@
             <td>Total Gagal</td>
             <td>: {{ nilai_d_e }}</td>
           </tr>
-          <tr>
-            <td>Perusahaan</td>
-            <td>
-              <b-form-select
-                        v-model="registerid"
-                        :options="listregister"
-                        value-field="registerid"
-                        text-field="registernamaperusahaan"
-                        @change="getRegister()"
-                      ></b-form-select>
-            </td>
-          </tr>
+          
         </table>
         <b-link
           :href="endpoint + dokumenbalasan.balasanfiles"
@@ -86,7 +88,7 @@
       </div>
     </b-col>
     <b-col cols="12" lg="8">
-      <div class="kotak">
+      <div class="kotak profile-content-card">
         <!-- Tabs with card integration -->
         <b-tabs pills content-class="mt-3" lazy>
           <b-tab title="Registrasi Magang">
@@ -1129,7 +1131,7 @@ export default {
       config: null,
       rekomendasi: null,
       register: null,
-      listregister: null,
+      listregister: [],
       registerid: "",
       idjenisdokumen: "",
       dokumenid: "",
@@ -1148,7 +1150,7 @@ export default {
     };
   },
   mounted() {
-    console.clear();
+    // console.clear();
     console.log("Profile is inisialize...");
     this.profile();
   },
@@ -1189,10 +1191,17 @@ export default {
               "registerid":0,
               "registernamaperusahaan":"Daftarkan ke perusahaan lain"
             })
-            console.clear();
-            console.log(lr)
+            // console.clear();
+            // console.log("List Register : ")
+            // console.log(lr)
+
+            
             this.listregister = lr;
             // alert(lr.length)
+            console.log(lr)
+            console.log("Register id : " + this.registerid)
+            console.log(this.listregister)
+            console.log(Array.isArray(this.listregister))
             if(lr.length>1){
               let idx = lr.length - 2;
               this.registerid = response.data.data.register[idx].registerid;
@@ -1262,7 +1271,7 @@ export default {
           url: `register/detail/` + this.registerid,
         })
         .then((response) => {
-          console.clear();
+          // console.clear();
           // console.log(response.data.data);
           // alert(response.data.code)
           if(response.data.code==200){
@@ -1336,7 +1345,7 @@ export default {
       this.tampilListPerusahaan();
     },
     async upload(dokumenid, registerid, dokumentipe) {
-      console.clear();
+      // console.clear();
       console.log(dokumenid);
       console.log(registerid);
       // alert(dokumentipe)
@@ -1479,7 +1488,7 @@ export default {
               registernobp: this.mhsnobp,
               registermhsnama: this.mhsnama,
             };
-            console.clear();
+            // console.clear();
             console.log(this.formdata);
             axios
               .request({
@@ -1546,7 +1555,7 @@ export default {
               registernobp: this.mhsnobp,
               registermhsnama: this.mhsnama,
             };
-            console.clear();
+            // console.clear();
             console.log(this.formdata);
             axios
               .request({
@@ -1684,31 +1693,126 @@ export default {
 };
 </script>
 <style lang="scss">
+.profile-card {
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+  overflow: visible;
+}
+
+.profile-header {
+  margin: -15px -15px 16px;
+  padding: 16px 14px;
+  background: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%);
+  color: #ffffff;
+}
+
+.profile-subtitle {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+.profile-avatar {
+  width: 128px !important;
+  height: 128px;
+  object-fit: cover;
+  border: 4px solid #ffffff;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.2);
+  margin: 8px auto 12px;
+}
+
+.profile-name {
+  font-size: 1.05rem;
+  color: #0f172a;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.profile-nobp {
+  font-size: 0.86rem;
+  color: #334155;
+  letter-spacing: 0.2px;
+}
+
+.profile-divider {
+  border-top: 1px solid rgba(15, 23, 42, 0.1);
+}
+
+.profile-info-table {
+  margin-bottom: 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.profile-info-table td,
+.profile-info-table th {
+  vertical-align: middle;
+  border-color: rgba(15, 23, 42, 0.08);
+  font-size: 0.88rem;
+}
+
+.profile-info-table td:first-child {
+  width: 42%;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.profile-info-table td:last-child {
+  color: #334155;
+}
+
+.profile-info-table tbody tr:nth-of-type(odd) {
+  background-color: rgba(20, 184, 166, 0.06);
+}
+
+.profile-content-card {
+  border: 1px solid #dbeafe;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  box-shadow: 0 10px 24px rgba(30, 64, 175, 0.08);
+}
+
+@media (max-width: 991.98px) {
+  .profile-card {
+    margin-bottom: 14px;
+  }
+
+  .profile-avatar {
+    width: 112px !important;
+    height: 112px;
+  }
+}
+
 fieldset.menu-border {
-  border: 1px solid #ccc !important;
-  border-radius: 15px 15px 0px 0px;
+  border: 1px solid #dbeafe !important;
+  border-radius: 14px;
   min-height: 100px;
-  padding: 10px;
+  padding: 12px;
   margin-bottom: 10px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
 }
 legend.menu-border {
-  font-family: cursive;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   float: none;
   width: auto;
-  font-size: 1.2em !important;
-  font-weight: bold !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
   text-align: left !important;
   width: auto;
-  padding: 0 10px;
-  border: 1px solid #ccc;
-  border-radius: 15px;
-  margin-left: 10px;
-  background: linear-gradient(
-    90deg,
-    rgb(65, 65, 219) 0%,
-    rgb(66, 53, 66) 35%,
-    rgb(65, 65, 219) 100%
-  );
-  color: #ccc;
+  padding: 6px 14px;
+  border: 1px solid #c7d2fe;
+  border-radius: 999px;
+  margin-left: 4px;
+  background: linear-gradient(90deg, #eef2ff 0%, #e0f2fe 100%);
+  color: #334155;
+}
+.v-select {
+  position: relative;
+}
+
+.vs__dropdown-menu {
+  z-index: 99999 !important;
 }
 </style>

@@ -5,10 +5,12 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 import { BootstrapVue, IconsPlugin} from 'bootstrap-vue'
+import vSelect from 'vue-select'
 // Import Bootstrap and BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
+import 'vue-select/dist/vue-select.css'
 import '../public/assets/css/style.css'
 import './app.scss'
 
@@ -31,6 +33,7 @@ axios.defaults.baseURL=process.env.VUE_APP_BASE_URL;
 Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
+Vue.component('v-select', vSelect)
 // Vue.use(axios)
 Vue.config.productionTip = false
 

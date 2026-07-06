@@ -1,5 +1,5 @@
 <template>
-  <b-row>
+  <b-row no-gutters class="login-wrapper">
     <b-col lg="3" >
       <b-form v-if="show" class="kotak-login center-vertikal">
         <p class="text-center">
@@ -24,6 +24,8 @@
             :options="levelOptions"
             placeholder="Pilih Level Login"
             :clearable="false"
+            label="label"
+            :reduce="item => item.id"
             style="flex: 1;"
           ></v-select>
         </b-input-group>
@@ -66,7 +68,7 @@
         <!-- Captcha Section -->
         <b-input-group class="mt-3">
           <b-input-group-prepend>
-            <b-input-group-text style="font-weight: bold; font-size: 14px; background: #5947c2; color: white;">
+            <b-input-group-text style="font-weight: bold; font-size: 14px; background: #7c9be6; color: white;">
               {{ captcha.num1 }} + {{ captcha.num2 }} = ?
             </b-input-group-text>
           </b-input-group-prepend>
@@ -126,11 +128,11 @@
     <b-col
       lg="9"
       style="
-        background-color: #ccc;
-        height: 90vh;
+        background-color: #dbeafe;
+        height: 100vh;
         background: url(img/bg.jpg);
         background-repeat: no-repeat;
-        background-size: cover;
+        background-size: 100% 100%;
       "
     >
     <div class="footer-label">

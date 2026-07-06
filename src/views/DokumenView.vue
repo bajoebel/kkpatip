@@ -11,14 +11,11 @@
     <!-- <b-table striped hover :items="items"></b-table> -->
     <b-row>
       <b-col cols="2" lg="1">
-        <select class="custom-select" v-model="limit">
-          <option value="10" selected>10</option>
-          <option value="20">20</option>
-          <option value="30">30</option>
-          <option value="40">40</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
-        </select>
+        <v-select
+          v-model="limit"
+          :options="[10, 20, 30, 40, 50, 100]"
+          :clearable="false"
+        />
       </b-col>
       <b-col cols="7" lg="10">
         <b-input-group>
@@ -112,7 +109,12 @@
             label-for="dokumenjenisid"
             class="mt-2"
           >
-            <b-form-select v-model="dokumenjenisid" :options="options" value-field="jenisidx" text-field="jenisdokumen" class="mt-3 form-control"></b-form-select>
+            <v-select
+              v-model="dokumenjenisid"
+              :options="options"
+              label="jenisdokumen"
+              :reduce="item => item.jenisidx"
+            ></v-select>
             <span v-if="error.dokumenjenisid" class="text-error"> {{ error.dokumenjenisid }} </span>
           </b-form-group>
           <b-form-group
