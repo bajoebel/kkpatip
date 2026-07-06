@@ -68,8 +68,7 @@ export default {
       nama: "",
       level: "",
       menu: '',
-      baseurl: 'https://kkp.poltekatipdg.ac.id/'
-      // baseurl:process.env.VUE_BASE_URL
+      baseurl: process.env.BASE_URL
     };
   },
   mounted() {

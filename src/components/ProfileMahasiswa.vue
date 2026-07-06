@@ -9,7 +9,7 @@
         <b-img
           center
           rounded="circle"
-          src="https://kkp.poltekatipdg.ac.id/img/male.png"
+          :src="baseurl + 'img/male.png'"
           alt="Center image"
           class="w150 profile-avatar"
           v-if="mhsjkl == 'L'"
@@ -17,7 +17,7 @@
         <b-img
           center
           rounded="circle"
-          src="https://kkp.poltekatipdg.ac.id/img/female.png"
+          :src="baseurl + 'img/female.png'"
           alt="Center image"
           class="w150 profile-avatar"
           v-else
@@ -1147,6 +1147,7 @@ export default {
       perusahaannotelp: "",
       dokumenbalasan: null,
       endpoint: process.env.VUE_APP_BASE_URL,
+      baseurl: process.env.BASE_URL,
     };
   },
   mounted() {

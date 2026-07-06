@@ -44,7 +44,7 @@
       </thead>
       <tbody>
         <tr v-for="(item, index) in items" :key="item.jenisidx">
-          <td>{{ index + 1 }}</td>
+          <td>{{ (currentPage - 1) * perPage + index + 1 }}</td>
           <td>{{ item.jenisdokumen }}</td>
           <td>{{ item.jenisstatus==1?'Aktif':'Non Aktif' }}</td>
           <td>
