@@ -24,12 +24,8 @@
             :options="levelOptions"
             placeholder="Pilih Level Login"
             :clearable="false"
-<<<<<<< HEAD
             label="label"
             :reduce="item => item.id"
-=======
-            :reduce="opt => opt.id"
->>>>>>> 22330d584b01cf7b01ac6753480faf111e1fe06b
             style="flex: 1;"
           ></v-select>
         </b-input-group>
